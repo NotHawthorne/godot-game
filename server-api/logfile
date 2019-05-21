@@ -1,0 +1,43 @@
+2019-05-21 03:34:18.595 PDT [75395] LOG:  listening on IPv6 address "::1", port 5432
+2019-05-21 03:34:18.595 PDT [75395] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2019-05-21 03:34:18.617 PDT [75395] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2019-05-21 03:34:18.641 PDT [75396] LOG:  database system was shut down at 2019-05-21 03:33:41 PDT
+2019-05-21 03:34:18.665 PDT [75395] LOG:  database system is ready to accept connections
+2019-05-21 03:36:59.533 PDT [76653] FATAL:  database "server-api_development" does not exist
+2019-05-21 03:37:40.185 PDT [76944] FATAL:  role "postgres" does not exist
+2019-05-21 03:38:23.792 PDT [77266] FATAL:  database "server-api_development" does not exist
+2019-05-21 03:38:53.483 PDT [77466] ERROR:  relation "users" does not exist at character 566
+2019-05-21 03:38:53.483 PDT [77466] STATEMENT:                SELECT a.attname, format_type(a.atttypid, a.atttypmod),
+	                     pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod,
+	                     c.collname, col_description(a.attrelid, a.attnum) AS comment
+	                FROM pg_attribute a
+	                LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+	                LEFT JOIN pg_type t ON a.atttypid = t.oid
+	                LEFT JOIN pg_collation c ON a.attcollation = c.oid AND a.attcollation <> t.typcollation
+	               WHERE a.attrelid = '"users"'::regclass
+	                 AND a.attnum > 0 AND NOT a.attisdropped
+	               ORDER BY a.attnum
+	
+2019-05-21 03:40:06.745 PDT [77891] ERROR:  database "server-api_development" is being accessed by other users
+2019-05-21 03:40:06.745 PDT [77891] DETAIL:  There is 1 other session using the database.
+2019-05-21 03:40:06.745 PDT [77891] STATEMENT:  DROP DATABASE "server-api_development";
+2019-05-21 03:41:09.560 PDT [78473] ERROR:  relation "users" does not exist at character 566
+2019-05-21 03:41:09.560 PDT [78473] STATEMENT:                SELECT a.attname, format_type(a.atttypid, a.atttypmod),
+	                     pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod,
+	                     c.collname, col_description(a.attrelid, a.attnum) AS comment
+	                FROM pg_attribute a
+	                LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+	                LEFT JOIN pg_type t ON a.atttypid = t.oid
+	                LEFT JOIN pg_collation c ON a.attcollation = c.oid AND a.attcollation <> t.typcollation
+	               WHERE a.attrelid = '"users"'::regclass
+	                 AND a.attnum > 0 AND NOT a.attisdropped
+	               ORDER BY a.attnum
+	
+2019-05-21 03:58:47.372 PDT [85682] ERROR:  database "server-api_development" already exists
+2019-05-21 03:58:47.372 PDT [85682] STATEMENT:  CREATE DATABASE "server-api_development" ENCODING = 'unicode'
+2019-05-21 03:58:47.413 PDT [85692] ERROR:  database "server-api_test" already exists
+2019-05-21 03:58:47.413 PDT [85692] STATEMENT:  CREATE DATABASE "server-api_test" ENCODING = 'unicode'
+2019-05-21 08:46:39.373 PDT [75395] LOG:  received smart shutdown request
+2019-05-21 08:46:39.378 PDT [75395] LOG:  background worker "logical replication launcher" (PID 75402) exited with exit code 1
+2019-05-21 08:46:39.379 PDT [75397] LOG:  shutting down
+2019-05-21 08:46:39.428 PDT [75395] LOG:  database system is shut down

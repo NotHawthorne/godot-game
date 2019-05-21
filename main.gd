@@ -11,9 +11,9 @@ func _ready():
 	$network.start_server()
 
 func _process(delta):
-	if (Input.is_action_just_pressed("ui_cancel")):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		get_tree().quit()
+	#if (Input.is_action_just_pressed("ui_cancel")):
+	#	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	#	get_tree().quit()
 	if (Input.is_action_just_pressed("show_cursor")):
 		if (!cursor_shown):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
