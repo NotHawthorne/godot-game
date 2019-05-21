@@ -6,11 +6,12 @@ class UsersController < ApplicationController
 		@user = User.find(params[:handle])
 	end
 	def create
+		puts(user_params)
 		@user = User.new(user_params)
 		if @user.save
 			render json: @user
 		else
-			return user.login(user_params)
+			render json: User::login(user_params)
 		end
 	end
 	protected

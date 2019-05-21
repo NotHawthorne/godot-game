@@ -1,1 +1,1 @@
-/nfs/2018/a/alkozma/.brew/Cellar/postgresql/11.3/bin/postgres "-D" "./postgres"
+/nfs/2018/a/alkozma/.brew/Cellar/postgresql/11.3/bin/postgres "-D" "postgres"

@@ -33,12 +33,55 @@ func _on_Button_pressed():
 #			})
 	var body = str("user[handle]=", uname, "&user[password]=", pwd, "&user[password_confirmation]=", pwd)
 	
-	err = http.request(
-		HTTPClient.METHOD_POST, 
+	http.request(
+		http.METHOD_POST, 
 		'/users.json', 
 		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
 		body
 	)
+	while http.get_status() != HTTPClient.STATUS_BODY and http.get_status() != HTTPClient.STATUS_CONNECTED:
+		http.poll()
+		print("Sending login request...")
+		OS.delay_msec(500)
+	if (http.has_response()):
+			# If there is a response...
+			
+			var headers = http.get_response_headers_as_dictionary() # Get response headers.
+			print("code: ", http.get_response_code()) # Show response code.
+			print("**headers:\\n", headers) # Show headers.
+			
+			# Getting the HTTP Body
+			
+			if http.is_response_chunked():
+			# Does it use chunks?
+				print("Response is Chunked!")
+			else:
+				# Or just plain Content-Length
+				var bl = http.get_response_body_length()
+				print("Response Length: ",bl)
+			
+				# This method works for both anyway
+			
+			var rb = PoolByteArray() # Array that will hold the data.
+			
+			while http.get_status() == HTTPClient.STATUS_BODY:
+			# While there is body left to be read
+				http.poll()
+				var chunk = http.read_response_body_chunk() # Get a chunk.
+				if chunk.size() == 0:
+					# Got nothing, wait for buffers to fill a bit.
+					OS.delay_usec(1000)
+				else:
+			    	rb = rb + chunk # Append to read buffer.
+			
+			# Done!
+			
+			print("bytes got: ", rb.size())
+			var text = JSON.parse(rb.get_string_from_ascii())
+			if text.result and text.result.has("status"):
+				get_node('PanelContainer/Panel/Status').text = "Error logging in!"
+				return
+	print(err)
 	assert (err == OK)
 	http = HTTPClient.new()
 	err = http.connect_to_host("localhost", 3000)
@@ -58,6 +101,7 @@ func _on_Button_pressed():
 		body
 	)
 	print("GOING")
+	get_tree().change_scene("res://default_level.tscn")
 
 
 func _on_boi_request_completed(result, response_code, headers, body):
