@@ -23,6 +23,8 @@ var	move				= "stop"
 #var	root				= false
 #var	console				= false
 var	tree				= {}
+var		health			= 100
+var		dead			= false
 
 func _ready():
 	pass # Replace with function body.

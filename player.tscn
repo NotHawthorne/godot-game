@@ -22,6 +22,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0 )
 [node name="Camera" type="Camera" parent="Head"]
 far = 200.0
 
+[node name="RayCast" type="RayCast" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0 )
+enabled = true
+
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 0.4, 0, 0, 0, 1.6, 0, 0, 0, 0.4, 0, 0, 0 )
 mesh = SubResource( 2 )
