@@ -60,3 +60,7 @@ func	_input(event):
 		if change + camera_angle < 90 and change + camera_angle > -90:
 			$Head/Camera.rotate_x(deg2rad(change))
 			camera_angle += change
+	if event is InputEventMouseButton and control == true:
+		var	bullet_scene	= load("res://bullet.tscn")
+		var	bullet			= bullet_scene.instance()
+		get_node('Head/Camera/RayCast').add_child(bullet)

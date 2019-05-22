@@ -23,29 +23,19 @@ func _on_Button_pressed():
 		OS.delay_msec(500)
 	print("Connected!")
 	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-	
-#			var body = http.query_string_from_dict({
-#				'user': {
-#					'handle': login, 
-#					'password': password, 
-#					'password_confirmation': password_confirmation
-#				}
-#			})
 	var body = str("user[handle]=", uname, "&user[password]=", pwd, "&user[password_confirmation]=", pwd)
 	
 	http.request(
 		http.METHOD_POST, 
 		'/users.json', 
 		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
-		body
+			body
 	)
 	while http.get_status() != HTTPClient.STATUS_BODY and http.get_status() != HTTPClient.STATUS_CONNECTED:
 		http.poll()
 		print("Sending login request...")
 		OS.delay_msec(500)
 	if (http.has_response()):
-			# If there is a response...
-			
 			var headers = http.get_response_headers_as_dictionary() # Get response headers.
 			print("code: ", http.get_response_code()) # Show response code.
 			print("**headers:\\n", headers) # Show headers.
