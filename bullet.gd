@@ -7,6 +7,7 @@ const KILL_TIMER = 4
 var timer = 0
 
 var hit_something = false
+var bullet_owner = ""
 
 func _ready():
 	$Area.connect("body_entered", self, "collided")
@@ -15,7 +16,7 @@ func _ready():
 
 func _physics_process(delta):
     var forward_dir = global_transform.basis.z.normalized()
-    global_translate(forward_dir * BULLET_SPEED * delta)
+    global_translate(-(forward_dir * BULLET_SPEED * delta))
 
     timer += delta
     if timer >= KILL_TIMER:
@@ -25,10 +26,13 @@ func _physics_process(delta):
 func collided(body):
 	var node = find_node_by_name(get_tree().get_root(), body.get_name())
 	if hit_something == false:
-		if "player_id" in node:
+		if "player_id" in node and body.get_name() != str(bullet_owner):
 			print("HIT")
 			print(body.get_name())
-			rpc_unreliable("deal_damage", BULLET_DAMAGE, node.player_id)
+			print(global.player_id)
+			print(node.player_id)
+			print(bullet_owner)
+			rpc_id(1, "deal_damage", BULLET_DAMAGE, str(node.player_id), node.player_id)
 			hit_something = true
 			queue_free()
 

@@ -98,3 +98,10 @@ func _on_boi_request_completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	print(json.result)
 	get_tree().change_scene("res://default_level.tscn")
+
+
+func _on_LineEdit_text_changed(new_text):
+	if (new_text == "::1"):
+		new_text = "127.0.0.1"
+		get_node('PanelContainer/Panel/LineEdit').text = "127.0.0.1"
+	global.server_selection = new_text
