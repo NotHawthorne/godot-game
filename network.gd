@@ -7,9 +7,9 @@ var		player_name
 
 
 func			_ready():
-	get_tree().connect("network_peer_connected", self, "_player_connected")
+	get_tree().connect("network_peer_connected", self, "_connected_ok")
 	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
-	get_tree().connect("connected_to_server", self, "_connected_ok")
+	#get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	get_tree().connect("server_disconnected", self, "_server_disconnect")
 
@@ -39,13 +39,16 @@ func			join_server():
 	global.player_id = get_tree().get_network_unique_id()
 	
 func			_player_connected(id):
+	print("PLAYER CONNECTED")
 	pass
 
 func			_player_disconnected(id):
 	unregister_player(id)
+	print("PLAYER LEFT")
 	rpc("unregister_player", id)
 
 func			_connected_ok():
+	print("PLAYER READY")
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name)
 
 remote	func	user_ready(id, player_name):
@@ -90,7 +93,7 @@ remote	func	deal_damage(id, name, amt):
 #	players[id] = name
 
 remote	func	unregister_player(id):
-	get_node("/root/" + str(id)).queue_free()
+	get_parent().get_node(str(id)).queue_free()
 	players.erase(id)
 
 func			quit_game():
