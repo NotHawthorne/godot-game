@@ -9,7 +9,8 @@ var timer = 0
 var hit_something = false
 
 func _ready():
-    $Area.connect("body_entered", self, "collided")
+	$Area.connect("body_entered", self, "collided")
+	print("FIRED")
 
 
 func _physics_process(delta):
@@ -22,9 +23,25 @@ func _physics_process(delta):
 
 
 func collided(body):
-    if hit_something == false:
-        if body.has_method("bullet_hit"):
-            body.bullet_hit(BULLET_DAMAGE, global_transform)
+	var node = find_node_by_name(get_tree().get_root(), body.get_name())
+	if hit_something == false:
+		if "player_id" in node:
+			print("HIT")
+			print(body.get_name())
+			rpc_unreliable("deal_damage", BULLET_DAMAGE, node.player_id)
+			hit_something = true
+			queue_free()
 
-    hit_something = true
-    queue_free()
+func find_node_by_name(root, name):
+
+    if(root.get_name() == name): return root
+
+    for child in root.get_children():
+        if(child.get_name() == name):
+            return child
+
+        var found = find_node_by_name(child, name)
+
+        if(found): return found
+
+    return null

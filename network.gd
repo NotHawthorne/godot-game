@@ -61,14 +61,17 @@ remote	func	register_new_player(id, name):
 	spawn_player(id)
 
 remote	func	deal_damage(id, name, amt):
+	print("DEALING DAMAGE")
 	if get_tree().is_network_server():
 		rpc_id(id, "deal_damage", 1, player_name, amt)
 		for peer_id in players:
 			rpc_id(id, "deal_damage", peer_id, players[peer_id], amt)
 	var user = find_node(str(id))
 	user.health -= amt
+	print("HI")
 	if (user.health < 0):
 		user.health = 0;
+		print("USER DIED")
 		user.dead = true;
 
 #remote	func	register_player(id, name):
