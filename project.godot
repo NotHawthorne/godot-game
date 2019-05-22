@@ -19,6 +19,10 @@ config/name="FPS"
 run/main_scene="res://lobby.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+global="*res://global.gd"
+
 [input]
 
 ui_accept={

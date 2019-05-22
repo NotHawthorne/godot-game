@@ -62,6 +62,7 @@ margin_bottom = 553.173
 [node name="ServersRequest" type="HTTPRequest" parent="PanelContainer"]
 
 [node name="boi" type="HTTPRequest" parent="."]
+[connection signal="text_changed" from="PanelContainer/Panel/LineEdit" to="." method="_on_LineEdit_text_changed"]
 [connection signal="pressed" from="PanelContainer/Panel/Button" to="." method="_on_Button_pressed"]
 [connection signal="request_completed" from="PanelContainer/HTTPRequest" to="PanelContainer/Panel/LineEdit" method="_on_HTTPRequest_request_completed"]
 [connection signal="request_completed" from="PanelContainer/ServersRequest" to="PanelContainer/Panel/ServerListing" method="_on_ServersRequest_request_completed"]

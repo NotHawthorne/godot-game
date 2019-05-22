@@ -15,21 +15,28 @@ func			_ready():
 
 func			start_server():
 	player_name	= "Server"
+	global.player_name = player_name;
 	var	host	= NetworkedMultiplayerENet.new()
 	var	err		= host.create_server(DEFAULT_PORT, MAX_PEERS)
+	print("Attempting to connect to " + global.server_selection)
 	
-	if (err != OK):
+	if (err != OK || global.server_selection != '127.0.0.1'):
+		print("Joining server!")
 		join_server()
 		return
 	get_tree().set_network_peer(host)
+	print("Starting server!")
+	global.player_id = 1;
 	spawn_player(1)
 
 func			join_server():
 	player_name	= "Client"
+	global.player_name = player_name;
 	var	host	= NetworkedMultiplayerENet.new()
 	
-	host.create_client('127.0.0.1', DEFAULT_PORT)
+	host.create_client(global.server_selection, DEFAULT_PORT)
 	get_tree().set_network_peer(host)
+	global.player_id = get_tree().get_network_unique_id()
 	
 func			_player_connected(id):
 	pass
@@ -65,8 +72,8 @@ remote	func	deal_damage(id, name, amt):
 	if get_tree().is_network_server():
 		rpc_id(id, "deal_damage", 1, player_name, amt)
 		for peer_id in players:
-			rpc_id(id, "deal_damage", peer_id, players[peer_id], amt)
-	var user = find_node(str(id))
+			rpc_id(id, "deal_damage", peer_id, player_name, amt)
+	var user = find_node(name)
 	user.health -= amt
 	print("HI")
 	if (user.health < 0):
@@ -100,3 +107,5 @@ func			spawn_player(id):
 		player.player_id	= id
 		player.control		= true
 	get_parent().add_child(player)
+	print(str(id) + " joined!")
+	print("your id: " + str(global.player_id))
