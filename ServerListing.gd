@@ -8,11 +8,11 @@ func _ready():
 	add_child(list_timer)
 	list_timer.start()
 	var http = get_node('../../ServersRequest')
-	http.request("http://localhost:3000/servers.json")
+	http.request("http://35.236.33.159:3000/servers.json")
 	
 func	_on_timeout():
 	var http = get_node('../../ServersRequest')
-	http.request("http://localhost:3000/servers.json")
+	http.request("http://35.236.33.159:3000/servers.json")
 	
 
 func _on_ServersRequest_request_completed(result, response_code, headers, body):
