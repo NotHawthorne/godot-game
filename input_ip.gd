@@ -8,7 +8,7 @@ extends LineEdit
 func _ready():
 	var root = get_parent().get_parent()
 	var http = root.get_node('HTTPRequest')
-	http.request("http://localhost:3000/ips.json")
+	http.request("http://35.236.33.159:3000/ips.json")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

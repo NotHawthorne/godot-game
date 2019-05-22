@@ -29,7 +29,7 @@ func _input(event):
 			password_confirmation = cmd
 			
 			var http = HTTPClient.new()
-			var err = http.connect_to_host("localhost", 3000)
+			var err = http.connect_to_host("35.236.33.159", 3000)
 			assert(err == OK)
 
 			while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
