@@ -80,4 +80,5 @@ show_cursor={
 
 [rendering]
 
+quality/voxel_cone_tracing/high_quality=false
 environment/default_environment="res://scenes/levels/default_env.tres"
