@@ -17,6 +17,7 @@ render_target_update_mode = 3
 [node name="ARVRCamera" type="ARVRCamera" parent="Viewport-VR/ARVROrigin"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.16053, 0 )
 current = true
+fov = 90.0
 
 [node name="MeshInstance" type="MeshInstance" parent="Viewport-VR"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.64377, 1.03263, -4.37258 )
