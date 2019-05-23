@@ -105,3 +105,7 @@ func _on_LineEdit_text_changed(new_text):
 		new_text = "127.0.0.1"
 		get_node('PanelContainer/Panel/LineEdit').text = "127.0.0.1"
 	global.server_selection = new_text
+
+
+func _on_Username_text_changed(new_text):
+	global.player_name = new_text

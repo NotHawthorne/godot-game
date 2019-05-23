@@ -9,13 +9,14 @@ var timer = 0
 var hit_something = false
 var bullet_owner = ""
 
+var forward_dir
+
 func _ready():
 	$Area.connect("body_entered", self, "collided")
-	print("FIRED")
+	forward_dir = global_transform.basis.z.normalized()
 
 
 func _physics_process(delta):
-    var forward_dir = global_transform.basis.z.normalized()
     global_translate(-(forward_dir * BULLET_SPEED * delta))
 
     timer += delta
@@ -24,20 +25,16 @@ func _physics_process(delta):
 
 
 func collided(body):
-	var node = find_node_by_name(get_tree().get_root(), body.get_name())
 	if hit_something == false:
-		if "player_id" in node and body.get_name() != str(bullet_owner):
-			print("HIT")
-			print(body.get_name())
-			print(global.player_id)
-			print(node.player_id)
-			print(bullet_owner)
-			rpc_id(1, "deal_damage", BULLET_DAMAGE, str(node.player_id), node.player_id)
+		if body.get_name() != str(bullet_owner):
+			var node = get_tree().get_root().find_node(body.get_name(), true, false)
+			print("AX | " + body.get_name())
+			print("HIT " + node.player_name)
+			#rpc_unreliable("deal_damage", BULLET_DAMAGE, str(node.player_id), node.player_id)
 			hit_something = true
 			queue_free()
 
 func find_node_by_name(root, name):
-
     if(root.get_name() == name): return root
 
     for child in root.get_children():

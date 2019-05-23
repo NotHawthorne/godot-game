@@ -14,8 +14,7 @@ func			_ready():
 	get_tree().connect("server_disconnected", self, "_server_disconnect")
 
 func			start_server():
-	player_name	= "Server"
-	global.player_name = player_name;
+	player_name = global.player_name;
 	var	host	= NetworkedMultiplayerENet.new()
 	var	err		= host.create_server(DEFAULT_PORT, MAX_PEERS)
 	print("Attempting to connect to " + global.server_selection)
@@ -27,11 +26,10 @@ func			start_server():
 	get_tree().set_network_peer(host)
 	print("Starting server!")
 	global.player_id = 1;
-	spawn_player(1)
+	spawn_player(1, player_name)
 
 func			join_server():
-	player_name	= "Client"
-	global.player_name = player_name;
+	player_name	= global.player_name
 	var	host	= NetworkedMultiplayerENet.new()
 	
 	host.create_client(global.server_selection, DEFAULT_PORT)
@@ -39,7 +37,6 @@ func			join_server():
 	global.player_id = get_tree().get_network_unique_id()
 	
 func			_player_connected(id):
-	print("PLAYER CONNECTED")
 	pass
 
 func			_player_disconnected(id):
@@ -48,7 +45,6 @@ func			_player_disconnected(id):
 	rpc("unregister_player", id)
 
 func			_connected_ok(id):
-	print("PLAYER READY")
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name)
 
 remote	func	user_ready(id, player_name):
@@ -68,21 +64,22 @@ remote	func	register_new_player(id, name):
 		for peer_id in players:
 			rpc_id(id, "register_new_player", peer_id, players[peer_id])
 	players[id] = name
-	spawn_player(id)
+	spawn_player(id, name)
 
-remote	func	deal_damage(id, name, amt):
+func		deal_damage(id, name, amt):
 	print("DEALING DAMAGE")
-	if get_tree().is_network_server():
-		rpc_id(id, "deal_damage", 1, player_name, amt)
-		for peer_id in players:
-			rpc_id(id, "deal_damage", peer_id, player_name, amt)
-	var user = find_node(name)
-	user.health -= amt
-	print("HI")
-	if (user.health < 0):
-		user.health = 0;
-		print("USER DIED")
-		user.dead = true;
+	#if get_tree().is_network_server():
+	#	rpc_id(id, "deal_damage", 1, player_name, amt)
+	#	for peer_id in players:
+	#		rpc_id(id, "deal_damage", peer_id, player_name, amt)
+	#print(name)
+	#var user = find_node(name)
+	#user.health -= amt
+	#print("HI")
+	#if (user.health < 0):
+	#	user.health = 0;
+	#	print("USER DIED")
+	#	user.dead = true;
 
 #remote	func	register_player(id, name):
 #	if get_tree().is_network_server():
@@ -100,7 +97,7 @@ func			quit_game():
 	get_tree().set_network_peer(null)
 	players.clear()
 
-func			spawn_player(id):
+func			spawn_player(id, name):
 	var	player_scene	= load("res://player.tscn")
 	var	player			= player_scene.instance()
 	
@@ -109,6 +106,6 @@ func			spawn_player(id):
 		player.set_network_master(id)
 		player.player_id	= id
 		player.control		= true
+		player.player_name	= name
 	get_parent().add_child(player)
-	print(str(id) + " joined!")
-	print("your id: " + str(global.player_id))
+	print(name + " joined!")
