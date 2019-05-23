@@ -47,7 +47,7 @@ func			_player_disconnected(id):
 	print("PLAYER LEFT")
 	rpc("unregister_player", id)
 
-func			_connected_ok():
+func			_connected_ok(id):
 	print("PLAYER READY")
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name)
 
