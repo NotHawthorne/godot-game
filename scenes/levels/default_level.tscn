@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/main.gd" type="Script" id=1]
 [ext_resource path="res://scripts/db/account.gd" type="Script" id=2]
@@ -19,6 +19,9 @@ bias = 1.5
 normal_bias = 0.0
 propagation = 0.7
 interior = true
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 96.3638, 0.0135574, 94.2621 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0552416, 0 )
@@ -167,8 +170,23 @@ material/119 = null
 
 [node name="GIProbe" type="GIProbe" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.115482, 10.333, 0.194122 )
+visible = false
 subdiv = 0
 extents = Vector3( 218.468, 148.148, 294.142 )
 energy = 10.0
 interior = true
 data = SubResource( 2 )
+
+[node name="Environment" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.05805, 0 )
+collision_layer = 3
+collision_mask = 7
+
+[node name="Floor" type="StaticBody" parent="Environment"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.00218, 5.56447, 0 )
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape" type="CollisionShape" parent="Environment/Floor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.84839, -3.85555, 0 )
+shape = SubResource( 3 )

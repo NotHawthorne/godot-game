@@ -78,6 +78,12 @@ show_cursor={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Player"
+3d_physics/layer_2="Environment"
+3d_physics/layer_3="Objects"
+
 [rendering]
 
 quality/voxel_cone_tracing/high_quality=false
