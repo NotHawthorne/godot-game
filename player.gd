@@ -13,6 +13,7 @@ const	FLY_ACCEL		= 4
 # Network
 var	control				= false
 var	player_id			= 0
+var	player_name			= ""
 #var	direct				= ["N", "W", "S", "O"]
 var	move				= "stop"
 #var	step				= 0
@@ -78,27 +79,32 @@ remote	func	do_rot(headrot, camrot, pid):
 	rot.y = headrot.y
 	rot.x = camrot.x
 	pnode.get_node('Head').set_rotation_degrees(rot)
-	print(str(rot))
-	#print(str(pid) + "rot")
 
 remote	func	fire_bullet(id):
-	var	bullet_scene	= load("res://bullet.tscn")
-	var	bullet			= bullet_scene.instance()
-	var	root			= get_parent()
-	var	pnode			= root.get_node(str(id))
-	bullet.bullet_owner = id
-	pnode.get_node('Head/Camera/RayCast').add_child(bullet)
 	print(str(id) + " fired a bullet")
+	if (str(id) != str(player_id)):
+		var	bullet_scene	= load("res://bullet.tscn")
+		var	bullet			= bullet_scene.instance()
+		var	root			= get_parent()
+		var	pnode			= root.get_node(str(id))
+		bullet.bullet_owner = id
+		pnode.find_node('RayCast', true, false).add_child(bullet)
 
 func	_input(event):
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and !global.ui_mode:
 		var change = 0
 		if control == true:
 			$Head.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 			change = -event.relative.y * mouse_sensitivity
 			if change + camera_angle < 90 and change + camera_angle > -90:
 				$Head/Camera.rotate_x(deg2rad(change))
+				$Head/gunthing.rotate_x(deg2rad(change))
 				camera_angle += change
 			rpc_unreliable("do_rot", $Head.get_rotation_degrees(), $Head/Camera.get_rotation_degrees(), global.player_id)
 	if event is InputEventMouseButton and control == true:
+		var	bullet_scene	= load("res://bullet.tscn")
+		var	bullet			= bullet_scene.instance()
+		bullet.bullet_owner = player_id
 		rpc_unreliable("fire_bullet", player_id)
+		$Head/Camera/RayCast.add_child(bullet)
+		print("fired!")

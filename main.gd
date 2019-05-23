@@ -15,10 +15,10 @@ func _process(delta):
 	#	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	#	get_tree().quit()
 	if (Input.is_action_just_pressed("show_cursor")):
-		if (!cursor_shown):
+		if (!global.ui_mode):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		cursor_shown = !cursor_shown
+		global.ui_mode = !global.ui_mode
 	if (Input.is_action_just_pressed("restart")):
 		get_tree().reload_current_scene()
