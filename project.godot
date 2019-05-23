@@ -23,6 +23,10 @@ config/icon="res://img/ui/icon.png"
 
 global="*res://scripts/global.gd"
 
+[gdnative]
+
+singletons=[ "res://addons/godot-openvr/godot_openvr.gdnlib" ]
+
 [input]
 
 ui_accept={
