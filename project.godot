@@ -15,13 +15,13 @@ _global_script_class_icons={
 
 [application]
 
-config/name="FPS"
-run/main_scene="res://lobby.tscn"
-config/icon="res://icon.png"
+config/name="split"
+run/main_scene="res://scenes/levels/lobby.tscn"
+config/icon="res://img/ui/icon.png"
 
 [autoload]
 
-global="*res://global.gd"
+global="*res://scripts/global.gd"
 
 [input]
 
@@ -76,4 +76,4 @@ show_cursor={
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://scenes/levels/default_env.tres"
