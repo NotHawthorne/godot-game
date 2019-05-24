@@ -114,8 +114,13 @@ func			spawn_player(id, name):
 	
 	if (get_parent().find_node(str(id), true, false)):
 		return
-	var	player_scene	= load("res://scenes/objects/player.tscn")
-	var	player			= player_scene.instance()
+	var interface = ARVRServer.find_interface("OpenVR")
+	var player_scene
+	if interface and interface.initialize():
+		player_scene = load("res://scenes/objects/players/vr_player.tscn")
+	else:
+		player_scene = load("res://scenes/objects/player.tscn")
+	var player			= player_scene.instance()
 	
 	player.set_name(str(id))
 	player.player_id	= id
