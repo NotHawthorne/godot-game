@@ -100,7 +100,7 @@ remote	func	kill(id):
 		return
 	print(pname + " died, respawning them")
 	if get_tree().is_network_server():
-		rpc_id(1, "register_new_player", id, pname)
+		get_parent().get_node("network").register_new_player(id, pname)
 	get_parent().remove_child(get_parent().get_node(str(id)))
 
 remote	func	damage(id, amt):
