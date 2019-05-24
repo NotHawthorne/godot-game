@@ -95,10 +95,10 @@ remote	func	fire_bullet(id):
 		pnode.find_node('RayCast', true, false).add_child(bullet)
 
 remote	func	kill(id):
-	var name = get_parent().get_node(str(id)).player_name
-	get_parent().remove_child(get_parent().get_node(str(id)))
+	var pname = get_parent().get_node(str(id)).player_name
 	if get_tree().is_network_server():
-		rpc_id(1, "register_new_player", id, name)
+		rpc_id(1, "register_new_player", id, pname)
+	get_parent().remove_child(get_parent().get_node(str(id)))
 
 remote	func	damage(id, amt):
 	print(str(id) + " hit you!")
