@@ -64,9 +64,9 @@ remote	func	register_new_player(id, name):
 		
 		for peer_id in players:
 			rpc_id(id, "register_new_player", peer_id, players[peer_id])
+			rpc_id(peer_id, "register_new_player", id, name)
 			
 	players[id] = name
-	spawn_player(id, name)
 
 func			_kill_player(id):
 	for peer_id in players:
