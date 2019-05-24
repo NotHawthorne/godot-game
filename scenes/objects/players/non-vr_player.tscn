@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/objects/players/non-vr_player.gd" type="Script" id=1]
+[ext_resource path="res://scenes/objects/players/non-VR-UI/camera_ui.gd" type="Script" id=2]
+[ext_resource path="res://scenes/objects/players/non-vr-camera.gd" type="Script" id=3]
+
+[sub_resource type="CubeMesh" id=1]
+
+[sub_resource type="CapsuleShape" id=2]
+
+[sub_resource type="CubeMesh" id=3]
+
+[node name="non-vr_player" type="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.661, 0 )
+script = ExtResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.4, 0, 0, 0, 1.6, 0, 0, 0, 0.4, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Hitbox" type="CollisionShape" parent="."]
+transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, -0.8, 0, 0.5, -3.49691e-08, 0, 0.228, 0 )
+shape = SubResource( 2 )
+
+[node name="Head" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0 )
+
+[node name="Camera" type="Camera" parent="Head"]
+script = ExtResource( 3 )
+
+[node name="RayCast" type="RayCast" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.361, -0.5, 0 )
+enabled = true
+
+[node name="Sprite" type="Sprite" parent="Head/Camera"]
+script = ExtResource( 2 )
+
+[node name="crosshair" type="Sprite" parent="Head/Camera/Sprite"]
+
+[node name="gunthing" type="MeshInstance" parent="Head"]
+transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 1, 0.397, -0.245, -0.438 )
+mesh = SubResource( 3 )
+material/0 = null
