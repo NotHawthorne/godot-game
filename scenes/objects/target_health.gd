@@ -10,7 +10,10 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if (global.target && global.target.get("health") > 0):
-		self.text = str(global.target.get("health"))
+	if global.target != null:
+		if global.target.get("health") > 0:
+			self.text = str(global.target.get("health"))
+		else:
+			self.text = ""
 	else:
 		self.text = ""

@@ -10,7 +10,10 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if (global.target && global.target.get("player_name")):
-		self.text = global.target.get("player_name")
+	if global.target != null:
+		if global.target.get("player_name"):
+			self.text = str(global.target.get("player_name"))
+		else:
+			self.text = ""
 	else:
 		self.text = ""
