@@ -96,6 +96,9 @@ remote	func	fire_bullet(id):
 
 remote	func	kill(id):
 	var pname = get_parent().get_node(str(id)).player_name
+	if (!pname):
+		return
+	print(pname + " died, respawning them")
 	if get_tree().is_network_server():
 		rpc_id(1, "register_new_player", id, pname)
 	get_parent().remove_child(get_parent().get_node(str(id)))
