@@ -105,6 +105,14 @@ func			quit_game():
 	players.clear()
 
 func			spawn_player(id, name):
+	
+	# FIXME:
+	# THE BELOW IF CHECK IS A BAND-AID!
+	# FOR SOME REASON CLIENTS ARE GETTING MULTIPLE spawn_player RPCS
+	# FIX THIS LATER PLEASE
+	
+	if (get_parent().find_node(str(id), true, false)):
+		return
 	var	player_scene	= load("res://scenes/objects/player.tscn")
 	var	player			= player_scene.instance()
 	
