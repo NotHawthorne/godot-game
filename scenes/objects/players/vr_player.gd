@@ -1,22 +1,30 @@
-extends Spatial
+extends KinematicBody
 
-# Called when the node enters the scene tree for the first time.
+var	velocity			= Vector3()
+var	direction			= Vector3()
+const	FLY_SPEED		= 40
+const	FLY_ACCEL		= 4
+
+# Network
+var	control				= false
+var	player_id			= 0
+var	player_name			= ""
+#var	direct				= ["N", "W", "S", "O"]
+var	move				= "stop"
+#var	step				= 0
+#var	pos					= Vector3(10, 1, 10)
+#var	rot_l				= 0
+#var	rot_r				= 0
+#var	id					= {16777232:0, 16777234:1, 16777231:2, 16777233:3}
+#var	root				= false
+#var	console				= false
+var	tree				= {}
+var		health			= 100
+var		dead			= false
+
 func _ready():
-	var interface = get_parent().interface
-	# Make sure Godot knows the size of our viewport, else this is only known inside of the render driver
-	$"Viewport-VR".size = interface.get_render_targetsize()
+	pass # Replace with function body.
 
-	# Tell our viewport it is the arvr viewport
-	$"Viewport-VR".arvr = true
-	# get_viewport().hdr = false
-	# Uncomment this if you are using an older driver
-	$"Viewport-VR".hdr = false
-	
-	# turn off vsync
-	OS.vsync_enabled = false
-
-	# change our physics fps
-	Engine.target_fps = 90
-		
-	# Tell our display what we want to display
-	$"ViewportContainer/Viewport-UI".set_viewport_texture($"Viewport-VR".get_texture())
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
