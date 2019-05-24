@@ -62,6 +62,7 @@ remote	func	register_new_player(id, name):
 	if get_tree().is_network_server():
 		rpc_id(id, "register_new_player", 1, player_name)
 		for peer_id in players:
+			rpc_id(id, "register_player", peer_id, players[peer_id])
 			rpc_id(peer_id, "register_new_player", id, name)
 	players[id] = name
 	spawn_player(id, name)
