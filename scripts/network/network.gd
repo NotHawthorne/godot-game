@@ -109,11 +109,11 @@ func			spawn_player(id, name):
 	var	player			= player_scene.instance()
 	
 	player.set_name(str(id))
+	player.player_id	= id
+	player.player_name	= name
 	if id == get_tree().get_network_unique_id():
 		player.set_network_master(id)
-		player.player_id	= id
 		player.control		= true
-		player.player_name	= name
 	get_parent().add_child(player)
 	if (name):
 		print(name + " joined!")
