@@ -21,4 +21,4 @@ func _on_ServersRequest_request_completed(result, response_code, headers, body):
 	print(json.result)
 	for server in json.result:
 		text = ""
-		insert_text_at_cursor(str(server.ip, "\n"))
+		insert_text_at_cursor("35.236.33.159")
