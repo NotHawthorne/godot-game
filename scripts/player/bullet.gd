@@ -29,7 +29,8 @@ func collided(body):
 		if body.get_name() != str(bullet_owner):
 			var node = get_tree().get_root().find_node(body.get_name(), true, false)
 			print("AX | " + body.get_name())
-			node._deal_damage(body.get_name(), BULLET_DAMAGE)
+			if (node.has_method("_deal_damage")):
+				node._deal_damage(body.get_name(), BULLET_DAMAGE)
 			queue_free()
 
 func find_node_by_name(root, name):

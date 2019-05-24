@@ -65,6 +65,12 @@ remote	func	register_new_player(id, name):
 			rpc_id(id, "register_new_player", peer_id, players[peer_id])
 	players[id] = name
 	spawn_player(id, name)
+
+func			_kill_player(id):
+	for peer_id in players:
+		var node = get_tree().get_root().find_node(str(peer_id))
+		if (node.dead == true):
+			rpc_unreliable("do_update", get_tree().get_root().find_node('Spawn').get_global_transform(), peer_id)
 	
 remote	func	deal_damage(id, tid, amt):
 #	if (get_tree().is_network_server()):
@@ -109,4 +115,5 @@ func			spawn_player(id, name):
 		player.control		= true
 		player.player_name	= name
 	get_parent().add_child(player)
-	print(name + " joined!")
+	if (name):
+		print(name + " joined!")
