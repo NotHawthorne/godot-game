@@ -101,7 +101,7 @@ func _on_boi_request_completed(result, response_code, headers, body):
 
 
 func _on_LineEdit_text_changed(new_text):
-	global.server_selection = "35.236.33.159"
+	global.server_selection = new_text
 
 
 func _on_Username_text_changed(new_text):
