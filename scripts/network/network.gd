@@ -97,8 +97,9 @@ remote	func	deal_damage(id, tid, amt):
 #	players[id] = name
 
 remote	func	unregister_player(id):
-	get_parent().get_node(str(id)).queue_free()
-	players.erase(id)
+	if (get_parent().get_node(str(id))):
+		get_parent().get_node(str(id)).queue_free()
+		players.erase(id)
 
 func			quit_game():
 	get_tree().set_network_peer(null)
