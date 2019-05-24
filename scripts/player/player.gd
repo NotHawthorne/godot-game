@@ -94,16 +94,24 @@ remote	func	fire_bullet(id):
 		bullet.bullet_owner = id
 		pnode.find_node('RayCast', true, false).add_child(bullet)
 
+remote	func	kill(id):
+	var name = get_parent().get_node(str(id)).player_name
+	get_parent().remove_child(get_parent().get_node(str(id)))
+	if get_tree().is_network_server():
+		rpc_id(1, "register_new_player", id, name)
+
 remote	func	damage(id, amt):
 	print(str(id) + " hit you!")
 	health -= 15;
 	if (health < 0):
-		health = 0;
+		rpc_unreliable("kill", id)
 		print("you died!")
 
 func			_deal_damage(id, amt):
 	rpc_unreliable("damage", player_id, amt)
-	pass
+	var parent = get_parent()
+	var pnode = parent.get_node(str(player_id))
+	pnode.health -= 15;
 
 func	_input(event):
 	if event is InputEventMouseMotion and !global.ui_mode:
