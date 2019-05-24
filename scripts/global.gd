@@ -3,7 +3,7 @@ extends Node
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var		server_selection	= '127.0.0.1'
+var		server_selection	= "35.236.33.159"
 var		player_id			= 0
 var		player_name
 var		ui_mode				= false
