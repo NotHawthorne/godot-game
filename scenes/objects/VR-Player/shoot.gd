@@ -1,4 +1,4 @@
-extends Spatial
+extends MeshInstance
 
 # Declare member variables here. Examples:
 # var a = 2

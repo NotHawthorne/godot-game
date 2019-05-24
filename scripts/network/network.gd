@@ -5,7 +5,6 @@ const	MAX_PEERS		= 10
 var		players			= {}
 var		player_name
 
-
 func			_ready():
 	get_tree().connect("network_peer_connected", self, "_connected_ok")
 	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
@@ -114,10 +113,9 @@ func			spawn_player(id, name):
 	
 	if (get_parent().find_node(str(id), true, false)):
 		return
-	var interface = ARVRServer.find_interface("OpenVR")
 	var player_scene
-	if interface and interface.initialize():
-		player_scene = load("res://scenes/objects/players/vr_player.tscn")
+	if global.interface and global.interface.initialize():
+		player_scene = load("res://scenes/objects/VR-Player/VR-Player.tscn")
 	else:
 		player_scene = load("res://scenes/objects/player.tscn")
 	var player			= player_scene.instance()
