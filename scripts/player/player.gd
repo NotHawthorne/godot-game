@@ -80,6 +80,10 @@ remote	func	do_rot(headrot, camrot, pid):
 	rot.x = camrot.x
 	pnode.get_node('Head').set_rotation_degrees(rot)
 
+remote	func	set_vr_mode(id):
+	# Get the node of ID and set variable
+	pass
+
 remote	func	fire_bullet(id):
 	print(str(id) + " fired a bullet")
 	if (str(id) != str(player_id)):
@@ -98,7 +102,7 @@ remote	func	damage(id, amt):
 		print("you died!")
 
 func			_deal_damage(id, amt):
-	rpc_id(player_id, "damage", id, amt)
+	rpc_unreliable("damage", player_id, amt)
 	pass
 
 func	_input(event):
@@ -122,8 +126,11 @@ func	_input(event):
 		var ray_to	 = ray_from + $Head/Camera.project_ray_normal(center_pos) * 500
 		var space_state = get_world().direct_space_state
 		var selection = space_state.intersect_ray(ray_from, ray_to)
-		if (selection.get("collider")):
-			print(str(selection.collider.get("player_id")))
+		if (selection.get("collider") && selection.collider.get("player_name") != null):
+			global.target = selection.collider
+		else:
+			global.target = null
+			
 	if event is InputEventMouseButton and control == true:
 		var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		var	bullet			= bullet_scene.instance()
