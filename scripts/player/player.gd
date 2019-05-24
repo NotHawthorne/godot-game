@@ -104,7 +104,7 @@ remote	func	damage(id, amt):
 	print(str(id) + " hit you!")
 	health -= 15;
 	if (health < 0):
-		rpc_unreliable("kill", id)
+		rpc_unreliable("kill", player_id)
 		print("you died!")
 
 func			_deal_damage(id, amt):
