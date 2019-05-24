@@ -16,13 +16,13 @@ func			_ready():
 func			start_server():
 	player_name = global.player_name;
 	var	host	= NetworkedMultiplayerENet.new()
-	var	err		= host.create_server(DEFAULT_PORT, MAX_PEERS)
 	print("Attempting to connect to " + global.server_selection)
 	
-	if (err != OK || global.server_selection != '127.0.0.1'):
+	if (global.server_selection != '0.0.0.0'):
 		print("Joining server!")
 		join_server()
 		return
+	var	err		= host.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(host)
 	print("Starting server!")
 	global.player_id = 1;
@@ -105,15 +105,23 @@ func			quit_game():
 	players.clear()
 
 func			spawn_player(id, name):
+	
+	# FIXME:
+	# THE BELOW IF CHECK IS A BAND-AID!
+	# FOR SOME REASON CLIENTS ARE GETTING MULTIPLE spawn_player RPCS
+	# FIX THIS LATER PLEASE
+	
+	if (get_parent().find_node(str(id), true, false)):
+		return
 	var	player_scene	= load("res://scenes/objects/player.tscn")
 	var	player			= player_scene.instance()
 	
 	player.set_name(str(id))
+	player.player_id	= id
+	player.player_name	= name
 	if id == get_tree().get_network_unique_id():
 		player.set_network_master(id)
-		player.player_id	= id
 		player.control		= true
-		player.player_name	= name
 	get_parent().add_child(player)
 	if (name):
 		print(name + " joined!")

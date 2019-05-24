@@ -1,12 +1,8 @@
-extends Node
+extends Camera
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var		server_selection	= "0.0.0.0"
-var		player_id			= 0
-var		player_name
-var		ui_mode				= false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
