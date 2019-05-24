@@ -21,6 +21,7 @@ func			start_server():
 	
 	if (err != OK || global.server_selection != '127.0.0.1'):
 		print("Joining server!")
+		print(err)
 		join_server()
 		return
 	get_tree().set_network_peer(host)
