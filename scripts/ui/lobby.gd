@@ -101,10 +101,7 @@ func _on_boi_request_completed(result, response_code, headers, body):
 
 
 func _on_LineEdit_text_changed(new_text):
-	if (new_text == "::1"):
-		new_text = "127.0.0.1"
-		get_node('PanelContainer/Panel/LineEdit').text = "127.0.0.1"
-	global.server_selection = new_text
+	global.server_selection = "35.236.33.159"
 
 
 func _on_Username_text_changed(new_text):
