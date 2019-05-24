@@ -16,21 +16,17 @@ func			_ready():
 func			start_server():
 	player_name = global.player_name;
 	var	host	= NetworkedMultiplayerENet.new()
-	var	err		= host.create_client(global.server_selection, DEFAULT_PORT)
+	var	err		= host.create_server(DEFAULT_PORT, MAX_PEERS)
 	print("Attempting to connect to " + global.server_selection)
 	
-	if (err != OK):
-		err = host.create_server(DEFAULT_PORT, MAX_PEERS)
-		if (err != OK):
-			quit_game()
-			return
-		get_tree().set_network_peer(host)
-		print("Starting server!")
-		global.player_id = 1;
-		spawn_player(1, player_name)
+	if (err != OK || global.server_selection != '0.0.0.0'):
+		print("Joining server!")
+		join_server()
 		return
-	print("Joining server!")
-	join_server()
+	get_tree().set_network_peer(host)
+	print("Starting server!")
+	global.player_id = 1;
+	spawn_player(1, player_name)
 
 func			join_server():
 	player_name	= global.player_name
