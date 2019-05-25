@@ -16,9 +16,4 @@ func	_on_timeout():
 	
 
 func _on_ServersRequest_request_completed(result, response_code, headers, body):
-	var json = JSON.parse(body.get_string_from_utf8())
-	var ips = []
-	print(json.result)
-	for server in json.result:
-		text = ""
-		insert_text_at_cursor("35.236.33.159")
+	insert_text_at_cursor("35.236.33.159")
