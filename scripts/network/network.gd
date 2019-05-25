@@ -86,7 +86,7 @@ func			stats_add_kill(id, name, kills):
 	
 	http.request(
 		http.METHOD_POST, 
-		'/users.json', 
+		'/stats.json', 
 		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
 		body
 	)
