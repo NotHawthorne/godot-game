@@ -34,6 +34,7 @@ func _ready():
 	update_timer.connect("timeout", self, "_update")
 	add_child(update_timer)
 	update_timer.start()
+	stats_init()
 
 func	_physics_process(delta):
 	if (control == true):
@@ -126,7 +127,7 @@ func			stats_add_kill():
 		OS.delay_msec(500)
 	print("Connected!")
 	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-	var body = str("stats[handle]=", global.player_name, "&stats[level]=", 1, "&user[kills]=", global.kills)
+	var body = str("stats[handle]=", global.player_name, "&stats[level]=", 1, "&stats[kills]=", global.kills)
 	
 	http.request(
 		http.METHOD_POST, 
