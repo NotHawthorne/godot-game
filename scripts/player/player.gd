@@ -115,6 +115,9 @@ func			_deal_damage(id, amt):
 	var parent = get_parent()
 	var pnode = parent.get_node(str(player_id))
 	pnode.health -= 15;
+	if (pnode.health < 0):
+		global.kills += 1
+		rpc_id(1, "stats_add_kill", player_id, global.player_name, global.kills) 
 
 func	stats_init():
 	var http = HTTPClient.new()
@@ -122,15 +125,15 @@ func	stats_init():
 	assert(err == OK)
 	while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
 		http.poll()
-		print("Connecting..")
+		print("Connecting2..")
 		OS.delay_msec(500)
-	print("Connected!")
+	print("Connected2!")
 	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
 	var body = str("stats[handle]=", global.player_name)
 	
 	http.request(
 		HTTPClient.METHOD_POST, 
-		'/servers.json', 
+		'/stats.json', 
 		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
 		body
 	)
@@ -168,7 +171,7 @@ func	stats_init():
 			print("bytes got: ", rb.size())
 			var text = JSON.parse(rb.get_string_from_ascii())
 			if text.result and text.result.has("status"):
-				get_node('PanelContainer/Panel/Status').text = "Error initializing stats!"
+				print("Error initializing stats!")
 				return
 			else:
 				global.kills = text.result.kills
