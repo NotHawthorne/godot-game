@@ -126,6 +126,7 @@ func			spawn_player(id, name):
 	if id == get_tree().get_network_unique_id():
 		player.set_network_master(id)
 		player.control		= true
+		global.player		= player
 	get_parent().add_child(player)
 	if (name):
 		print(name + " joined!")

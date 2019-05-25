@@ -99,8 +99,8 @@ remote	func	kill(id):
 	var	parent = get_parent()
 	if (!pnode):
 		return
-	pnode.position = get_parent().get_node('Spawn').position
-	pnode.health = 100
+	pnode.set_global_transform(get_parent().get_node('Spawn').get_global_transform())
+	pnode.health = 100	
 
 remote	func	damage(id, amt):
 	print(str(id) + " hit you!")
