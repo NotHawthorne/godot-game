@@ -115,6 +115,126 @@ func			_deal_damage(id, amt):
 	var pnode = parent.get_node(str(player_id))
 	pnode.health -= 15;
 
+func			stats_add_kill():
+	var http = HTTPClient.new()
+	var err = http.connect_to_host("35.236.33.159", 3000)
+	assert(err == OK)
+
+	while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
+		http.poll()
+		print("Connecting..")
+		OS.delay_msec(500)
+	print("Connected!")
+	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
+	var body = str("stats[handle]=", global.player_name, "&stats[level]=", 1, "&user[kills]=", global.kills)
+	
+	http.request(
+		http.METHOD_POST, 
+		'/users.json', 
+		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
+		body
+	)
+	while http.get_status() != HTTPClient.STATUS_BODY and http.get_status() != HTTPClient.STATUS_CONNECTED:
+		http.poll()
+		print("Sending login request...")
+		OS.delay_msec(500)
+	if (http.has_response()):
+			var headers = http.get_response_headers_as_dictionary() # Get response headers.
+			print("code: ", http.get_response_code()) # Show response code.
+			print("**headers:\\n", headers) # Show headers.
+			
+			# Getting the HTTP Body
+			
+			if http.is_response_chunked():
+			# Does it use chunks?
+				print("Response is Chunked!")
+			else:
+				# Or just plain Content-Length
+				var bl = http.get_response_body_length()
+				print("Response Length: ",bl)
+			
+				# This method works for both anyway
+			
+			var rb = PoolByteArray() # Array that will hold the data.
+			
+			while http.get_status() == HTTPClient.STATUS_BODY:
+			# While there is body left to be read
+				http.poll()
+				var chunk = http.read_response_body_chunk() # Get a chunk.
+				if chunk.size() == 0:
+					# Got nothing, wait for buffers to fill a bit.
+					OS.delay_usec(1000)
+				else:
+			    	rb = rb + chunk # Append to read buffer.
+			
+			# Done!
+			
+			print("bytes got: ", rb.size())
+			var text = JSON.parse(rb.get_string_from_ascii())
+			if text.result and text.result.has("status"):
+				print("Error retrieving stats")
+				return
+	print(err)
+	assert (err == OK)
+
+func	stats_init():
+	var http = HTTPClient.new()
+	var err = http.connect_to_host("35.236.33.159", 3000)
+	assert(err == OK)
+	while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
+		http.poll()
+		print("Connecting..")
+		OS.delay_msec(500)
+	print("Connected!")
+	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
+	var body = str("stats[handle]=", global.player_name)
+	
+	http.request(
+		HTTPClient.METHOD_POST, 
+		'/servers.json', 
+		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
+		body
+	)
+	if (http.has_response()):
+			var headers = http.get_response_headers_as_dictionary() # Get response headers.
+			print("code: ", http.get_response_code()) # Show response code.
+			print("**headers:\\n", headers) # Show headers.
+			
+			# Getting the HTTP Body
+			
+			if http.is_response_chunked():
+			# Does it use chunks?
+				print("Response is Chunked!")
+			else:
+				# Or just plain Content-Length
+				var bl = http.get_response_body_length()
+				print("Response Length: ",bl)
+			
+				# This method works for both anyway
+			
+			var rb = PoolByteArray() # Array that will hold the data.
+			
+			while http.get_status() == HTTPClient.STATUS_BODY:
+			# While there is body left to be read
+				http.poll()
+				var chunk = http.read_response_body_chunk() # Get a chunk.
+				if chunk.size() == 0:
+					# Got nothing, wait for buffers to fill a bit.
+					OS.delay_usec(1000)
+				else:
+			    	rb = rb + chunk # Append to read buffer.
+			
+			# Done!
+			
+			print("bytes got: ", rb.size())
+			var text = JSON.parse(rb.get_string_from_ascii())
+			if text.result and text.result.has("status"):
+				get_node('PanelContainer/Panel/Status').text = "Error initializing stats!"
+				return
+			else:
+				global.kills = text.result.kills
+	pass
+
 func	_input(event):
 	if event is InputEventMouseMotion and !global.ui_mode:
 		var change = 0
