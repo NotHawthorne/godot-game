@@ -25,7 +25,7 @@ func			start_server():
 	get_tree().set_network_peer(host)
 	print("Starting server!")
 	global.player_id = 1;
-	spawn_player(1, player_name)
+	spawn_player(1, "Server")
 
 func			join_server():
 	player_name	= global.player_name
@@ -70,7 +70,9 @@ func			_kill_player(id):
 		var node = get_tree().get_root().find_node(str(peer_id))
 		if (node.dead == true):
 			rpc_unreliable("do_update", get_tree().get_root().find_node('Spawn').get_global_transform(), peer_id)
-	
+			#DOESNT UPDATE SERVER
+
+
 remote	func	deal_damage(id, tid, amt):
 #	if (get_tree().is_network_server()):
 #		rpc_id(id, "deal_damage", tid, 15)
