@@ -6,14 +6,8 @@ extends Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	self.text = global.player_name
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if global.target != null:
-		if "player_name" in global.target:
-			self.text = str(global.target.get("player_name"))
-		else:
-			self.text = ""
-	else:
-		self.text = ""
+#func _process(delta):
+#	pass
