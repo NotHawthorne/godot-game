@@ -200,7 +200,7 @@ func	stats_init():
 		OS.delay_msec(500)
 	print("Connected2!")
 	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-	var body = str("stat[handle]=", global.player_name, "&stat[level]=", 1, "&stat[kills]=", 0)
+	var body = str("stat[handle]=", global.player_name)
 	print("Forming request... ")
 	err = http.request(
 		HTTPClient.METHOD_POST, 
@@ -262,6 +262,7 @@ func	stats_init():
 			return
 		else:
 			print(text.result)
+			global.kills = text.result[0].kills
 			print("Kills: " + str(text.result[0].kills))
 	else:
 		print("No response...")
