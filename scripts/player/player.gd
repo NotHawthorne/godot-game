@@ -174,6 +174,7 @@ func			stats_add_kill():
 			if text.result and text.result.has("status"):
 				print("Error retrieving stats")
 				return
+			print(text.result)
 	print(err)
 	assert (err == OK)
 
@@ -233,6 +234,7 @@ func	stats_init():
 				return
 			else:
 				global.kills = text.result.kills
+				print("Kills: " + str(text.result.kills))
 	pass
 
 func	_input(event):
