@@ -30,6 +30,8 @@ func collided(body):
 			var node = get_tree().get_root().find_node(body.get_name(), true, false)
 			if bullet_owner == global.player_id:
 				global.kills += 1
+				if (node.has_method("stats_add_kill")):
+					node.stats_add_kill()
 			print("AX | " + body.get_name())
 			if (node.has_method("_deal_damage")):
 				node._deal_damage(body.get_name(), BULLET_DAMAGE)
