@@ -12,6 +12,7 @@ var		interface			= ARVRServer.find_interface("OpenVR")
 var		player
 var		kills				= 0
 var		level				= 0
+var		stats_inited		= false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
