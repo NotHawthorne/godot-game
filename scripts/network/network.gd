@@ -71,7 +71,7 @@ func			_kill_player(id):
 		if (node.dead == true):
 			rpc_unreliable("do_update", get_tree().get_root().find_node('Spawn').get_global_transform(), peer_id)
 
-func			stats_add_kill(id, name, kills):
+remote func			stats_add_kill(id, name, kills):
 	var http = HTTPClient.new()
 	var err = http.connect_to_host("35.236.33.159", 3000)
 	assert(err == OK)
@@ -82,7 +82,7 @@ func			stats_add_kill(id, name, kills):
 		OS.delay_msec(500)
 	print("Connected!")
 	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-	var body = str("stats[handle]=", name, "&stats[level]=", 1, "&stats[kills]=", kills)
+	var body = str("stat[handle]=", name, "&stat[level]=", 1, "&stat[kills]=", kills)
 	
 	http.request(
 		http.METHOD_POST, 

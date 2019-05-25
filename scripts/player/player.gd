@@ -34,7 +34,9 @@ func _ready():
 	update_timer.connect("timeout", self, "_update")
 	add_child(update_timer)
 	update_timer.start()
-	stats_init()
+	if global.stats_inited == false:
+		global.stats_inited = true
+		stats_init()
 
 func	_physics_process(delta):
 	if (control == true):
@@ -129,53 +131,57 @@ func	stats_init():
 		OS.delay_msec(500)
 	print("Connected2!")
 	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-	var body = str("stats[handle]=", global.player_name)
-	
+	var body = str("stat[handle]=", global.player_name)
+	print("Forming request...")
 	http.request(
 		HTTPClient.METHOD_POST, 
 		'/stats.json', 
 		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
 		body
 	)
+	print("Checking response...")
 	if (http.has_response()):
-			var headers = http.get_response_headers_as_dictionary() # Get response headers.
-			print("code: ", http.get_response_code()) # Show response code.
-			print("**headers:\\n", headers) # Show headers.
-			
-			# Getting the HTTP Body
-			
-			if http.is_response_chunked():
-			# Does it use chunks?
-				print("Response is Chunked!")
+		print("Response!")
+		var headers = http.get_response_headers_as_dictionary() # Get response headers.
+		print("code: ", http.get_response_code()) # Show response code.
+		print("**headers:\\n", headers) # Show headers.
+		
+		# Getting the HTTP Body
+		
+		if http.is_response_chunked():
+		# Does it use chunks?
+			print("Response is Chunked!")
+		else:
+			# Or just plain Content-Length
+			var bl = http.get_response_body_length()
+			print("Response Length: ",bl)
+		
+			# This method works for both anyway
+		
+		var rb = PoolByteArray() # Array that will hold the data.
+		
+		while http.get_status() == HTTPClient.STATUS_BODY:
+		# While there is body left to be read
+			http.poll()
+			var chunk = http.read_response_body_chunk() # Get a chunk.
+			if chunk.size() == 0:
+				# Got nothing, wait for buffers to fill a bit.
+				OS.delay_usec(1000)
 			else:
-				# Or just plain Content-Length
-				var bl = http.get_response_body_length()
-				print("Response Length: ",bl)
-			
-				# This method works for both anyway
-			
-			var rb = PoolByteArray() # Array that will hold the data.
-			
-			while http.get_status() == HTTPClient.STATUS_BODY:
-			# While there is body left to be read
-				http.poll()
-				var chunk = http.read_response_body_chunk() # Get a chunk.
-				if chunk.size() == 0:
-					# Got nothing, wait for buffers to fill a bit.
-					OS.delay_usec(1000)
-				else:
-			    	rb = rb + chunk # Append to read buffer.
-			
-			# Done!
-			
-			print("bytes got: ", rb.size())
-			var text = JSON.parse(rb.get_string_from_ascii())
-			if text.result and text.result.has("status"):
-				print("Error initializing stats!")
-				return
-			else:
-				global.kills = text.result.kills
-				print("Kills: " + str(text.result.kills))
+		    	rb = rb + chunk # Append to read buffer.
+		
+		# Done!
+		
+		print("bytes got: ", rb.size())
+		var text = JSON.parse(rb.get_string_from_ascii())
+		if text.result and text.result.has("status"):
+			print("Error initializing stats!")
+			return
+		else:
+			global.kills = text.result.kills
+			print("Kills: " + str(text.result.kills))
+	else:
+		print("No response...")
 	pass
 
 func	_input(event):
