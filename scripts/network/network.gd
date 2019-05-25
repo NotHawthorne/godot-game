@@ -70,70 +70,9 @@ func			_kill_player(id):
 		var node = get_tree().get_root().find_node(str(peer_id))
 		if (node.dead == true):
 			rpc_unreliable("do_update", get_tree().get_root().find_node('Spawn').get_global_transform(), peer_id)
+			#DOESNT UPDATE SERVER
 
-remote func			stats_add_kill(id, name, kills):
-	var http = HTTPClient.new()
-	var err = http.connect_to_host("35.236.33.159", 3000)
-	assert(err == OK)
 
-	while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
-		http.poll()
-		print("Connecting..")
-		OS.delay_msec(500)
-	print("Connected!")
-	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-	var body = str("stat[handle]=", name, "&stat[level]=", 1, "&stat[kills]=", kills)
-	
-	http.request(
-		http.METHOD_POST, 
-		'/stats.json', 
-		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
-		body
-	)
-	while http.get_status() != HTTPClient.STATUS_BODY and http.get_status() != HTTPClient.STATUS_CONNECTED:
-		http.poll()
-		print("Sending login request...")
-		OS.delay_msec(500)
-	if (http.has_response()):
-			var headers = http.get_response_headers_as_dictionary() # Get response headers.
-			print("code: ", http.get_response_code()) # Show response code.
-			print("**headers:\\n", headers) # Show headers.
-			
-			# Getting the HTTP Body
-			
-			if http.is_response_chunked():
-			# Does it use chunks?
-				print("Response is Chunked!")
-			else:
-				# Or just plain Content-Length
-				var bl = http.get_response_body_length()
-				print("Response Length: ",bl)
-			
-				# This method works for both anyway
-			
-			var rb = PoolByteArray() # Array that will hold the data.
-			
-			while http.get_status() == HTTPClient.STATUS_BODY:
-			# While there is body left to be read
-				http.poll()
-				var chunk = http.read_response_body_chunk() # Get a chunk.
-				if chunk.size() == 0:
-					# Got nothing, wait for buffers to fill a bit.
-					OS.delay_usec(1000)
-				else:
-			    	rb = rb + chunk # Append to read buffer.
-			
-			# Done!
-			
-			print("bytes got: ", rb.size())
-			var text = JSON.parse(rb.get_string_from_ascii())
-			if text.result and text.result.has("status"):
-				print("Error retrieving stats")
-				return
-			print(text.result)
-	print(err)
-	assert (err == OK)
-	
 remote	func	deal_damage(id, tid, amt):
 #	if (get_tree().is_network_server()):
 #		rpc_id(id, "deal_damage", tid, 15)

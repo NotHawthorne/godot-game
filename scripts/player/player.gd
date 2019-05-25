@@ -34,7 +34,7 @@ func _ready():
 	update_timer.connect("timeout", self, "_update")
 	add_child(update_timer)
 	update_timer.start()
-	if global.stats_inited == false:
+	if global.stats_inited == false and player_id == global.player_id:
 		global.stats_inited = true
 		stats_init()
 
@@ -119,11 +119,80 @@ func			_deal_damage(id, amt):
 	pnode.health -= 15;
 	if (pnode.health < 0):
 		global.kills += 1
+		print("TRYING TO KILL")
 		rpc_id(1, "stats_add_kill", player_id, global.player_name, global.kills) 
 
-func	stats_init():
+remote func			stats_add_kill(id, name, kills):
 	var http = HTTPClient.new()
 	var err = http.connect_to_host("35.236.33.159", 3000)
+	assert(err == OK)
+
+	while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
+		http.poll()
+		print("Connecting..")
+		OS.delay_msec(500)
+	print("Connected!")
+	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
+	var body = str("stat[handle]=", name, "&stat[level]=", 1, "&stat[kills]=", kills)
+	
+	http.request(
+		http.METHOD_POST, 
+		'/stats.json', 
+		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
+		body
+	)
+	while http.get_status() != HTTPClient.STATUS_BODY and http.get_status() != HTTPClient.STATUS_CONNECTED:
+		http.poll()
+		print("Sending login request...")
+		OS.delay_msec(500)
+	if (http.has_response()):
+			var headers = http.get_response_headers_as_dictionary() # Get response headers.
+			print("code: ", http.get_response_code()) # Show response code.
+			print("**headers:\\n", headers) # Show headers.
+			
+			# Getting the HTTP Body
+			
+			if http.is_response_chunked():
+			# Does it use chunks?
+				print("Response is Chunked!")
+			else:
+				# Or just plain Content-Length
+				var bl = http.get_response_body_length()
+				print("Response Length: ",bl)
+			
+				# This method works for both anyway
+			
+			var rb = PoolByteArray() # Array that will hold the data.
+			
+			while http.get_status() == HTTPClient.STATUS_BODY:
+			# While there is body left to be read
+				http.poll()
+				var chunk = http.read_response_body_chunk() # Get a chunk.
+				if chunk.size() == 0:
+					# Got nothing, wait for buffers to fill a bit.
+					OS.delay_usec(1000)
+				else:
+			    	rb = rb + chunk # Append to read buffer.
+			
+			# Done!
+			
+			print("bytes got: ", rb.size())
+			var text = JSON.parse(rb.get_string_from_ascii())
+			if text.result and text.result.has("status"):
+				print("Error retrieving stats")
+				return
+			print(text.result)
+	print(err)
+	assert (err == OK)
+
+func	stats_init():
+	print(str(player_id) + "initializing")
+	var http = HTTPClient.new()
+	var err = http.connect_to_host("35.236.33.159", 3000)
+	var headers = [
+		"User-Agent: Pirulo/1.0 (Godot)",
+		"Accept: */*"
+	]
 	assert(err == OK)
 	while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
 		http.poll()
@@ -131,18 +200,32 @@ func	stats_init():
 		OS.delay_msec(500)
 	print("Connected2!")
 	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-	var body = str("stat[handle]=", global.player_name)
-	print("Forming request...")
-	http.request(
+	var body = str("stat[handle]=", global.player_name, "&stat[level]=", 1, "&stat[kills]=", 0)
+	print("Forming request... ")
+	err = http.request(
 		HTTPClient.METHOD_POST, 
 		'/stats.json', 
-		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
+		headers,
 		body
 	)
+	assert(err == OK) # Make sure all is OK.
+	
+	while http.get_status() == HTTPClient.STATUS_REQUESTING:
+		# Keep polling for as long as the request is being processed.
+		http.poll()
+		print("Requesting...")
+		if not OS.has_feature("web"):
+			OS.delay_msec(500)
+		else:
+			# Synchronous HTTP requests are not supported on the web,
+			# so wait for the next main loop iteration.
+			yield(Engine.get_main_loop(), "idle_frame")
+	print(str(http.get_status()))
+	assert(http.get_status() == HTTPClient.STATUS_BODY or http.get_status() == HTTPClient.STATUS_CONNECTED) # Make sure request finished well.
 	print("Checking response...")
 	if (http.has_response()):
 		print("Response!")
-		var headers = http.get_response_headers_as_dictionary() # Get response headers.
+		headers = http.get_response_headers_as_dictionary() # Get response headers.
 		print("code: ", http.get_response_code()) # Show response code.
 		print("**headers:\\n", headers) # Show headers.
 		
@@ -178,8 +261,8 @@ func	stats_init():
 			print("Error initializing stats!")
 			return
 		else:
-			global.kills = text.result.kills
-			print("Kills: " + str(text.result.kills))
+			print(text.result)
+			print("Kills: " + str(text.result[0].kills))
 	else:
 		print("No response...")
 	pass
