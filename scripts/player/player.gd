@@ -267,4 +267,8 @@ func	_input(event):
 		bullet.bullet_owner = player_id
 		rpc_unreliable("fire_bullet", player_id)
 		$Head/Camera/RayCast.add_child(bullet)
+		var shoot_sound = AudioStreamPlayer.new()
+		self.add_child(shoot_sound)
+		shoot_sound.stream = load("res://sounds/shoot_sound.wav")
+		shoot_sound.play()
 		print("fired!")
