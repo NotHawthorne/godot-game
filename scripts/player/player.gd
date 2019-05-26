@@ -352,7 +352,7 @@ func	_input(event):
 		var	bullet			= bullet_scene.instance()
 		bullet.bullet_owner = player_id
 		rpc_unreliable("fire_bullet", player_id, weapon.damage)
-		$Head/Camera/RayCast.add_child(bullet)
+		$Head/Camera/gun_container.find_node('RayCast', true, false).add_child(bullet)
 		can_fire = false
 		fire_cooldown.start()
 		var shoot_sound = AudioStreamPlayer.new()
