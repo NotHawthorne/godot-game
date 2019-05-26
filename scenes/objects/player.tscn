@@ -34,6 +34,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0 )
 far = 200.0
 script = ExtResource( 4 )
 
+[node name="RayCast" type="RayCast" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32168, -0.258523, 0 )
+enabled = true
+
 [node name="Sprite" type="Sprite" parent="Head/Camera"]
 script = ExtResource( 3 )
 
