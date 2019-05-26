@@ -61,3 +61,8 @@ material/50 = null
 material/51 = null
 material/52 = null
 material/53 = null
+
+[node name="RayCast" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.205033, 4.73029, -9.34915 )
+enabled = true
+cast_to = Vector3( 0, 0, -1 )
