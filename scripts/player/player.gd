@@ -132,13 +132,16 @@ remote	func	damage(id, amt):
 		print("you died!")
 
 remote	func	set_weapon(id, wid):
+	var pnode = get_parent().get_node(str(id))
 	if wid == 1:
-		var to_remove = get_node('Head/gun_container').get_child(0)
+		var to_remove = pnode.get_node('Head/gun_container').get_child(0)
 		var model = load("res://models/pistol.tscn")
 		var to_replace = model.instance()
 		var old_loc = to_remove.get_global_transform()
-		get_node('Head/gun_container').remove_child(to_remove)
-		get_node('Head/gun_container').add_child(to_replace)
+		pnode.get_node('Head/gun_container').remove_child(to_remove)
+		pnode.get_node('Head/gun_container').add_child(to_replace)
+		if (id == player_id):
+			rpc_unreliable("set_weapon", player_id, 1)
 	else:
 		print("INVALID WEAPON SET REQUEST")
 	pass
@@ -358,3 +361,6 @@ func	_input(event):
 		shoot_sound.stream = load("res://sounds/shoot_sound.wav")
 		shoot_sound.play()
 		print("fired!")
+	if Input.is_action_pressed("Weapon 1"):
+		rpc_unreliable("set_weapon", player_id, 1)
+		pass
