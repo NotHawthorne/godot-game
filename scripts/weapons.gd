@@ -4,7 +4,7 @@ extends Node
 # var a = 2
 # var b = "text"
 
-var	pistol = {"damage": 35, "cooldown": 500, "model": load("res://models/pistol.tscn")}
+var	pistol = {"damage": 35, "cooldown": 333, "model": load("res://models/pistol.tscn")}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
