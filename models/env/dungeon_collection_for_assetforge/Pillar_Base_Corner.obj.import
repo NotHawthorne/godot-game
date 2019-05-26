@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Pillar_Base_Corner.obj-cbdc3cedc40cf529ce9e485a2fc6921b.mesh"
+
+[deps]
+
+files=[ "res://.import/Pillar_Base_Corner.obj-cbdc3cedc40cf529ce9e485a2fc6921b.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Pillar_Base_Corner.obj"
+dest_files=[ "res://.import/Pillar_Base_Corner.obj-cbdc3cedc40cf529ce9e485a2fc6921b.mesh", "res://.import/Pillar_Base_Corner.obj-cbdc3cedc40cf529ce9e485a2fc6921b.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

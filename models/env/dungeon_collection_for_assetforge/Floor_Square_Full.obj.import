@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Floor_Square_Full.obj-591882aad2111a044ccc78de876404fd.mesh"
+
+[deps]
+
+files=[ "res://.import/Floor_Square_Full.obj-591882aad2111a044ccc78de876404fd.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Floor_Square_Full.obj"
+dest_files=[ "res://.import/Floor_Square_Full.obj-591882aad2111a044ccc78de876404fd.mesh", "res://.import/Floor_Square_Full.obj-591882aad2111a044ccc78de876404fd.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

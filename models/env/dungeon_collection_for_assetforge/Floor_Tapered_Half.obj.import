@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Floor_Tapered_Half.obj-b3a07df5109dc72fa1b6836a5064ebca.mesh"
+
+[deps]
+
+files=[ "res://.import/Floor_Tapered_Half.obj-b3a07df5109dc72fa1b6836a5064ebca.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Floor_Tapered_Half.obj"
+dest_files=[ "res://.import/Floor_Tapered_Half.obj-b3a07df5109dc72fa1b6836a5064ebca.mesh", "res://.import/Floor_Tapered_Half.obj-b3a07df5109dc72fa1b6836a5064ebca.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

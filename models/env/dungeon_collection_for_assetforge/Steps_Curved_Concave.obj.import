@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Steps_Curved_Concave.obj-82bcef3a0134a6af49d6018a8c6e2f95.mesh"
+
+[deps]
+
+files=[ "res://.import/Steps_Curved_Concave.obj-82bcef3a0134a6af49d6018a8c6e2f95.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Steps_Curved_Concave.obj"
+dest_files=[ "res://.import/Steps_Curved_Concave.obj-82bcef3a0134a6af49d6018a8c6e2f95.mesh", "res://.import/Steps_Curved_Concave.obj-82bcef3a0134a6af49d6018a8c6e2f95.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

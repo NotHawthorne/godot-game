@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/._untitled.obj-f6c0e73bbc91d8713d3dd2867f211da0.mesh"
+
+[deps]
+
+files=[ "res://.import/._untitled.obj-f6c0e73bbc91d8713d3dd2867f211da0.mesh" ]
+
+source_file="res://models/env/Cobblestones3/Files/._untitled.obj"
+dest_files=[ "res://.import/._untitled.obj-f6c0e73bbc91d8713d3dd2867f211da0.mesh", "res://.import/._untitled.obj-f6c0e73bbc91d8713d3dd2867f211da0.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

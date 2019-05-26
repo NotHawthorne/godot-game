@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Switch_Floor.obj-bfec6274fbbb46cfa33dc4e99e2530b9.mesh"
+
+[deps]
+
+files=[ "res://.import/Switch_Floor.obj-bfec6274fbbb46cfa33dc4e99e2530b9.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Switch_Floor.obj"
+dest_files=[ "res://.import/Switch_Floor.obj-bfec6274fbbb46cfa33dc4e99e2530b9.mesh", "res://.import/Switch_Floor.obj-bfec6274fbbb46cfa33dc4e99e2530b9.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

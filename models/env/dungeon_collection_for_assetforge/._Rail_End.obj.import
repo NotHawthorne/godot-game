@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/._Rail_End.obj-7393cc28891914c5cf6c5521bdc7d66e.mesh"
+
+[deps]
+
+files=[ "res://.import/._Rail_End.obj-7393cc28891914c5cf6c5521bdc7d66e.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/._Rail_End.obj"
+dest_files=[ "res://.import/._Rail_End.obj-7393cc28891914c5cf6c5521bdc7d66e.mesh", "res://.import/._Rail_End.obj-7393cc28891914c5cf6c5521bdc7d66e.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

@@ -27,15 +27,22 @@ var		tree			= {}
 var		health			= 100
 var		dead			= false
 var		to_update		= []
+var		weapon			= weapons.pistol
+var		can_fire		= true
 
 var update_timer		= Timer.new()
 var db_timer			= Timer.new()
+var fire_cooldown		= Timer.new()
 
 func _ready():
 	update_timer.set_wait_time(1)
 	update_timer.connect("timeout", self, "_update")
 	add_child(update_timer)
 	update_timer.start()
+	fire_cooldown.set_wait_time(float(weapon.cooldown / 1000))
+	fire_cooldown.one_shot = true
+	fire_cooldown.connect("timeout", self, "flip_cooldown")
+	add_child(fire_cooldown)
 	if (get_tree().is_network_server()):
 		db_timer.set_wait_time(10)
 		db_timer.connect("timeout", self, "update_stats")
@@ -44,6 +51,7 @@ func _ready():
 	if global.stats_inited == false and player_id == global.player_id:
 		global.stats_inited = true
 		stats_init()
+		set_weapon(player_id, 1)
 
 func	_physics_process(delta):
 	if (control == true):
@@ -68,6 +76,9 @@ func			_update():
 	if control == true:
 		print("Sending position update packet! " + str(player_id) + "|" + str(global.player_id))
 		rpc_unreliable("do_update", get_global_transform(), player_id)
+
+func			flip_cooldown():
+	can_fire = true
 
 remote	func	do_update(_transform, pid):
 	var	root	= get_parent()
@@ -94,7 +105,7 @@ remote	func	set_vr_mode(id):
 	# Get the node of ID and set variable
 	pass
 
-remote	func	fire_bullet(id):
+remote	func	fire_bullet(id, amt):
 	print(str(id) + " fired a bullet")
 	if (str(id) != str(player_id)):
 		var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
@@ -102,6 +113,7 @@ remote	func	fire_bullet(id):
 		var	root			= get_parent()
 		var	pnode			= root.get_node(str(id))
 		bullet.bullet_owner = id
+		bullet.BULLET_DAMAGE= amt
 		pnode.find_node('RayCast', true, false).add_child(bullet)
 
 remote	func	kill(id):
@@ -114,16 +126,28 @@ remote	func	kill(id):
 
 remote	func	damage(id, amt):
 	print(str(id) + " hit you!")
-	health -= 15;
+	health -= amt;
 	if (health < 0):
 		rpc_unreliable("kill", player_id)
 		print("you died!")
+
+remote	func	set_weapon(id, wid):
+	if wid == 1:
+		var to_remove = get_node('Head/gun_container').get_child(0)
+		var model = load("res://models/pistol.tscn")
+		var to_replace = model.instance()
+		var old_loc = to_remove.get_global_transform()
+		get_node('Head/gun_container').remove_child(to_remove)
+		get_node('Head/gun_container').add_child(to_replace)
+	else:
+		print("INVALID WEAPON SET REQUEST")
+	pass
 
 func			_deal_damage(id, amt):
 	rpc_unreliable("damage", player_id, amt)
 	var parent = get_parent()
 	var pnode = parent.get_node(str(player_id))
-	pnode.health -= 15;
+	pnode.health -= amt;
 	if (pnode.health < 0):
 		global.kills += 1
 		print("TRYING TO KILL")
@@ -303,7 +327,7 @@ func	_input(event):
 			change = -event.relative.y * mouse_sensitivity
 			if change + camera_angle < 90 and change + camera_angle > -90:
 				$Head/Camera.rotate_x(deg2rad(change))
-				$Head/gunthing.rotate_x(deg2rad(change))
+				$Head/gun_container.get_child(0).rotate_x(deg2rad(change))
 				camera_angle += change
 			rpc_unreliable("do_rot", $Head.get_rotation_degrees(), $Head/Camera.get_rotation_degrees(), global.player_id)
 		
@@ -321,12 +345,14 @@ func	_input(event):
 		else:
 			global.target = null
 			
-	if event is InputEventMouseButton and control == true:
+	if event is InputEventMouseButton and control == true and can_fire == true:
 		var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		var	bullet			= bullet_scene.instance()
 		bullet.bullet_owner = player_id
-		rpc_unreliable("fire_bullet", player_id)
+		rpc_unreliable("fire_bullet", player_id, weapon.damage)
 		$Head/Camera/RayCast.add_child(bullet)
+		can_fire = false
+		fire_cooldown.start()
 		var shoot_sound = AudioStreamPlayer.new()
 		self.add_child(shoot_sound)
 		shoot_sound.stream = load("res://sounds/shoot_sound.wav")

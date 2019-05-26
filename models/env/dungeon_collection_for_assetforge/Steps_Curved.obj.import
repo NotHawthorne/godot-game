@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Steps_Curved.obj-021f42631989865754d44a076ebeb667.mesh"
+
+[deps]
+
+files=[ "res://.import/Steps_Curved.obj-021f42631989865754d44a076ebeb667.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Steps_Curved.obj"
+dest_files=[ "res://.import/Steps_Curved.obj-021f42631989865754d44a076ebeb667.mesh", "res://.import/Steps_Curved.obj-021f42631989865754d44a076ebeb667.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

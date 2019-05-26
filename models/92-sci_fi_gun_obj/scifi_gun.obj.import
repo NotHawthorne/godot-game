@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/scifi_gun.obj-8c92006e826a7aa2fc18c2339648fe35.mesh"
+
+[deps]
+
+files=[ "res://.import/scifi_gun.obj-8c92006e826a7aa2fc18c2339648fe35.mesh" ]
+
+source_file="res://models/92-sci_fi_gun_obj/scifi_gun.obj"
+dest_files=[ "res://.import/scifi_gun.obj-8c92006e826a7aa2fc18c2339648fe35.mesh", "res://.import/scifi_gun.obj-8c92006e826a7aa2fc18c2339648fe35.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

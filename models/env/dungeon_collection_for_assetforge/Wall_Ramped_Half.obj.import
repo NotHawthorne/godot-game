@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Wall_Ramped_Half.obj-adf058074c7cf5d6a6b8e306a6003147.mesh"
+
+[deps]
+
+files=[ "res://.import/Wall_Ramped_Half.obj-adf058074c7cf5d6a6b8e306a6003147.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Wall_Ramped_Half.obj"
+dest_files=[ "res://.import/Wall_Ramped_Half.obj-adf058074c7cf5d6a6b8e306a6003147.mesh", "res://.import/Wall_Ramped_Half.obj-adf058074c7cf5d6a6b8e306a6003147.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

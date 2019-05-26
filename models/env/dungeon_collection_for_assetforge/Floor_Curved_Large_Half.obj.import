@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Floor_Curved_Large_Half.obj-d181dacd013b0d9233a6f98b4bb52697.mesh"
+
+[deps]
+
+files=[ "res://.import/Floor_Curved_Large_Half.obj-d181dacd013b0d9233a6f98b4bb52697.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Floor_Curved_Large_Half.obj"
+dest_files=[ "res://.import/Floor_Curved_Large_Half.obj-d181dacd013b0d9233a6f98b4bb52697.mesh", "res://.import/Floor_Curved_Large_Half.obj-d181dacd013b0d9233a6f98b4bb52697.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

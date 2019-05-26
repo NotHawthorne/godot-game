@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Ramp.obj-bac13284f7ae5384e72122a74985598d.mesh"
+
+[deps]
+
+files=[ "res://.import/Ramp.obj-bac13284f7ae5384e72122a74985598d.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Ramp.obj"
+dest_files=[ "res://.import/Ramp.obj-bac13284f7ae5384e72122a74985598d.mesh", "res://.import/Ramp.obj-bac13284f7ae5384e72122a74985598d.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true
