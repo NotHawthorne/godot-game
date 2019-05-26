@@ -329,8 +329,7 @@ func	_input(event):
 			change = -event.relative.y * mouse_sensitivity
 			if change + camera_angle < 90 and change + camera_angle > -90:
 				$Head/Camera.rotate_x(deg2rad(change))
-				$Head/gun_container.get_child(0).rotate_x(deg2rad(change))
-				$Head/gun_container.get_child(1).rotate_x(deg2rad(change))
+				$Head/gun_container.rotate_x(deg2rad(change))
 				camera_angle += change
 			rpc_unreliable("do_rot", $Head.get_rotation_degrees(), $Head/Camera.get_rotation_degrees(), global.player_id)
 		
