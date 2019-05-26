@@ -141,8 +141,6 @@ remote	func	set_weapon(id, wid):
 		var old_loc = to_remove.get_global_transform()
 		pnode.get_node('Head/gun_container').remove_child(to_remove)
 		pnode.get_node('Head/gun_container').add_child(to_replace)
-		if (id == player_id):
-			rpc_unreliable("set_weapon", player_id, 1)
 	else:
 		print("INVALID WEAPON SET REQUEST")
 	pass
