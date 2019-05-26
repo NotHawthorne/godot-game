@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path="res://.import/BrickRound0105_5_S_BUMP.png-5db58352a3252c68065e233aea4d4bfb.stex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://models/env/Cobblestones3/Textures/BrickRound0105_5_S_BUMP.png"
+dest_files=[ "res://.import/BrickRound0105_5_S_BUMP.png-5db58352a3252c68065e233aea4d4bfb.stex" ]
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=0
+flags/filter=true
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+stream=false
+size_limit=0
+detect_3d=true
+svg/scale=1.0

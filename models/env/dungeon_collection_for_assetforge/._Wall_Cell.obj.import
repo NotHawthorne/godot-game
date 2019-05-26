@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/._Wall_Cell.obj-05b12bf3a336ca8502f4b12b27d1526d.mesh"
+
+[deps]
+
+files=[ "res://.import/._Wall_Cell.obj-05b12bf3a336ca8502f4b12b27d1526d.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/._Wall_Cell.obj"
+dest_files=[ "res://.import/._Wall_Cell.obj-05b12bf3a336ca8502f4b12b27d1526d.mesh", "res://.import/._Wall_Cell.obj-05b12bf3a336ca8502f4b12b27d1526d.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

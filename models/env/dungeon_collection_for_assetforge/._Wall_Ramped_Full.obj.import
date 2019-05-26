@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/._Wall_Ramped_Full.obj-59748e08bd279b56193fd6a6aa89d716.mesh"
+
+[deps]
+
+files=[ "res://.import/._Wall_Ramped_Full.obj-59748e08bd279b56193fd6a6aa89d716.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/._Wall_Ramped_Full.obj"
+dest_files=[ "res://.import/._Wall_Ramped_Full.obj-59748e08bd279b56193fd6a6aa89d716.mesh", "res://.import/._Wall_Ramped_Full.obj-59748e08bd279b56193fd6a6aa89d716.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Wall_Tapered.obj-987e3e8b860111f84e013d7de7e5076b.mesh"
+
+[deps]
+
+files=[ "res://.import/Wall_Tapered.obj-987e3e8b860111f84e013d7de7e5076b.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Wall_Tapered.obj"
+dest_files=[ "res://.import/Wall_Tapered.obj-987e3e8b860111f84e013d7de7e5076b.mesh", "res://.import/Wall_Tapered.obj-987e3e8b860111f84e013d7de7e5076b.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Lever_Floor.obj-9caaaef3c446c0c7bc138b401f23a451.mesh"
+
+[deps]
+
+files=[ "res://.import/Lever_Floor.obj-9caaaef3c446c0c7bc138b401f23a451.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/Lever_Floor.obj"
+dest_files=[ "res://.import/Lever_Floor.obj-9caaaef3c446c0c7bc138b401f23a451.mesh", "res://.import/Lever_Floor.obj-9caaaef3c446c0c7bc138b401f23a451.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

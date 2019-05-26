@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/._Wall_Top_Curved.obj-38b6c8876daee716cf917bba37b057cd.mesh"
+
+[deps]
+
+files=[ "res://.import/._Wall_Top_Curved.obj-38b6c8876daee716cf917bba37b057cd.mesh" ]
+
+source_file="res://models/env/dungeon_collection_for_assetforge/._Wall_Top_Curved.obj"
+dest_files=[ "res://.import/._Wall_Top_Curved.obj-38b6c8876daee716cf917bba37b057cd.mesh", "res://.import/._Wall_Top_Curved.obj-38b6c8876daee716cf917bba37b057cd.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true
