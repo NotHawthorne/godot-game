@@ -29,12 +29,18 @@ var		dead			= false
 var		to_update		= []
 
 var update_timer		= Timer.new()
+var db_timer			= Timer.new()
 
 func _ready():
 	update_timer.set_wait_time(1)
 	update_timer.connect("timeout", self, "_update")
 	add_child(update_timer)
 	update_timer.start()
+	if (get_tree().is_network_server()):
+		db_timer.set_wait_time(10)
+		db_timer.connect("timeout", self, "update_stats")
+		add_child(db_timer)
+		db_timer.start()
 	if global.stats_inited == false and player_id == global.player_id:
 		global.stats_inited = true
 		stats_init()
