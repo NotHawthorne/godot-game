@@ -30,6 +30,13 @@ var		to_update		= []
 var		weapon			= weapons.pistol
 var		can_fire		= true
 
+const GRAVITY = -24.8
+const MAX_SPEED = 20
+const JUMP_SPEED = 18
+const ACCEL = 4.5
+const DEACCEL= 16
+const MAX_SLOPE_ANGLE = 40
+
 var update_timer		= Timer.new()
 var db_timer			= Timer.new()
 var fire_cooldown		= Timer.new()
@@ -53,24 +60,47 @@ func _ready():
 		stats_init()
 		set_weapon(player_id, 1)
 
-func	_physics_process(delta):
-	if (control == true):
-		# Reset player direction
-		direction	= Vector3()
-		var aim		= $Head/Camera.get_global_transform().basis
-		if Input.is_action_pressed("move_forward"):
-			direction -= aim.z
-		if Input.is_action_pressed("move_backward"):
-			direction += aim.z
-		if Input.is_action_pressed("move_left"):
-			direction -= aim.x
-		if Input.is_action_pressed("move_right"):
-			direction += aim.x
-		direction	= direction.normalized()
-		var target	= direction * FLY_SPEED
-		velocity	= velocity.linear_interpolate(target, FLY_ACCEL * delta)
-		rpc_unreliable("do_move", velocity, player_id)
-		move_and_slide(velocity)
+func _physics_process(delta):
+    process_input(delta)
+    process_movement(delta)
+
+func process_input(delta):
+    direction = Vector3()
+    var cam_xform = $Head/Camera.get_global_transform()
+    var input_movement_vector = Vector2()
+    if Input.is_action_pressed("movement_forward"):
+        input_movement_vector.y += 1
+    if Input.is_action_pressed("movement_backward"):
+        input_movement_vector.y -= 1
+    if Input.is_action_pressed("movement_left"):
+        input_movement_vector.x -= 1
+    if Input.is_action_pressed("movement_right"):
+        input_movement_vector.x += 1
+    input_movement_vector = input_movement_vector.normalized()
+    direction += -cam_xform.basis.z.normalized() * input_movement_vector.y
+    direction += cam_xform.basis.x.normalized() * input_movement_vector.x
+    if is_on_floor():
+        if Input.is_action_just_pressed("movement_jump"):
+            velocity.y = JUMP_SPEED
+
+func process_movement(delta):
+	direction.y = 0
+	direction = direction.normalized()
+	velocity.y += delta * GRAVITY
+	var hvel = velocity
+	hvel.y = 0
+	var target = direction
+	target *= MAX_SPEED
+	var accel
+	if direction.dot(hvel) > 0:
+		accel = ACCEL
+	else:
+		accel = DEACCEL
+	hvel = hvel.linear_interpolate(target, accel * delta)
+	velocity.x = hvel.x
+	velocity.z = hvel.z
+	velocity = move_and_slide(velocity, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+	rpc_unreliable("do_move", velocity, player_id)
 
 func			_update():
 	if control == true:
