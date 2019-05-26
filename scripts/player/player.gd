@@ -133,6 +133,7 @@ remote	func	damage(id, amt):
 
 remote	func	set_weapon(id, wid):
 	var pnode = get_parent().get_node(str(id))
+	print("SET WEAPON CALLED ON " + str(id))
 	if wid == 1:
 		var to_remove = pnode.get_node('Head/gun_container').get_child(0)
 		var model = load("res://models/pistol.tscn")
