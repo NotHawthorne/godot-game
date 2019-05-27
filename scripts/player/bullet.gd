@@ -23,6 +23,9 @@ func _physics_process(delta):
     if timer >= KILL_TIMER:
         queue_free()
 
+func set_damage(amt):
+	BULLET_DAMAGE = amt
+
 
 func collided(body):
 	if hit_something == false:
