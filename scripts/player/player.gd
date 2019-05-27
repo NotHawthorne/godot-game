@@ -73,13 +73,11 @@ func	_physics_process(delta):
 			direction -= aim.x
 		if Input.is_action_pressed("move_right"):
 			direction += aim.x
+		if (Input.is_action_pressed("jump") and $JumpCast.is_colliding()):
+			direction.y = JUMP_SPEED * delta
+			velocity.y = JUMP_SPEED * delta
 		direction	= direction.normalized()
 		var target	= direction * FLY_SPEED
-		if (Input.is_action_pressed("jump") and $JumpCast.is_colliding()):
-			velocity.y = (JUMP_SPEED * 1000) * delta
-			print("JUMP")
-		else:
-			velocity.y = (GRAVITY * 15) * delta
 		velocity	= velocity.linear_interpolate(target, FLY_ACCEL * delta)
 		rpc_unreliable("do_move", velocity, player_id)
 		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
