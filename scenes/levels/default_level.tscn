@@ -187,7 +187,7 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Floor"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.84839, -3.85555, 0 )
+transform = Transform( 1, 0, 0, 0, 150, 0, 0, 0, 1, -2.84839, -4.30501, 0 )
 shape = SubResource( 3 )
 
 [node name="Spawn" type="Spatial" parent="."]

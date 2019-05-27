@@ -30,7 +30,7 @@ var		to_update		= []
 var		weapon			= weapons.pistol
 var		can_fire		= true
 
-const GRAVITY = -24.8
+const GRAVITY = -24
 const MAX_SPEED = 20
 const JUMP_SPEED = 18
 const ACCEL = 4.5
@@ -73,10 +73,16 @@ func	_physics_process(delta):
 			direction -= aim.x
 		if Input.is_action_pressed("move_right"):
 			direction += aim.x
-		#direction.y = GRAVITY * delta
 		direction	= direction.normalized()
 		var target	= direction * FLY_SPEED
+		if (Input.is_action_pressed("jump") and $JumpCast.is_colliding()):
+			velocity.y = (JUMP_SPEED * 100) * delta
+			print("JUMP")
+		else:
+			velocity.y = GRAVITY * delta
 		velocity	= velocity.linear_interpolate(target, FLY_ACCEL * delta)
+
+		print($JumpCast.is_colliding())
 		rpc_unreliable("do_move", velocity, player_id)
 		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
 
