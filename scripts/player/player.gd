@@ -123,7 +123,7 @@ remote	func	fire_bullet(id, amt):
 		var	root			= get_parent()
 		var	pnode			= root.get_node(str(id))
 		bullet.bullet_owner = id
-		bullet.BULLET_DAMAGE= amt
+		bullet.set_damage(amt)
 		pnode.find_node('RayCast', true, false).add_child(bullet)
 
 remote	func	kill(id):
@@ -361,6 +361,7 @@ func	_input(event):
 		var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		var	bullet			= bullet_scene.instance()
 		bullet.bullet_owner = player_id
+		bullet.set_damage(weapon.damage)
 		rpc_unreliable("fire_bullet", player_id, weapon.damage)
 		$Head/gun_container.find_node('RayCast', true, false).add_child(bullet)
 		can_fire = false
