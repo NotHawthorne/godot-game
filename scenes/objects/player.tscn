@@ -21,6 +21,7 @@ height = 2.0
 [node name="Player" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66133, 0 )
 collision_layer = 3
+collision/safe_margin = 1.0
 script = ExtResource( 1 )
 
 [node name="Hitbox" type="CollisionShape" parent="."]
@@ -91,3 +92,8 @@ transform = Transform( 0.4, 0, 0, 0, 1.6, 0, 0, 0, 0.4, 0, 0, 0 )
 use_in_baked_light = true
 mesh = SubResource( 3 )
 material/0 = null
+
+[node name="JumpCast" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.61273, -0.0240538 )
+enabled = true
+collide_with_areas = true
