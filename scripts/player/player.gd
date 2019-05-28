@@ -29,6 +29,7 @@ var		dead			= false
 var		to_update		= []
 var		weapon			= weapons.pistol
 var		can_fire		= true
+var		vr_player		= false
 
 const GRAVITY = 200
 const MAX_SPEED = 20
@@ -112,9 +113,8 @@ remote	func	do_rot(headrot, camrot, pid):
 	rot.x = camrot.x
 	pnode.get_node('Head').set_rotation_degrees(rot)
 
-remote	func	set_vr_mode(id):
-	# Get the node of ID and set variable
-	pass
+remote	func	set_vr_mode(id, mode):
+	vr_player = mode
 
 remote	func	fire_bullet(id, amt):
 	print(str(id) + " fired a bullet")
@@ -125,7 +125,10 @@ remote	func	fire_bullet(id, amt):
 		var	pnode			= root.get_node(str(id))
 		bullet.bullet_owner = id
 		bullet.set_damage(amt)
-		pnode.find_node('RayCast', true, false).add_child(bullet)
+		if (pnode.vr_player == true):
+			pnode.find_node('RayCast', true, false).add_child(bullet)
+		else:
+			pnode.find_node('CamCast', true, false).add_child(bullet)
 
 remote	func	kill(id):
 	var pnode = get_parent().get_node(str(id))
@@ -364,7 +367,8 @@ func	_input(event):
 		bullet.bullet_owner = player_id
 		bullet.set_damage(weapon.damage)
 		rpc_unreliable("fire_bullet", player_id, weapon.damage)
-		$Head/gun_container.find_node('RayCast', true, false).add_child(bullet)
+		
+		$Head/Camera/CamCast.add_child(bullet)
 		can_fire = false
 		fire_cooldown.start()
 		var shoot_sound = AudioStreamPlayer.new()
