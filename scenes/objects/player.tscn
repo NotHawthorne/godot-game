@@ -36,7 +36,7 @@ far = 200.0
 script = ExtResource( 4 )
 
 [node name="CamCast" type="RayCast" parent="Head/Camera"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.000414252, 0.000640869, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.000414252, 0.000640869, -0.706131 )
 enabled = true
 
 [node name="Sprite" type="Sprite" parent="Head/Camera"]
@@ -80,7 +80,7 @@ margin_bottom = 47.0
 script = ExtResource( 9 )
 
 [node name="gun_container" type="Spatial" parent="Head"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419102, -0.218586, -0.340602 )
+transform = Transform( 0.999969, 0, 0.00788296, 0, 1, 0, -0.00788296, 0, 0.999969, 0.414887, -0.220135, -0.342562 )
 
 [node name="gunthing" type="MeshInstance" parent="Head/gun_container"]
 transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 1, 0, 0, 0 )

@@ -125,10 +125,10 @@ remote	func	fire_bullet(id, amt):
 		var	pnode			= root.get_node(str(id))
 		bullet.bullet_owner = id
 		bullet.set_damage(amt)
-		if (pnode.vr_player == true):
-			pnode.find_node('RayCast', true, false).add_child(bullet)
-		else:
-			pnode.find_node('CamCast', true, false).add_child(bullet)
+		#if (pnode.vr_player == true):
+		#	pnode.find_node('RayCast', true, false).add_child(bullet)
+		#else:
+		pnode.find_node('gun_container', true, false).add_child(bullet)
 
 remote	func	kill(id):
 	var pnode = get_parent().get_node(str(id))
@@ -180,15 +180,11 @@ func			update_stats():
 		var http = HTTPClient.new()
 		var err = http.connect_to_host("35.236.33.159", 3000)
 		assert(err == OK)
-	
 		while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
 			http.poll()
-			#print("Connecting..")
-			#OS.delay_msec(500)
 		print("Connected!")
 		assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
 		var body = str("stat[handle]=", id.name, "&stat[level]=", 1, "&stat[kills]=", id.kills)
-		
 		http.request(
 			http.METHOD_POST, 
 			'/stats.json', 
@@ -197,8 +193,6 @@ func			update_stats():
 		)
 		while http.get_status() != HTTPClient.STATUS_BODY and http.get_status() != HTTPClient.STATUS_CONNECTED:
 			http.poll()
-			#print("Sending login request...")
-			#OS.delay_msec(500)
 		if (http.has_response()):
 				var headers = http.get_response_headers_as_dictionary() # Get response headers.
 				print("code: ", http.get_response_code()) # Show response code.
@@ -368,7 +362,7 @@ func	_input(event):
 		bullet.set_damage(weapon.damage)
 		rpc_unreliable("fire_bullet", player_id, weapon.damage)
 		
-		$Head/Camera/CamCast.add_child(bullet)
+		$Head/gun_container.add_child(bullet)
 		can_fire = false
 		fire_cooldown.start()
 		var shoot_sound = AudioStreamPlayer.new()
