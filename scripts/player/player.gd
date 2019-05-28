@@ -30,9 +30,9 @@ var		to_update		= []
 var		weapon			= weapons.pistol
 var		can_fire		= true
 
-const GRAVITY = -24
+const GRAVITY = 15
 const MAX_SPEED = 20
-const JUMP_SPEED = 18
+const JUMP_SPEED = 500
 const ACCEL = 4.5
 const DEACCEL= 16
 const MAX_SLOPE_ANGLE = 40
@@ -75,7 +75,14 @@ func	_physics_process(delta):
 			direction += aim.x
 		if (Input.is_action_pressed("jump") and $JumpCast.is_colliding()):
 			direction.y = JUMP_SPEED * delta
-			velocity.y = JUMP_SPEED * delta
+			velocity.y += JUMP_SPEED * delta
+		#direction.y -= GRAVITY * delta
+		#velocity.y -= GRAVITY * delta
+		if (direction.y >= 0):
+			direction.y = (-1 + direction.y) * delta
+		else:
+			direction.y = (GRAVITY * delta) * -1
+		velocity.y -= GRAVITY * delta
 		direction	= direction.normalized()
 		var target	= direction * FLY_SPEED
 		velocity	= velocity.linear_interpolate(target, FLY_ACCEL * delta)
