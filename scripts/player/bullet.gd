@@ -1,6 +1,6 @@
 extends Spatial
 
-var BULLET_SPEED = 250
+var BULLET_SPEED = 50
 var BULLET_DAMAGE = 15
 
 const KILL_TIMER = 4
@@ -10,6 +10,8 @@ var hit_something = false
 var bullet_owner = ""
 
 var forward_dir
+var target
+var val = 0
 
 func _ready():
 	$Area.connect("body_entered", self, "collided")
@@ -17,11 +19,17 @@ func _ready():
 
 
 func _physics_process(delta):
-    global_translate(-(forward_dir * BULLET_SPEED * delta))
+	if (!target):
+		global_translate(-(forward_dir * BULLET_SPEED * delta))
+	else:
+		set_global_transform(Transform(get_global_transform().basis, target))
+		#print(str(-(forward_dir * BULLET_SPEED * delta)) + "|" + str(-(target * BULLET_SPEED * delta)))
+		#get_translation().linear_interpolate(target.get_transform().origin, delta * BULLET_SPEED)
+		#set_global_transform(Transform(target * (BULLET_SPEED * delta)))
 
-    timer += delta
-    if timer >= KILL_TIMER:
-        queue_free()
+	timer += delta
+	if timer >= KILL_TIMER:
+		queue_free()
 
 func set_damage(amt):
 	BULLET_DAMAGE = amt

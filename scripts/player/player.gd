@@ -116,7 +116,7 @@ remote	func	do_rot(headrot, camrot, pid):
 remote	func	set_vr_mode(id, mode):
 	vr_player = mode
 
-remote	func	fire_bullet(id, amt):
+remote	func	fire_bullet(id, amt, target):
 	print(str(id) + " fired a bullet")
 	if (str(id) != str(player_id)):
 		var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
@@ -124,6 +124,7 @@ remote	func	fire_bullet(id, amt):
 		var	root			= get_parent()
 		var	pnode			= root.get_node(str(id))
 		bullet.bullet_owner = id
+		bullet.target = target
 		bullet.set_damage(amt)
 		#if (pnode.vr_player == true):
 		#	pnode.find_node('RayCast', true, false).add_child(bullet)
@@ -360,7 +361,10 @@ func	_input(event):
 		var	bullet			= bullet_scene.instance()
 		bullet.bullet_owner = player_id
 		bullet.set_damage(weapon.damage)
-		rpc_unreliable("fire_bullet", player_id, weapon.damage)
+		if ($Head/Camera/CamCast.is_colliding()):
+			print($Head/Camera/CamCast.get_collision_normal())
+		bullet.target = $Head/Camera/CamCast.get_collision_point()
+		rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 		
 		$Head/gun_container.add_child(bullet)
 		can_fire = false
