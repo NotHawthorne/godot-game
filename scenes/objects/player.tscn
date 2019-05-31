@@ -98,4 +98,5 @@ material/0 = null
 [node name="JumpCast" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.61273, -0.0240538 )
 enabled = true
+cast_to = Vector3( 0, -10, 0 )
 collide_with_areas = true
