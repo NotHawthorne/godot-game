@@ -31,9 +31,9 @@ var		weapon			= weapons.pistol
 var		can_fire		= true
 var		vr_player		= false
 
-const GRAVITY = 200
+const GRAVITY = 300
 const MAX_SPEED = 20
-const JUMP_SPEED = 5000
+const JUMP_SPEED = 10000
 const ACCEL = 4.5
 const DEACCEL= 16
 const MAX_SLOPE_ANGLE = 40
@@ -74,7 +74,8 @@ func	_physics_process(delta):
 			direction -= aim.x
 		if Input.is_action_pressed("move_right"):
 			direction += aim.x
-		if (Input.is_action_pressed("jump") and $JumpCast.is_colliding()):
+		if (Input.is_action_just_pressed("jump") and $JumpCast.is_colliding()):
+			print("jumping...")
 			direction.y = 1 + (direction.y * delta)
 			velocity.y += JUMP_SPEED * delta
 		velocity.y -= GRAVITY * delta
@@ -374,6 +375,7 @@ func	_input(event):
 		shoot_sound.stream = load("res://sounds/shoot_sound.wav")
 		shoot_sound.play()
 		print("fired!")
-	if Input.is_action_pressed("Weapon 1"):
+	if Input.is_action_just_pressed("Weapon 1"):
+		print("trying to change weapon")
 		rpc_unreliable("set_weapon", player_id, 1)
 		pass
