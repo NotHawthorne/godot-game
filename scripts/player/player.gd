@@ -8,10 +8,11 @@ var	mouse_sensitivity	= 0.3
 var	velocity			= Vector3()
 var	direction			= Vector3()
 const	FLY_SPEED		= 40
-const	FLY_ACCEL		= 4
+const	FLY_ACCEL		= 2
 
 # Network
 var	control				= false
+var	jumps				= 0
 var	player_id			= 0
 var	player_name			= ""
 #var	direct				= ["N", "W", "S", "O"]
@@ -31,11 +32,11 @@ var		weapon			= weapons.pistol
 var		can_fire		= true
 var		vr_player		= false
 
-const GRAVITY = 300
-const MAX_SPEED = 20
-const JUMP_SPEED = 10000
-const ACCEL = 4.5
-const DEACCEL= 16
+const GRAVITY = 150
+const MAX_SPEED = 10
+const JUMP_SPEED = 5000
+const ACCEL = 1
+const DEACCEL= 25
 const MAX_SLOPE_ANGLE = 40
 
 var update_timer		= Timer.new()
@@ -74,10 +75,15 @@ func	_physics_process(delta):
 			direction -= aim.x
 		if Input.is_action_pressed("move_right"):
 			direction += aim.x
-		if (Input.is_action_just_pressed("jump") and $JumpCast.is_colliding()):
-			print("jumping...")
-			direction.y = 1 + (direction.y * delta)
-			velocity.y += JUMP_SPEED * delta
+		if (Input.is_action_just_pressed("jump")):
+			if $JumpCast.is_colliding():
+				jumps = 0
+				print("colliding")
+			if jumps < 2:
+				print("jumping...")
+				direction.y = 1 + (direction.y * delta)
+				velocity.y += JUMP_SPEED * delta
+				jumps += 1
 		velocity.y -= GRAVITY * delta
 		direction	= direction.normalized()
 		var target	= direction * FLY_SPEED
