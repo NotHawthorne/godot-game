@@ -7,8 +7,8 @@ var	mouse_sensitivity	= 0.3
 # Physics
 var	velocity			= Vector3()
 var	direction			= Vector3()
-const	FLY_SPEED		= 40
-const	FLY_ACCEL		= 2
+const	RUN_SPEED		= 22.5
+const	RUN_ACCEL		= 11.7
 
 # Network
 var	control				= false
@@ -32,16 +32,15 @@ var		weapon			= weapons.pistol
 var		can_fire		= true
 var		vr_player		= false
 
-const GRAVITY = 150
-const MAX_SPEED = 10
-const JUMP_SPEED = 5000
-const ACCEL = 1
-const DEACCEL= 25
-const MAX_SLOPE_ANGLE = 40
+const GRAVITY = 12.5
+const JUMP_SPEED = 6400
+const DASH_SPEED = 100
 
 var update_timer		= Timer.new()
 var db_timer			= Timer.new()
 var fire_cooldown		= Timer.new()
+
+var time_off_ground		= 0
 
 func _ready():
 	update_timer.set_wait_time(1)
@@ -66,6 +65,8 @@ func	_physics_process(delta):
 	if (control == true):
 		# Reset player direction
 		direction	= Vector3()
+		if $JumpCast.is_colliding():
+			time_off_ground = 0
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -84,10 +85,28 @@ func	_physics_process(delta):
 				direction.y = 1 + (direction.y * delta)
 				velocity.y += JUMP_SPEED * delta
 				jumps += 1
-		velocity.y -= GRAVITY * delta
+				time_off_ground = 0
+			if (Input.is_action_pressed("move_backward")):
+				velocity += aim.z * DASH_SPEED
+				velocity.y -= (JUMP_SPEED * delta) / 2
+			if (Input.is_action_pressed("move_left")):
+				velocity -= aim.x * DASH_SPEED
+				velocity.y -= (JUMP_SPEED * delta) / 2
+			if (Input.is_action_pressed("move_right")):
+				velocity += aim.x * DASH_SPEED
+				velocity.y -= (JUMP_SPEED * delta) / 2
+		direction.y = 0
+		time_off_ground += (delta * 2)
+		velocity.y -= GRAVITY * time_off_ground
 		direction	= direction.normalized()
-		var target	= direction * FLY_SPEED
-		velocity	= velocity.linear_interpolate(target, FLY_ACCEL * delta)
+		var target	= direction * RUN_SPEED
+		var accel
+		if (RUN_ACCEL * delta > RUN_SPEED):
+			accel = RUN_SPEED
+		else:
+			accel = RUN_ACCEL * delta
+		print(time_off_ground)
+		velocity	= velocity.linear_interpolate(target, accel)
 		rpc_unreliable("do_move", velocity, player_id)
 		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
 
