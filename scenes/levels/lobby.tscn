@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/ui/input_ip.gd" type="Script" id=1]
 [ext_resource path="res://scripts/ui/lobby.gd" type="Script" id=2]
 [ext_resource path="res://scripts/ui/ServerListing.gd" type="Script" id=3]
 [ext_resource path="res://scenes/levels/dropdown.gd" type="Script" id=4]
+[ext_resource path="res://scenes/levels/ServerList_new.gd" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.203922, 0.203922, 0.203922, 1 )
 
 [node name="lobby" type="Spatial"]
 script = ExtResource( 2 )
@@ -11,52 +15,70 @@ script = ExtResource( 2 )
 [node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 1030.0
 margin_bottom = 600.0
+focus_next = NodePath("Panel/LineEdit")
+focus_previous = NodePath("Panel/LineEdit")
 
 [node name="Panel" type="Panel" parent="PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1023.0
 margin_bottom = 593.0
+focus_next = NodePath("LineEdit")
+focus_previous = NodePath("LineEdit")
+
+[node name="serverlist_box" type="Panel" parent="PanelContainer/Panel"]
+anchor_left = 0.1
+anchor_top = 0.05
+anchor_right = 0.9
+anchor_bottom = 0.5
+custom_styles/panel = SubResource( 1 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/Panel/serverlist_box"]
+anchor_left = 0.02
+anchor_top = 0.02
+anchor_right = 0.98
+anchor_bottom = 0.98
+bbcode_enabled = true
+scroll_following = true
+script = ExtResource( 5 )
+
+[node name="ServerListing" type="TextEdit" parent="PanelContainer/Panel"]
+visible = false
+margin_right = 1016.0
+margin_bottom = 586.0
+script = ExtResource( 3 )
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/Panel"]
 margin_left = 711.451
 margin_top = 501.44
 margin_right = 886.451
 margin_bottom = 525.44
+focus_next = NodePath("../Username")
+focus_previous = NodePath("../Button")
 script = ExtResource( 1 )
-
-[node name="Button" type="Button" parent="PanelContainer/Panel"]
-margin_left = 898.0
-margin_top = 504.0
-margin_right = 991.0
-margin_bottom = 574.0
-text = "Start Game"
-
-[node name="ServerListing" type="TextEdit" parent="PanelContainer/Panel"]
-margin_left = 12.0179
-margin_top = 7.72009
-margin_right = 1004.01
-margin_bottom = 492.72
-script = ExtResource( 3 )
 
 [node name="Username" type="LineEdit" parent="PanelContainer/Panel"]
 margin_left = 711.933
 margin_top = 529.813
 margin_right = 886.933
 margin_bottom = 553.813
+focus_next = NodePath("../Password")
+focus_previous = NodePath("../LineEdit")
 
 [node name="Password" type="LineEdit" parent="PanelContainer/Panel"]
 margin_left = 712.0
 margin_top = 557.0
 margin_right = 887.0
 margin_bottom = 581.0
+focus_next = NodePath("../Button")
+focus_previous = NodePath("../Username")
 secret = true
 
 [node name="Status" type="Label" parent="PanelContainer/Panel"]
-margin_left = 405.892
-margin_top = 519.173
-margin_right = 556.892
-margin_bottom = 553.173
+margin_left = 840.189
+margin_top = 459.592
+margin_right = 991.189
+margin_bottom = 493.592
 
 [node name="Control" type="Control" parent="PanelContainer/Panel"]
 margin_right = 40.0
@@ -69,7 +91,18 @@ margin_left = 598.0
 margin_top = 502.0
 margin_right = 710.0
 margin_bottom = 524.0
+focus_next = NodePath("../../LineEdit")
+focus_previous = NodePath("../../LineEdit")
 text = "select map"
+
+[node name="Button" type="Button" parent="PanelContainer/Panel"]
+margin_left = 898.0
+margin_top = 504.0
+margin_right = 991.0
+margin_bottom = 574.0
+focus_next = NodePath("../LineEdit")
+focus_previous = NodePath("../Password")
+text = "Start Game"
 
 [node name="HTTPRequest" type="HTTPRequest" parent="PanelContainer"]
 
@@ -77,8 +110,8 @@ text = "select map"
 
 [node name="boi" type="HTTPRequest" parent="."]
 [connection signal="text_changed" from="PanelContainer/Panel/LineEdit" to="." method="_on_LineEdit_text_changed"]
-[connection signal="pressed" from="PanelContainer/Panel/Button" to="." method="_on_Button_pressed"]
 [connection signal="text_changed" from="PanelContainer/Panel/Username" to="." method="_on_Username_text_changed"]
+[connection signal="pressed" from="PanelContainer/Panel/Button" to="." method="_on_Button_pressed"]
 [connection signal="request_completed" from="PanelContainer/HTTPRequest" to="PanelContainer/Panel/LineEdit" method="_on_HTTPRequest_request_completed"]
 [connection signal="request_completed" from="PanelContainer/ServersRequest" to="PanelContainer/Panel/ServerListing" method="_on_ServersRequest_request_completed"]
 [connection signal="request_completed" from="boi" to="." method="_on_boi_request_completed"]

@@ -13,7 +13,7 @@ func _ready():
 func	_on_timeout():
 	var http = get_node('../../ServersRequest')
 	http.request("http://35.236.33.159:3000/servers.json")
-	
 
 func _on_ServersRequest_request_completed(result, response_code, headers, body):
+	cursor_set_line(get_line_count() + 1, false, true, 10)
 	insert_text_at_cursor("35.236.33.159")
