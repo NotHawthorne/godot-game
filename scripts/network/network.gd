@@ -114,8 +114,8 @@ remote func		_change_map(map):
 		print("changing map")
 		global.map = map
 		for peer_id in players:
-			if peer_id != get_tree().get_network_unique_id():
-				rpc_id(peer_id, "change_map", map)
+			if players[peer_id] != global.player_name :
+				rpc_id(peer_id, "_change_map", map)
 		print("finished sending map change to players")
 		_player_disconnected(get_tree().get_network_unique_id())
 		get_tree().change_scene(global.map)
