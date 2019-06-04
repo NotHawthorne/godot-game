@@ -112,23 +112,31 @@ func			on_timer_timeout(map):
 remote func		_change_map(map):
 	if get_tree().is_network_server():
 		print("changing map")
-		global.map = map
-		for peer_id in players:
+		#global.map = map
+		for peer_id in range(players.size()) :
 			if players[peer_id] != global.player_name :
 				rpc_id(peer_id, "_change_map", map)
 		print("finished sending map change to players")
-		_player_disconnected(get_tree().get_network_unique_id())
-		get_tree().change_scene(global.map)
+		#_player_disconnected(get_tree().get_network_unique_id())
+		#get_tree().change_scene(global.map)
 		return
-	_player_disconnected(get_tree().get_network_unique_id())
-	var timer = Timer.new()
-	timer.set_wait_time( 2 )
-	timer.connect("timeout",self,"on_timer_timeout", map) 
+	print("got change map signal!")
+	#_player_disconnected(get_tree().get_network_unique_id())
+	#var timer = Timer.new()
+	#timer.set_wait_time( 2 )
+	#timer.connect("timeout",self,"on_timer_timeout", map) 
 #timeout is what says in docs, in signals
 #self is who respond to the callback
 #_on_timer_timeout is the callback, can have any name
-	add_child(timer) #to process
-	timer.start() #to start
+	#add_child(timer) #to process
+	#timer.start() #to start
+
+func			_input(event):
+	if Input.is_action_just_pressed("change_map") :
+		_player_disconnected(get_tree().get_network_unique_id())
+		global.player = null
+		get_tree().change_scene("res://scenes/levels/playground.tscn")
+	
 
 func			spawn_player(id, name, map):
 
