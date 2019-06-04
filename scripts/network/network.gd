@@ -138,6 +138,24 @@ remote func		_change_map(map):
 	add_child(timer) #to process
 	timer.start() #to start
 
+#remote func _broadcast_message(message):
+#	if get_tree().is_network_server():
+#		print("server: " + message)
+#		global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(message)
+#		global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
+#		for peer_id in players :
+#			if players[peer_id] != global.player_name :
+#				rpc_id(peer_id, "_broadcast_message", message)
+#		return
+#	print("client: " + message)
+#	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(message)
+#	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
+
+func	send_message(message):
+	#rpc_id(1, "_broadcast_message", message)
+	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(message)
+	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
+
 func			spawn_player(id, name, map):
 
 	# FIXME:

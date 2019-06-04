@@ -364,6 +364,9 @@ func	stats_init():
 		print("No response...")
 	pass
 
+func	get_message(message):
+	get_parent().find_node('network').send_message(message)
+
 func	_input(event):
 	if event is InputEventMouseMotion and !global.ui_mode:
 		var change = 0
