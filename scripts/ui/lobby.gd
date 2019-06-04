@@ -3,6 +3,7 @@ extends Spatial
 func _ready():
 	if OS.has_feature("Server"):
 		get_tree().change_scene(global.map)
+	get_node('PanelContainer/Panel/LineEdit').grab_focus()
 
 func _on_Button_pressed():
 	var lineedit = get_node('PanelContainer/Panel/LineEdit')
