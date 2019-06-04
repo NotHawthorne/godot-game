@@ -117,8 +117,10 @@ remote func		_change_map(map):
 			if peer_id != get_tree().get_network_unique_id():
 				rpc_id(peer_id, "change_map", map)
 		print("finished sending map change to players")
+		_player_disconnected(get_tree().get_network_unique_id())
 		get_tree().change_scene(global.map)
 		return
+	_player_disconnected(get_tree().get_network_unique_id())
 	var timer = Timer.new()
 	timer.set_wait_time( 2 )
 	timer.connect("timeout",self,"on_timer_timeout", map) 
