@@ -138,12 +138,6 @@ remote func		_change_map(map):
 	add_child(timer) #to process
 	timer.start() #to start
 
-func			_input(event):
-	if Input.is_action_just_pressed("change_map") :
-		_player_disconnected(get_tree().get_network_unique_id())
-		global.player = null
-		get_tree().change_scene("res://scenes/levels/playground.tscn")
-
 func			spawn_player(id, name, map):
 
 	# FIXME:
