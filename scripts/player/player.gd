@@ -389,7 +389,9 @@ func	_input(event):
 			global.target = selection.collider
 		else:
 			global.target = null
-			
+	if Input.is_action_just_pressed("restart") :
+		self.set_global_transform(get_parent().get_node('Spawn').get_global_transform())
+		self.health = 100
 	if event is InputEventMouseButton and control == true and can_fire == true:
 		var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		var	bullet			= bullet_scene.instance()
