@@ -81,19 +81,22 @@ func	_physics_process(delta):
 			var dashing = false
 			if (jumps <= 1):
 				if $Head/Camera/WallCast1.is_colliding() or $Head/Camera/WallCast2.is_colliding() or $Head/Camera/WallCast3.is_colliding() or $Head/Camera/WallCast4.is_colliding():
-					jumps = 0
 					print("colliding")
 					dashing = true
-					velocity.y += (JUMP_SPEED * delta) / 1.7
+					velocity.y += (JUMP_SPEED * delta) / 1.9
 					velocity -= aim.z * (DASH_SPEED)
 				if $Head/Camera/WallCast1.is_colliding() and Input.is_action_pressed("move_left"):
-					velocity -= aim.x * (DASH_SPEED * 1.6)
+					jumps = 0
+					velocity -= aim.x * (DASH_SPEED * 1.2)
 				if $Head/Camera/WallCast2.is_colliding() and Input.is_action_pressed("move_backward"):
-					velocity += aim.z * (DASH_SPEED * 1.6)
+					jumps = 0
+					velocity += aim.z * (DASH_SPEED * 1.2)
 				if $Head/Camera/WallCast3.is_colliding() and Input.is_action_pressed("move_right"):
-					velocity += aim.x * (DASH_SPEED * 1.6)
+					jumps = 0
+					velocity += aim.x * (DASH_SPEED * 1.2)
 				if $Head/Camera/WallCast4.is_colliding() and Input.is_action_pressed("move_forward"):
-					velocity -= aim.z * (DASH_SPEED * 1.6)
+					jumps = 0
+					velocity -= aim.z * (DASH_SPEED * 1.2)
 			if $JumpCast.is_colliding():
 				jumps = 0
 				print("colliding")
