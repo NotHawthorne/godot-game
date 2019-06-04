@@ -117,7 +117,7 @@ func			spawn_player(id, name, map):
 	if id == get_tree().get_network_unique_id():
 		for admin in global.admins :
 			if admin == name and global.map != map:
-				pass
+				print("trying to change maps!")
 	var player_scene
 	if global.interface and global.interface.initialize():
 		player_scene = load("res://scenes/objects/VR-Player/VR-Player.tscn")
@@ -129,7 +129,7 @@ func			spawn_player(id, name, map):
 	player.player_id	= id
 	player.player_name	= name
 	player.server_map = map
-	print("global map is" + global.map)
+	print("global map is" + global.lobby_map_selection)
 	print("server map is" + map)
 	#global.define_level($PanelContainer/Panel/Control.selection)
 	#for peer_id in players :
