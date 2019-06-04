@@ -11,4 +11,7 @@ func _ready():
 	dropdown.connect("item_selected", self, "on_item_selected")
 
 func on_item_selected(id):
-	global.lobby_map_selection = str(dropdown.get_item_text(id))
+	if str(dropdown.get_item_text(id)) == "level1" :
+		global.lobby_map_selection = "res://scenes/levels/default_level.tscn"
+	elif str(dropdown.get_item_text(id)) == "level2" :
+		global.lobby_map_selection = "res://scenes/levels/playground.tscn"
