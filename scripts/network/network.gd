@@ -106,12 +106,13 @@ func			quit_game():
 	players.clear()
 
 func			on_timer_timeout(map):
+	print("trying to switch!")
 	get_tree().change_scene(global.map)
 
 remote func		_change_map(map):
 	if get_tree().is_network_server():
 		print("changing map")
-		#global.map = map
+		global.map = map
 		for peer_id in players :
 			if players[peer_id] != global.player_name :
 				rpc_id(peer_id, "_change_map", map)
