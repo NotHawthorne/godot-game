@@ -106,7 +106,7 @@ func			quit_game():
 	get_tree().set_network_peer(null)
 	players.clear()
 
-func			on_timer_timeout(map):
+func			on_timer_timeout():
 	print("trying to switch!")
 	get_tree().change_scene(global.map)
 
@@ -131,7 +131,7 @@ remote func		_change_map(map):
 	global.lobby_map_selection = map
 	var timer = Timer.new()
 	timer.set_wait_time( 2 )
-	timer.connect("timeout",self,"on_timer_timeout", map) 
+	timer.connect("timeout",self,"on_timer_timeout") 
 #timeout is what says in docs, in signals
 #self is who respond to the callback
 #_on_timer_timeout is the callback, can have any name
@@ -143,7 +143,6 @@ func			_input(event):
 		_player_disconnected(get_tree().get_network_unique_id())
 		global.player = null
 		get_tree().change_scene("res://scenes/levels/playground.tscn")
-	
 
 func			spawn_player(id, name, map):
 
