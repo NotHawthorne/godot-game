@@ -70,7 +70,7 @@ transform = Transform( 1, 0, 0, 0, 150, 0, 0, 0, 1, -2.84839, -4.30501, 0 )
 shape = SubResource( 3 )
 
 [node name="Spawn" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 18 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.14624, 18 )
 
 [node name="Spatial" parent="." instance=ExtResource( 5 )]
 transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -2.74612, 20.2736 )

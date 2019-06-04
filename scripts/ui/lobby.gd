@@ -1,7 +1,8 @@
 extends Spatial
 
 func _ready():
-	pass
+	if OS.has_feature("Server"):
+		get_tree().change_scene(global.map)
 
 func _on_Button_pressed():
 	var lineedit = get_node('PanelContainer/Panel/LineEdit')
@@ -91,7 +92,10 @@ func _on_Button_pressed():
 		body
 	)
 	print("GOING")
-	get_tree().change_scene("res://scenes/levels/default_level.tscn")
+	#for player in global.admins :
+	#	if (player == uname):
+	#		global.define_level($PanelContainer/Panel/Control.selection)
+	get_tree().change_scene(global.map)
 
 
 func _on_boi_request_completed(result, response_code, headers, body):

@@ -13,10 +13,22 @@ var		player
 var		kills				= 0
 var		level				= 0
 var		stats_inited		= false
+var		lobby_map_selection	= null
+var		map					= "res://scenes/levels/default_level.tscn"
+var		mode				= null
+var		admins				= [ "cam" , "NotHawthorne" ]
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
+func define_level(selection):
+	if (selection == "level1"):
+		map = "res://scenes/levels/default_level.tscn"
+	elif (selection == "level2"):
+		map = "res://scenes/levels/playground.tscn"
+
+remote func get_level_info():
+	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
