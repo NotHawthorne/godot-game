@@ -106,16 +106,17 @@ func			quit_game():
 	players.clear()
 
 func			on_timer_timeout(map):
-	global.define_level()
+	global.map = map
 	get_tree().change_scene(global.map)
 
 remote func		_change_map(map):
 	if get_tree().is_network_server():
-		global.lobby_map_selection = map
-		global.define_level()
+		print("changing map")
+		global.map = map
 		for peer_id in players:
 			if peer_id != get_tree().get_network_unique_id():
 				rpc_id(peer_id, "change_map", map)
+		print("finished sending map change to players")
 		get_tree().change_scene(global.map)
 		return
 	var timer = Timer.new()
@@ -137,9 +138,6 @@ func			spawn_player(id, name, map):
 	if (get_parent().find_node(str(id), true, false)):
 		return
 	#if id == get_tree().get_network_unique_id():
-	for admin in global.admins :
-		if admin == name and global.lobby_map_selection != map:
-			rpc_id(1, "_change_map", global.lobby_map_selection)
 	var player_scene
 	if global.interface and global.interface.initialize():
 		player_scene = load("res://scenes/objects/VR-Player/VR-Player.tscn")
@@ -163,3 +161,6 @@ func			spawn_player(id, name, map):
 	get_parent().add_child(player)
 	if (name):
 		print(name + " joined!")
+	for admin in global.admins :
+		if admin == name and global.lobby_map_selection != map:
+			rpc_id(1, "_change_map", global.lobby_map_selection)
