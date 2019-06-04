@@ -86,15 +86,22 @@ func	_physics_process(delta):
 				velocity.y += JUMP_SPEED * delta
 				jumps += 1
 				time_off_ground = 0
-			if (Input.is_action_pressed("move_backward")):
-				velocity += aim.z * DASH_SPEED
-				velocity.y -= (JUMP_SPEED * delta) / 2
-			if (Input.is_action_pressed("move_left")):
-				velocity -= aim.x * DASH_SPEED
-				velocity.y -= (JUMP_SPEED * delta) / 2
-			if (Input.is_action_pressed("move_right")):
-				velocity += aim.x * DASH_SPEED
-				velocity.y -= (JUMP_SPEED * delta) / 2
+			if jumps == 2:
+				var dashing = false;
+				if (Input.is_action_pressed("move_forward")):
+					velocity -= aim.z * DASH_SPEED
+					dashing = true
+				if (Input.is_action_pressed("move_backward")):
+					velocity += aim.z * DASH_SPEED
+					dashing = true
+				if (Input.is_action_pressed("move_left")):
+					velocity -= aim.x * DASH_SPEED
+					dashing = true
+				if (Input.is_action_pressed("move_right")):
+					velocity += aim.x * DASH_SPEED
+					dashing = true
+				if dashing == true:
+					velocity.y -= (JUMP_SPEED * delta) / 2
 		direction.y = 0
 		time_off_ground += (delta * 2)
 		velocity.y -= GRAVITY * time_off_ground
