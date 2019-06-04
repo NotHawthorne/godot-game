@@ -8,63 +8,67 @@
 [ext_resource path="res://scripts/main.gd" type="Script" id=6]
 [ext_resource path="res://models/env/dungeon_collection_for_assetforge/Steps_Curved.obj" type="ArrayMesh" id=7]
 
-[sub_resource type="CubeMesh" id=1]
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 26.3875, 0.777113, 26.2902 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.134439, 0.341969, 0.684674 )
 script = ExtResource( 6 )
 
 [node name="Floor" type="MeshInstance" parent="."]
-transform = Transform( 60, 0, 0, 0, 1, 0, 0, 0, 60, -5.02135, -0.511531, -3.83868 )
+transform = Transform( 60, 0, 0, 0, 1, 0, 0, 0, 60, -5.02135, -1.50056, -3.83868 )
 mesh = ExtResource( 2 )
 material/0 = null
 
 [node name="Wall" type="MeshInstance" parent="."]
-transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, 10.0354, -8.80479, -6.77651 )
+transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, 10.0354, -9.79382, -6.77651 )
 mesh = ExtResource( 1 )
 material/0 = null
 
 [node name="Wall2" type="MeshInstance" parent="."]
-transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, -19.5752, -8.79596, -6.88423 )
+transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, -19.5752, -9.78499, -6.88423 )
 mesh = ExtResource( 1 )
 material/0 = null
 
 [node name="Wall3" type="MeshInstance" parent="."]
-transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, -2.00217, 0.674913, 0 )
+transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, -2.00217, -0.314117, 0 )
 visible = false
 mesh = ExtResource( 1 )
 material/0 = null
 
 [node name="Wall4" type="MeshInstance" parent="."]
-transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, -2.98332, 0.674913, 0 )
+transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, -2.98332, -0.314117, 0 )
 visible = false
 mesh = ExtResource( 1 )
 material/0 = null
 
 [node name="Archway" type="MeshInstance" parent="."]
-transform = Transform( 15, 0, 0, 0, 15, 0, 0, 0, 15, -4.43187, 0.675, -8.8652 )
+transform = Transform( 15, 0, 0, 0, 15, 0, 0, 0, 15, -4.43187, -0.31403, -8.8652 )
 mesh = ExtResource( 3 )
 material/0 = null
 material/1 = null
 material/2 = null
 
 [node name="Archway2" type="MeshInstance" parent="."]
-transform = Transform( -3.49691e-07, 0, -8, 0, 8, 0, 8, 0, -3.49691e-07, 10.7388, 0.19173, 2.03633 )
+transform = Transform( -3.49691e-07, 0, -8, 0, 8, 0, 8, 0, -3.49691e-07, 10.7388, -0.7973, 2.03633 )
 mesh = ExtResource( 7 )
 material/0 = null
 
 [node name="Archway3" type="MeshInstance" parent="."]
-transform = Transform( 8, 0, 0, 0, 8, 0, 0, 0, 8, 10.7378, 4.18392, -5.93858 )
+transform = Transform( 8, 0, 0, 0, 8, 0, 0, 0, 8, 10.7378, 3.19489, -5.93858 )
 mesh = ExtResource( 4 )
 material/0 = null
 
 [node name="Spawn" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75719, 1.20372, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75719, 0.21469, 0 )
 
 [node name="network" type="Node" parent="."]
 script = ExtResource( 5 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 0.4, 0, 0, 0, 1.6, 0, 0, 0, 0.4, 0, 2.61343, 0 )
-mesh = SubResource( 1 )
-material/0 = null
+[node name="StaticBody" type="StaticBody" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.40053, 0 )
+shape = SubResource( 2 )

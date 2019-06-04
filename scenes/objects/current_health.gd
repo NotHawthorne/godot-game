@@ -10,5 +10,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	self.text = str(global.player.health)
+	if global.player :
+		self.text = str(global.player.health)
  
