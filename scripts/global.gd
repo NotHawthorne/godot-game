@@ -21,14 +21,6 @@ var		admins				= [ "cam" , "NotHawthorne" , "jeremy" , "testbot" ]
 func _ready():
 	pass # Replace with function body.
 
-func define_level():
-	if (lobby_map_selection == "level1"):
-		map = "res://scenes/levels/default_level.tscn"
-	elif (lobby_map_selection == "level2"):
-		map = "res://scenes/levels/playground.tscn"
-
-remote func get_level_info():
-	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

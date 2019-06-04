@@ -113,6 +113,7 @@ remote func		_change_map(map):
 	if get_tree().is_network_server():
 		print("changing map")
 		global.map = map
+		global.lobby_map_selection = map
 		for peer_id in players :
 			if players[peer_id] != global.player_name :
 				rpc_id(peer_id, "_change_map", map)
@@ -125,6 +126,7 @@ remote func		_change_map(map):
 	_player_disconnected(get_tree().get_network_unique_id())
 	global.player = null
 	global.map = map
+	global.lobby_map_selection = map
 	var timer = Timer.new()
 	timer.set_wait_time( 2 )
 	timer.connect("timeout",self,"on_timer_timeout", map) 
@@ -177,3 +179,4 @@ func			spawn_player(id, name, map):
 	for admin in global.admins :
 		if admin == name and global.lobby_map_selection != map:
 			rpc_id(1, "_change_map", global.lobby_map_selection)
+			_change_map(global.lobby_map_selection)
