@@ -3,6 +3,8 @@ extends Spatial
 func _ready():
 	if OS.has_feature("Server"):
 		get_tree().change_scene(global.map)
+		global.server_selection = '0.0.0.0'
+		return
 	get_node('PanelContainer/Panel/LineEdit').grab_focus()
 
 func _on_Button_pressed():
