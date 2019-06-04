@@ -25,7 +25,7 @@ func			start_server():
 	get_tree().set_network_peer(host)
 	print("Starting server!")
 	global.player_id = 1;
-	spawn_player(1, "Server", global.map)
+	spawn_player(1, "Server", global.map, global.vr_selected)
 
 func			join_server():
 	player_name	= global.player_name
@@ -44,27 +44,30 @@ func			_player_disconnected(id):
 	rpc("unregister_player", id)
 
 func			_connected_ok(id):
-	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name)
+	if	global.vr_selected :
+		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true)
+		return
+	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false)
 
-remote	func	user_ready(id, player_name):
+remote	func	user_ready(id, player_name, vr):
 	if get_tree().is_network_server():
-		rpc_id(id, "register_in_game", global.map)
+		rpc_id(id, "register_in_game", global.map, vr)
 
-remote	func	register_in_game(curr_map):
-	rpc("register_new_player", get_tree().get_network_unique_id(), player_name, curr_map)
-	register_new_player(get_tree().get_network_unique_id(), player_name, curr_map)
+remote	func	register_in_game(curr_map, vr):
+	rpc("register_new_player", get_tree().get_network_unique_id(), player_name, curr_map, vr)
+	register_new_player(get_tree().get_network_unique_id(), player_name, curr_map, vr)
 
 func			_server_disconnected():
 	print("server disconnected!")
 	quit_game()
 
-remote	func	register_new_player(id, name, curr_map):
+remote	func	register_new_player(id, name, curr_map, vr):
 	if get_tree().is_network_server():
-		rpc_id(id, "register_new_player", 1, player_name, curr_map)
+		rpc_id(id, "register_new_player", 1, player_name, curr_map, vr)
 		for peer_id in players:
-			rpc_id(id, "register_new_player", peer_id, players[peer_id], curr_map)
+			rpc_id(id, "register_new_player", peer_id, players[peer_id], curr_map, vr)
 	players[id] = name
-	spawn_player(id, name, curr_map)
+	spawn_player(id, name, curr_map, vr)
 
 func			_kill_player(id):
 	for peer_id in players:
@@ -156,7 +159,7 @@ func	send_message(message):
 	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(message)
 	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
 
-func			spawn_player(id, name, map):
+func			spawn_player(id, name, map, vr):
 
 	# FIXME:
 	# THE BELOW IF CHECK IS A BAND-AID!
@@ -167,7 +170,7 @@ func			spawn_player(id, name, map):
 		return
 	#if id == get_tree().get_network_unique_id():
 	var player_scene
-	if global.interface and global.interface.initialize():
+	if vr :
 		player_scene = load("res://scenes/objects/VR-Player/VR-Player.tscn")
 	else:
 		player_scene = load("res://scenes/objects/player.tscn")

@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/objects/VR-Player/Player-VR.gd" type="Script" id=1]
-[ext_resource path="res://addons/godot-openvr/scenes/ovr_controller.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/vr-common/functions/Function_Direct_movement.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/objects/VR-Player/VR-Player_helper.gd" type="Script" id=3]
-[ext_resource path="res://addons/vr-common/functions/Function_Direct_movement.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/godot-openvr/scenes/ovr_controller.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/objects/VR-Player/VR-UI/UI.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/objects/VR-Player/shoot.gd" type="Script" id=6]
 
@@ -37,30 +37,30 @@ render_target_update_mode = 3
 
 [node name="ARVROrigin" type="ARVROrigin" parent="Spatial/Viewport-VR"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.18634, 0.68086, 0 )
-world_scale = 5.0
 
 [node name="ARVRCamera" type="ARVRCamera" parent="Spatial/Viewport-VR/ARVROrigin"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.47852, 0 )
 current = true
 
-[node name="C1" parent="Spatial/Viewport-VR/ARVROrigin" instance=ExtResource( 2 )]
+[node name="C1" parent="Spatial/Viewport-VR/ARVROrigin" instance=ExtResource( 4 )]
 
-[node name="Function_Direct_movement" parent="Spatial/Viewport-VR/ARVROrigin/C1" instance=ExtResource( 4 )]
+[node name="Function_Direct_movement" parent="Spatial/Viewport-VR/ARVROrigin/C1" instance=ExtResource( 2 )]
 origin = NodePath("../..")
 camera = NodePath("../../ARVRCamera")
 
-[node name="C2" parent="Spatial/Viewport-VR/ARVROrigin" instance=ExtResource( 2 )]
+[node name="C2" parent="Spatial/Viewport-VR/ARVROrigin" instance=ExtResource( 4 )]
 controller_id = 2
 
-[node name="MeshInstance" type="MeshInstance" parent="Spatial/Viewport-VR/ARVROrigin/C2"]
+[node name="gun_container" type="MeshInstance" parent="Spatial/Viewport-VR/ARVROrigin/C2"]
 transform = Transform( 0.1, 0, 0, 0, 0.0707107, 0.282843, 0, -0.0707107, 0.282843, 0, -0.1, -0.1 )
 mesh = SubResource( 3 )
 material/0 = null
 script = ExtResource( 6 )
 
-[node name="RayCast" type="RayCast" parent="Spatial/Viewport-VR/ARVROrigin/C2/MeshInstance"]
+[node name="RayCast" type="RayCast" parent="Spatial/Viewport-VR/ARVROrigin/C2/gun_container"]
 transform = Transform( 1, 0, 0, 0, 0.707105, 0.707105, 0, -0.707105, 0.707105, -0.0156472, -0.25, -1 )
 enabled = true
+cast_to = Vector3( 0, 900, -600 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="Spatial"]
 margin_right = 40.0
