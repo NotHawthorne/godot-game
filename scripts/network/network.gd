@@ -55,6 +55,7 @@ remote	func	register_in_game(curr_map):
 	register_new_player(get_tree().get_network_unique_id(), player_name, curr_map)
 
 func			_server_disconnected():
+	print("server disconnected!")
 	quit_game()
 
 remote	func	register_new_player(id, name, curr_map):
