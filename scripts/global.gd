@@ -16,7 +16,7 @@ var		stats_inited		= false
 var		lobby_map_selection	= null
 var		map					= "res://scenes/levels/default_level.tscn"
 var		mode				= null
-var		admins				= [ "cam" , "NotHawthorne" ]
+var		admins				= [ "cam" , "NotHawthorne" , "jeremy" ]
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
