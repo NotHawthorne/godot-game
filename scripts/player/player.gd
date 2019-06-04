@@ -33,9 +33,9 @@ var		can_fire		= true
 var		vr_player		= false
 var		server_map
 
-const GRAVITY = 12.5
-const JUMP_SPEED = 6400
-const DASH_SPEED = 100
+const GRAVITY = 9.8
+const JUMP_SPEED = 5800
+const DASH_SPEED = 80
 
 var update_timer		= Timer.new()
 var db_timer			= Timer.new()
@@ -78,6 +78,22 @@ func	_physics_process(delta):
 		if Input.is_action_pressed("move_right"):
 			direction += aim.x
 		if (Input.is_action_just_pressed("jump")):
+			var dashing = false
+			if (jumps <= 1):
+				if $Head/Camera/WallCast1.is_colliding() or $Head/Camera/WallCast2.is_colliding() or $Head/Camera/WallCast3.is_colliding() or $Head/Camera/WallCast4.is_colliding():
+					jumps = 0
+					print("colliding")
+					dashing = true
+					velocity.y += (JUMP_SPEED * delta) / 1.7
+					velocity -= aim.z * (DASH_SPEED)
+				if $Head/Camera/WallCast1.is_colliding() and Input.is_action_pressed("move_left"):
+					velocity -= aim.x * (DASH_SPEED * 1.6)
+				if $Head/Camera/WallCast2.is_colliding() and Input.is_action_pressed("move_backward"):
+					velocity += aim.z * (DASH_SPEED * 1.6)
+				if $Head/Camera/WallCast3.is_colliding() and Input.is_action_pressed("move_right"):
+					velocity += aim.x * (DASH_SPEED * 1.6)
+				if $Head/Camera/WallCast4.is_colliding() and Input.is_action_pressed("move_forward"):
+					velocity -= aim.z * (DASH_SPEED * 1.6)
 			if $JumpCast.is_colliding():
 				jumps = 0
 				print("colliding")
@@ -88,7 +104,6 @@ func	_physics_process(delta):
 				jumps += 1
 				time_off_ground = 0
 			if jumps == 2:
-				var dashing = false;
 				if (Input.is_action_pressed("move_forward")):
 					velocity -= aim.z * DASH_SPEED
 					dashing = true
@@ -113,7 +128,6 @@ func	_physics_process(delta):
 			accel = RUN_SPEED
 		else:
 			accel = RUN_ACCEL * delta
-		print(time_off_ground)
 		velocity	= velocity.linear_interpolate(target, accel)
 		rpc_unreliable("do_move", velocity, player_id)
 		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
