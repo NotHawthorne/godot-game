@@ -31,6 +31,7 @@ var		to_update		= []
 var		weapon			= weapons.pistol
 var		can_fire		= true
 var		vr_player		= false
+var		server_map
 
 const GRAVITY = 12.5
 const JUMP_SPEED = 6400
@@ -400,8 +401,8 @@ func	_input(event):
 		rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 		
 		$Head/gun_container.add_child(bullet)
-		can_fire = false
-		fire_cooldown.start()
+		#can_fire = false
+		#fire_cooldown.start()
 		var shoot_sound = AudioStreamPlayer.new()
 		self.add_child(shoot_sound)
 		shoot_sound.stream = load("res://sounds/shoot_sound.wav")

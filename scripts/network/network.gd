@@ -25,7 +25,7 @@ func			start_server():
 	get_tree().set_network_peer(host)
 	print("Starting server!")
 	global.player_id = 1;
-	spawn_player(1, "Server")
+	spawn_player(1, "Server", global.map)
 
 func			join_server():
 	player_name	= global.player_name
@@ -48,22 +48,22 @@ func			_connected_ok(id):
 
 remote	func	user_ready(id, player_name):
 	if get_tree().is_network_server():
-		rpc_id(id, "register_in_game")
+		rpc_id(id, "register_in_game", global.map)
 
-remote	func	register_in_game():
-	rpc("register_new_player", get_tree().get_network_unique_id(), player_name)
-	register_new_player(get_tree().get_network_unique_id(), player_name)
+remote	func	register_in_game(curr_map):
+	rpc("register_new_player", get_tree().get_network_unique_id(), player_name, curr_map)
+	register_new_player(get_tree().get_network_unique_id(), player_name, curr_map)
 
 func			_server_disconnected():
 	quit_game()
 
-remote	func	register_new_player(id, name):
+remote	func	register_new_player(id, name, curr_map):
 	if get_tree().is_network_server():
-		rpc_id(id, "register_new_player", 1, player_name)
+		rpc_id(id, "register_new_player", 1, player_name, curr_map)
 		for peer_id in players:
-			rpc_id(id, "register_new_player", peer_id, players[peer_id])
+			rpc_id(id, "register_new_player", peer_id, players[peer_id], curr_map)
 	players[id] = name
-	spawn_player(id, name)
+	spawn_player(id, name, curr_map)
 
 func			_kill_player(id):
 	for peer_id in players:
@@ -71,7 +71,6 @@ func			_kill_player(id):
 		if (node.dead == true):
 			rpc_unreliable("do_update", get_tree().get_root().find_node('Spawn').get_global_transform(), peer_id)
 			#DOESNT UPDATE SERVER
-
 
 remote	func	deal_damage(id, tid, amt):
 #	if (get_tree().is_network_server()):
@@ -106,8 +105,8 @@ func			quit_game():
 	get_tree().set_network_peer(null)
 	players.clear()
 
-func			spawn_player(id, name):
-	
+func			spawn_player(id, name, map):
+
 	# FIXME:
 	# THE BELOW IF CHECK IS A BAND-AID!
 	# FOR SOME REASON CLIENTS ARE GETTING MULTIPLE spawn_player RPCS
@@ -115,6 +114,10 @@ func			spawn_player(id, name):
 	
 	if (get_parent().find_node(str(id), true, false)):
 		return
+	if id == get_tree().get_network_unique_id():
+		for admin in global.admins :
+			if admin == name and global.map != map:
+				pass
 	var player_scene
 	if global.interface and global.interface.initialize():
 		player_scene = load("res://scenes/objects/VR-Player/VR-Player.tscn")
@@ -125,6 +128,12 @@ func			spawn_player(id, name):
 	player.set_name(str(id))
 	player.player_id	= id
 	player.player_name	= name
+	player.server_map = map
+	print("global map is" + global.map)
+	print("server map is" + map)
+	#global.define_level($PanelContainer/Panel/Control.selection)
+	#for peer_id in players :
+
 	if id == get_tree().get_network_unique_id():
 		player.set_network_master(id)
 		player.control		= true

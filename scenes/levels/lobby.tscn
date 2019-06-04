@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/ui/input_ip.gd" type="Script" id=1]
 [ext_resource path="res://scripts/ui/lobby.gd" type="Script" id=2]
 [ext_resource path="res://scripts/ui/ServerListing.gd" type="Script" id=3]
+[ext_resource path="res://scenes/levels/dropdown.gd" type="Script" id=4]
 
 [node name="lobby" type="Spatial"]
 script = ExtResource( 2 )
@@ -32,9 +33,9 @@ margin_bottom = 574.0
 text = "Start Game"
 
 [node name="ServerListing" type="TextEdit" parent="PanelContainer/Panel"]
-margin_left = 13.1333
+margin_left = 12.0179
 margin_top = 7.72009
-margin_right = 1005.13
+margin_right = 1004.01
 margin_bottom = 492.72
 script = ExtResource( 3 )
 
@@ -56,6 +57,19 @@ margin_left = 405.892
 margin_top = 519.173
 margin_right = 556.892
 margin_bottom = 553.173
+
+[node name="Control" type="Control" parent="PanelContainer/Panel"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 4 )
+dropdown_path = NodePath("dropdown")
+
+[node name="dropdown" type="OptionButton" parent="PanelContainer/Panel/Control"]
+margin_left = 598.0
+margin_top = 502.0
+margin_right = 710.0
+margin_bottom = 524.0
+text = "select map"
 
 [node name="HTTPRequest" type="HTTPRequest" parent="PanelContainer"]
 

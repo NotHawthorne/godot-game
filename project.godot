@@ -21,8 +21,8 @@ config/icon="res://img/ui/icon.png"
 
 [autoload]
 
-global="*res://scripts/global.gd"
 weapons="*res://scripts/weapons.gd"
+global="*res://scripts/global.gd"
 
 [gdnative]
 
