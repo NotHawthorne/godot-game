@@ -114,10 +114,10 @@ func			spawn_player(id, name, map):
 	
 	if (get_parent().find_node(str(id), true, false)):
 		return
-	if id == get_tree().get_network_unique_id():
-		for admin in global.admins :
-			if admin == name and global.map != map:
-				print("trying to change maps!")
+	#if id == get_tree().get_network_unique_id():
+	for admin in global.admins :
+		if admin == name and global.map != map:
+			print("trying to change maps!")
 	var player_scene
 	if global.interface and global.interface.initialize():
 		player_scene = load("res://scenes/objects/VR-Player/VR-Player.tscn")
