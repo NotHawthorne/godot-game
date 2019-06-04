@@ -121,6 +121,7 @@ remote func		_change_map(map):
 		print("finished sending map change to players")
 		_player_disconnected(get_tree().get_network_unique_id())
 		global.player = null
+		players.clear()
 		get_tree().change_scene(global.map)
 		return
 	print("got change map signal!")
