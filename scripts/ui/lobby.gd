@@ -96,6 +96,12 @@ func _on_Button_pressed():
 	#for player in global.admins :
 	#	if (player == uname):
 	#		global.define_level($PanelContainer/Panel/Control.selection)
+	if global.vr_selected :
+		global.interface = ARVRServer.find_interface("OpenVR")
+	if not global.interface :
+		global.vr_selected = false
+	if global.server_selection == "0.0.0.0" :
+		global.map = global.lobby_map_selection
 	get_tree().change_scene(global.map)
 
 

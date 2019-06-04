@@ -66,7 +66,7 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Floor"]
-transform = Transform( 1, 0, 0, 0, 150, 0, 0, 0, 1, -2.84839, -4.30501, 0 )
+transform = Transform( 1, 0, 0, 0, 150, 0, 0, 0, 1, -2.84839, -5.83208, 0 )
 shape = SubResource( 3 )
 
 [node name="Spawn" type="Spatial" parent="."]
@@ -76,7 +76,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.14624, 18 )
 transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -2.74612, 20.2736 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.054512, 105.078, 77.2658 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0.054512, 105.078, 77.2658 )
 light_energy = 1.72
 light_indirect_energy = 0.25
 shadow_enabled = true
