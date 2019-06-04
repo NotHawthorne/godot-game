@@ -16,15 +16,15 @@ var		stats_inited		= false
 var		lobby_map_selection	= null
 var		map					= "res://scenes/levels/default_level.tscn"
 var		mode				= null
-var		admins				= [ "cam" , "NotHawthorne" , "jeremy" ]
+var		admins				= [ "cam" , "NotHawthorne" , "jeremy" , "testbot" ]
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
-func define_level(selection):
-	if (selection == "level1"):
+func define_level():
+	if (lobby_map_selection == "level1"):
 		map = "res://scenes/levels/default_level.tscn"
-	elif (selection == "level2"):
+	elif (lobby_map_selection == "level2"):
 		map = "res://scenes/levels/playground.tscn"
 
 remote func get_level_info():
