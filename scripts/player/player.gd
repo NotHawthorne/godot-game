@@ -43,6 +43,8 @@ var fire_cooldown		= Timer.new()
 
 var time_off_ground		= 0
 
+var shoot_sound = AudioStreamPlayer.new()
+
 func _ready():
 	update_timer.set_wait_time(1)
 	update_timer.connect("timeout", self, "_update")
@@ -61,6 +63,8 @@ func _ready():
 		global.stats_inited = true
 		stats_init()
 		set_weapon(player_id, 1)
+	self.add_child(shoot_sound)
+	shoot_sound.stream = load("res://sounds/shoot_sound.wav")
 
 func	_physics_process(delta):
 	if (control == true):
@@ -428,9 +432,6 @@ func	_input(event):
 		$Head/gun_container.add_child(bullet)
 		#can_fire = false
 		#fire_cooldown.start()
-		var shoot_sound = AudioStreamPlayer.new()
-		self.add_child(shoot_sound)
-		shoot_sound.stream = load("res://sounds/shoot_sound.wav")
 		shoot_sound.play()
 		print("fired!")
 	if Input.is_action_just_pressed("Weapon 1"):
