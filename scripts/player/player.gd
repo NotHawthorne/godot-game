@@ -66,6 +66,16 @@ func _ready():
 	self.add_child(shoot_sound)
 	shoot_sound.stream = load("res://sounds/shoot_sound.wav")
 
+func	spawn() :
+	print("finding spawns")
+	var spawns = get_tree().get_nodes_in_group("spawns")
+	var chosen = spawns[randi() % spawns.size()]
+	return chosen.get_global_transform()
+
+remote func	choose_spawn(id) :
+	var chosen = spawn()
+	rpc_unreliable("do_update", chosen, id)
+
 func	_physics_process(delta):
 	if (control == true):
 		# Reset player direction
@@ -75,8 +85,12 @@ func	_physics_process(delta):
 		if $JumpCast.is_colliding() :
 			var col_obj = get_node("JumpCast").get_collider()
 			if col_obj.get_name() == "Danger_Zone_Body" :
-				self.set_global_transform(get_parent().get_node('Spawn').get_global_transform())
-				self.health = 100
+				if player_id == 1 :
+					var new_spawn = spawn()
+					self.set_global_transform(new_spawn)
+					rpc_unreliable("do_update", new_spawn, player_id)
+				else :
+					rpc_id(1, "choose_spawn", player_id)
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -419,8 +433,12 @@ func	_input(event):
 		else:
 			global.target = null
 	if Input.is_action_just_pressed("restart") :
-		self.set_global_transform(get_parent().get_node('Spawn').get_global_transform())
-		self.health = 100
+		if player_id == 1 :
+			var new_spawn = spawn()
+			self.set_global_transform(new_spawn)
+			rpc_unreliable("do_update", new_spawn, player_id)
+		else :
+			rpc_id(1, "choose_spawn", player_id)
 	if Input.is_action_just_pressed("start_chat") :
 		control = false
 		get_node('Head/Camera/ChatBox/Control/LineEdit').grab_focus()
