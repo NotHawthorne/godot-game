@@ -412,7 +412,7 @@ func	get_message(message):
 	get_parent().find_node('network').send_message(message)
 
 func	_input(event):
-	if event is InputEventMouseMotion and !global.ui_mode:
+	if event is InputEventMouseMotion and !global.ui_mode and control == true:
 		var change = 0
 		if control == true:
 			$Head.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
@@ -436,14 +436,14 @@ func	_input(event):
 			global.target = selection.collider
 		else:
 			global.target = null
-	if Input.is_action_just_pressed("restart") :
+	if Input.is_action_just_pressed("restart") and control == true:
 		if player_id == 1 :
 			var new_spawn = spawn()
 			self.set_global_transform(new_spawn)
 			rpc_unreliable("do_update", new_spawn, player_id)
 		else :
 			rpc_id(1, "choose_spawn", player_id)
-	if Input.is_action_just_pressed("start_chat") :
+	if Input.is_action_just_pressed("start_chat") and control == true:
 		control = false
 		get_node('Head/Camera/ChatBox/Control/LineEdit').grab_focus()
 	if event is InputEventMouseButton and control == true and can_fire == true:
@@ -463,7 +463,7 @@ func	_input(event):
 		#fire_cooldown.start()
 		shoot_sound.play()
 		print("fired!")
-	if Input.is_action_just_pressed("Weapon 1"):
+	if Input.is_action_just_pressed("Weapon 1") and control == true:
 		print("trying to change weapon")
 		rpc_unreliable("set_weapon", player_id, 1)
 		pass
