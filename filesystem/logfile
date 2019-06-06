@@ -406,3 +406,5 @@
 
 [2019/6/4 @ 21:27:32] ASDFASDF
 
+[2019/6/5 @ 21:44:39] InputEventMouseButton : button_index=BUTTON_RIGHT, pressed=false, position=(703, 578), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(647, 581), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(647, 581), button_mask=0, doubleclick=falseAWW
+
