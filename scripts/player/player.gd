@@ -72,6 +72,11 @@ func	_physics_process(delta):
 		direction	= Vector3()
 		if $JumpCast.is_colliding():
 			time_off_ground = 0
+		if $JumpCast.is_colliding() :
+			var col_obj = get_node("JumpCast").get_collider()
+			if col_obj.get_name() == "Danger_Zone_Body" :
+				self.set_global_transform(get_parent().get_node('Spawn').get_global_transform())
+				self.health = 100
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z

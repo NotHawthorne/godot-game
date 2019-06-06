@@ -7,6 +7,6 @@
 resource_name = "Laser-Tower"
 albedo_color = Color( 0.8, 0.8, 0.8, 1 )
 albedo_texture = ExtResource( 1 )
-metallic = 0.63
-metallic_specular = 0.65
+metallic = 1.0
+metallic_specular = 0.82
 metallic_texture = ExtResource( 2 )
