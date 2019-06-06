@@ -55,8 +55,20 @@ normal_bias = 0.874
 interior = true
 data = SubResource( 2 )
 
-[node name="Spawn" type="Spatial" parent="."]
+[node name="Spawn" type="Spatial" parent="." groups=[
+"spawns",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.14624, 18 )
+
+[node name="Spawn2" type="Spatial" parent="." groups=[
+"spawns",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 83.3132, 2.14624, 34.5762 )
+
+[node name="Spawn3" type="Spatial" parent="." groups=[
+"spawns",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 149.762, 33.7199, 112.238 )
 
 [node name="Spatial" parent="." instance=ExtResource( 5 )]
 transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -2.74612, 20.2736 )
