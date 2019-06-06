@@ -144,6 +144,7 @@ func	_physics_process(delta):
 					dashing = true
 				if dashing == true:
 					velocity.y -= (JUMP_SPEED * delta) / 2
+					jumps += 1
 		direction.y = 0
 		time_off_ground += (delta * 2)
 		velocity.y -= GRAVITY * time_off_ground
