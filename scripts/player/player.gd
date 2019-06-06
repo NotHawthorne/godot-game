@@ -210,7 +210,11 @@ remote	func	kill(id):
 	var	parent = get_parent()
 	if (!pnode):
 		return
-	pnode.set_global_transform(get_parent().get_node('Spawn').get_global_transform())
+	#pnode.set_global_transform(get_parent().get_node('Spawn').get_global_transform())
+	if (player_id == 1):
+		choose_spawn(id)
+	else:
+		rpc_id(1, "choose_spawn", id)
 	pnode.health = 100	
 
 remote	func	damage(id, amt):
