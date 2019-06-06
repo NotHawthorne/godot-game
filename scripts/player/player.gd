@@ -425,16 +425,18 @@ func	_input(event):
 		control = false
 		get_node('Head/Camera/ChatBox/Control/LineEdit').grab_focus()
 	if event is InputEventMouseButton and control == true and can_fire == true:
-		var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
-		var	bullet			= bullet_scene.instance()
-		bullet.bullet_owner = player_id
-		bullet.set_damage(weapon.damage)
+		#var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
+		#var	bullet			= bullet_scene.instance()
+		#bullet.bullet_owner = player_id
+		#bullet.set_damage(weapon.damage)
 		if ($Head/Camera/CamCast.is_colliding()):
 			print($Head/Camera/CamCast.get_collision_normal())
-		bullet.target = $Head/Camera/CamCast.get_collision_point()
-		rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
+		#bullet.target = $Head/Camera/CamCast.get_collision_point()
+		if $Head/Camera/CamCast.get_collider() and $Head/Camera/CamCast.get_collider().has_method("_deal_damage"):
+			$Head/Camera/CamCast.get_collider()._deal_damage($Head/Camera/CamCast.get_collider().get_name(), weapon.damage)
+		#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 		
-		$Head/gun_container.add_child(bullet)
+		#$Head/gun_container.add_child(bullet)
 		#can_fire = false
 		#fire_cooldown.start()
 		shoot_sound.play()
