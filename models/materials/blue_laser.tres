@@ -1,0 +1,6 @@
+[gd_resource type="SpatialMaterial" format=2]
+
+[resource]
+resource_name = "Starfighter_Laser"
+albedo_color = Color( 0, 0.040808, 0.64, 1 )
+metallic = 0.49
