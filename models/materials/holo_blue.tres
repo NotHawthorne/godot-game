@@ -1,0 +1,6 @@
+[gd_resource type="SpatialMaterial" format=2]
+
+[resource]
+resource_name = "hologram_radar-blue"
+albedo_color = Color( 0.058377, 0.454233, 0.64, 1 )
+metallic = 0.5
