@@ -182,7 +182,7 @@ remote func		update_health_ammo(pid, health, ammo) :
 	else:
 		print("Couldn't update position for " + str(pid))
 
-remote	func	do_update(_transform, pid, health, ammo):
+remote	func	do_update(_transform, pid):
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
 	if (pnode):
@@ -250,18 +250,19 @@ remote	func	set_weapon(id, wid):
 	pass
 
 func			_deal_damage(shot, shooter, amt):
-	var pnode = get_parent().get_node(str(shot))
-	pnode.health -= amt;
-	if (pnode.health < 0):
+	shot.health -= amt;
+	if shot.health < 0 :
 		global.kills += 1
 		print("TRYING TO KILL")
 		if (shooter == 1):
-			choose_spawn(shot)
+			var new_spawn = spawn()
+			shot.set_global_transform(new_spawn)
+			rpc_unreliable("do_update", new_spawn, shot.player_id)
 		else:
-			rpc_id(1, "choose_spawn", shot)
-		update_health_ammo(shot, 100, 50)
-		rpc_unreliable("update_health_ammo", 100, 50)
-		rpc_id(1, "stats_add_kill", player_id, global.player_name, global.kills) 
+			rpc_id(1, "choose_spawn", shot.player_id)
+		update_health_ammo(shot.player_id, 100, 50)
+		rpc_unreliable("update_health_ammo", shot.player_id, 100, 50)
+		rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills) 
 
 #	STATS_ADD_KILL
 #	NEEDS TO NOT UPDATE ON EVERY KILL
@@ -476,7 +477,7 @@ func	_input(event):
 			print($Head/Camera/CamCast.get_collision_normal())
 		#bullet.target = $Head/Camera/CamCast.get_collision_point()
 		if $Head/Camera/CamCast.get_collider() and $Head/Camera/CamCast.get_collider().has_method("_deal_damage"):
-			self._deal_damage($Head/Camera/CamCast.get_collider(), player_name, weapon.damage)
+			self._deal_damage($Head/Camera/CamCast.get_collider(), player_id, weapon.damage)
 		#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 		
 		#$Head/gun_container.add_child(bullet)
