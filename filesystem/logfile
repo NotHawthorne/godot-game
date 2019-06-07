@@ -616,3 +616,5 @@
 
 [2019/6/7 @ 1:35:26] THELLO
 
+[2019/6/7 @ 3:17:55] InputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(384, 313), button_mask=0, doubleclick=false WA SInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(384, 313), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(384, 313), button_mask=0, doubleclick=falseWTYO
+

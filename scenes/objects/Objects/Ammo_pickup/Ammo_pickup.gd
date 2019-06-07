@@ -23,7 +23,7 @@ func flip_cooldown():
 func collided(body):
 	if body and "ammo" in body :
 		if body.ammo + ammo_to_add > body.max_ammo :
-			body.amo = body.max_ammo
+			body.ammo = body.max_ammo
 		else :
 			body.ammo += ammo_to_add
 		self.remove_child(capsule)
