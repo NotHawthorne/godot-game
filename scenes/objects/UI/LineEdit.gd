@@ -9,7 +9,7 @@ func _ready():
 #	pass
 
 func _input(event):
-	if event is InputEventKey and event.pressed:
+	if event is InputEventKey and event.pressed :
 		if event.scancode == KEY_ENTER || event.scancode == KEY_ESCAPE:
 			if event.scancode == KEY_ENTER :
 				global.player.get_message(global.player_name + ": " + self.get_text())
