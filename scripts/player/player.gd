@@ -95,6 +95,8 @@ func	_physics_process(delta):
 					rpc_unreliable("do_update", new_spawn, player_id)
 				else :
 					rpc_id(1, "choose_spawn", player_id)
+				health = 100
+				ammo = 50
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -171,7 +173,16 @@ func			_update():
 func			flip_cooldown():
 	can_fire = true
 
-remote	func	do_update(_transform, pid):
+remote func		update_health_ammo(pid, health, ammo) :
+	var	root	= get_parent()
+	var	pnode	= root.get_node(str(pid))
+	if (pnode):
+		pnode.health = health
+		pnode.ammo = ammo
+	else:
+		print("Couldn't update position for " + str(pid))
+
+remote	func	do_update(_transform, pid, health, ammo):
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
 	if (pnode):
@@ -210,24 +221,19 @@ remote	func	fire_bullet(id, amt, target):
 		#else:
 		pnode.find_node('gun_container', true, false).add_child(bullet)
 
-remote	func	kill(id):
-	var pnode = get_parent().get_node(str(id))
-	var	parent = get_parent()
-	if (!pnode):
+remote	func	damage(shot, shooter, amt):
+	var shot_node = get_parent().get_node(str(shot))
+	var shooter_node = get_parent().get_node(str(shooter))
+	if !shot_node || !shooter_node:
 		return
-	#pnode.set_global_transform(get_parent().get_node('Spawn').get_global_transform())
-	if (player_id == 1):
-		choose_spawn(id)
-	else:
-		rpc_id(1, "choose_spawn", id)
-	pnode.health = 100	
-
-remote	func	damage(id, amt):
-	print(str(id) + " hit you!")
-	health -= amt;
-	if (health < 0):
-		rpc_unreliable("kill", player_id)
-		print("you died!")
+	print(str(shooter) + " hit " + str(shot))
+	shot_node.health -= amt;
+	if shot_node.health < 0 :
+		if (player_id == 1):
+			choose_spawn(shot)
+		else:
+			rpc_id(1, "choose_spawn", shot)
+		
 
 remote	func	set_weapon(id, wid):
 	var pnode = get_parent().get_node(str(id))
@@ -243,14 +249,18 @@ remote	func	set_weapon(id, wid):
 		print("INVALID WEAPON SET REQUEST")
 	pass
 
-func			_deal_damage(id, amt):
-	rpc_unreliable("damage", player_id, amt)
-	var parent = get_parent()
-	var pnode = parent.get_node(str(player_id))
+func			_deal_damage(shot, shooter, amt):
+	var pnode = get_parent().get_node(str(shot))
 	pnode.health -= amt;
 	if (pnode.health < 0):
 		global.kills += 1
 		print("TRYING TO KILL")
+		if (shooter == 1):
+			choose_spawn(shot)
+		else:
+			rpc_id(1, "choose_spawn", shot)
+		update_health_ammo(shot, 100, 50)
+		rpc_unreliable("update_health_ammo", 100, 50)
 		rpc_id(1, "stats_add_kill", player_id, global.player_name, global.kills) 
 
 #	STATS_ADD_KILL
@@ -442,18 +452,20 @@ func	_input(event):
 		else:
 			global.target = null
 	if Input.is_action_just_pressed("restart") and control == true:
+		ammo = 50
+		health = 100
 		if player_id == 1 :
 			var new_spawn = spawn()
 			self.set_global_transform(new_spawn)
 			rpc_unreliable("do_update", new_spawn, player_id)
 		else :
 			rpc_id(1, "choose_spawn", player_id)
-	#if Input.is_action_just_pressed("start_chat") and control == true:
-	#	control = false
-	#	#get_tree().set_input_as_handled()
-	#	$Head/Camera/ChatBox/Control/LineEdit.set_editable(true)
-	#	$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
-	#	$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
+	if Input.is_action_just_pressed("start_chat") and control == true:
+		control = false
+		#get_tree().set_input_as_handled()
+		$Head/Camera/ChatBox/Control/LineEdit.set_editable(true)
+		$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
+		$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
 
 	if event is InputEventMouseButton and control == true and ammo > 0 and can_fire == true:
 		#var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
@@ -464,7 +476,7 @@ func	_input(event):
 			print($Head/Camera/CamCast.get_collision_normal())
 		#bullet.target = $Head/Camera/CamCast.get_collision_point()
 		if $Head/Camera/CamCast.get_collider() and $Head/Camera/CamCast.get_collider().has_method("_deal_damage"):
-			$Head/Camera/CamCast.get_collider()._deal_damage($Head/Camera/CamCast.get_collider().get_name(), weapon.damage)
+			self._deal_damage($Head/Camera/CamCast.get_collider(), player_name, weapon.damage)
 		#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 		
 		#$Head/gun_container.add_child(bullet)
