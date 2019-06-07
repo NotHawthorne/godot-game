@@ -78,8 +78,10 @@ func	spawn() :
 
 remote func	choose_spawn(id) :
 	var chosen = spawn()
-	if id == player_id :
-		global.player.get_global_transform(chosen)
+	print("spawning: " + str(id))
+	if id == 1 :
+		print("spawning self")
+		global.player.set_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
 
 func	_physics_process(delta):
