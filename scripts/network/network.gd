@@ -154,10 +154,16 @@ remote func		_change_map(map):
 #	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(message)
 #	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
 
-func	send_message(message):
-	#rpc_id(1, "_broadcast_message", message)
+remote func rpc_message(message) :
 	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(message)
 	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
+
+func	send_message(message):
+	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(message)
+	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
+	rpc_unreliable("rpc_message", message)
+	#rpc_id(1, "_broadcast_message", message)
+	
 
 func			spawn_player(id, name, map, vr):
 
