@@ -500,3 +500,99 @@
 
 [2019/6/7 @ 0:22:2]  A     WTHELLO
 
+[2019/6/7 @ 0:24:27] W D S A WInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=false WAS DInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseA  AWTHELLO
+
+[2019/6/7 @ 0:25:29] InputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseAA  AInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=false A WASA WW SDInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=false AW ASAD  WInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseW InputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseDDInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseSDInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=false  W SAS DA W W  DWA S AWSWInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseAAWInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseAWInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseASInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseDWInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseDInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseWInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseW DSInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseAInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseSAInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseWInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseAInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=false
+
+[2019/6/7 @ 0:25:29] 
+
+[2019/6/7 @ 0:25:29] 
+
+[2019/6/7 @ 0:25:33] THELLO
+
+[2019/6/7 @ 0:25:40] InputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseW D SRInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseAWInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseWInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseDSD
+
+[2019/6/7 @ 0:25:41] 
+
+[2019/6/7 @ 0:25:44] InputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(568, 366), button_mask=0, doubleclick=false DW WAD
+
+[2019/6/7 @ 0:25:45] 
+
+[2019/6/7 @ 0:25:45] 
+
+[2019/6/7 @ 0:25:45] 
+
+[2019/6/7 @ 0:25:45] 
+
+[2019/6/7 @ 0:25:45] 
+
+[2019/6/7 @ 0:25:46] 
+
+[2019/6/7 @ 0:43:38] InputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(512, 428), button_mask=0, doubleclick=false AInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(512, 428), button_mask=0, doubleclick=false A  A       WDInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(512, 428), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(512, 428), button_mask=0, doubleclick=falseSTHEKKI
+
+[2019/6/7 @ 0:43:41] D AW D
+
+[2019/6/7 @ 0:43:41] 
+
+[2019/6/7 @ 0:43:41] 
+
+[2019/6/7 @ 0:43:42] 
+
+[2019/6/7 @ 0:43:42] 
+
+[2019/6/7 @ 0:43:46] SDFASASDFASDFTT
+
+[2019/6/7 @ 0:43:46] 
+
+[2019/6/7 @ 0:43:46] 
+
+[2019/6/7 @ 0:43:47] 
+
+[2019/6/7 @ 0:43:47] 
+
+[2019/6/7 @ 0:43:48] ASDFASDF
+
+[2019/6/7 @ 0:43:48] 
+
+[2019/6/7 @ 0:43:48] 
+
+[2019/6/7 @ 0:47:19] InputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(387, 329), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(387, 329), button_mask=0, doubleclick=falseTSDFSDFSDFSDFASDFASDF
+
+[2019/6/7 @ 0:47:19] 
+
+[2019/6/7 @ 0:47:19] 
+
+[2019/6/7 @ 0:47:20] SDFASDFASD
+
+[2019/6/7 @ 0:47:22] FFFF
+
+[2019/6/7 @ 0:47:23] FFFF
+
+[2019/6/7 @ 0:47:25] FFFFF
+
+[2019/6/7 @ 0:47:27] FFFFF
+
+[2019/6/7 @ 0:54:5]  WA THELLO
+
+[2019/6/7 @ 0:54:5] 
+
+[2019/6/7 @ 0:54:6] 
+
+[2019/6/7 @ 0:54:7] 
+
+[2019/6/7 @ 0:54:7] 
+
+[2019/6/7 @ 0:54:7] 
+
+[2019/6/7 @ 0:54:7] 
+
+[2019/6/7 @ 0:54:8] 
+
+[2019/6/7 @ 0:55:9] InputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(491, 368), button_mask=0, doubleclick=falseWTHELLO
+
+[2019/6/7 @ 1:3:5]  InputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(614, 376), button_mask=0, doubleclick=falseInputEventMouseButton : button_index=BUTTON_LEFT, pressed=false, position=(614, 376), button_mask=0, doubleclick=falseTHELLO
+
+[2019/6/7 @ 1:3:12]  A  A        WTHELLO
+
+[2019/6/7 @ 1:3:54]  AW THELLO
+
