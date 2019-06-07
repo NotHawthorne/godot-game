@@ -11,4 +11,4 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if global.player :
-		self.text = "health: " + str(global.player.health)
+		self.text = "ammo: " + str(global.player.ammo)

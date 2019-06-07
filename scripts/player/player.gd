@@ -26,6 +26,9 @@ var	move				= "stop"
 #var	console				= false
 var		tree			= {}
 var		health			= 100
+var		max_health		= 200
+var		ammo			= 50
+var		max_ammo		= 200
 var		dead			= false
 var		to_update		= []
 var		weapon			= weapons.pistol
@@ -447,7 +450,7 @@ func	_input(event):
 	if Input.is_action_just_pressed("start_chat") and control == true:
 		control = false
 		get_node('Head/Camera/ChatBox/Control/LineEdit').grab_focus()
-	if event is InputEventMouseButton and control == true and can_fire == true:
+	if event is InputEventMouseButton and control == true and ammo > 0 and can_fire == true:
 		#var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		#var	bullet			= bullet_scene.instance()
 		#bullet.bullet_owner = player_id
@@ -463,6 +466,7 @@ func	_input(event):
 		#can_fire = false
 		#fire_cooldown.start()
 		shoot_sound.play()
+		ammo -= 1
 		print("fired!")
 	if Input.is_action_just_pressed("Weapon 1") and control == true:
 		print("trying to change weapon")

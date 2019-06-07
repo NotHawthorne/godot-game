@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[sub_resource type="CylinderMesh" id=1]
+
+[sub_resource type="CapsuleShape" id=2]
+
+[sub_resource type="CapsuleMesh" id=3]
+
+[node name="Ammo_Capsule" type="Area"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 4, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.247163, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 2 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 0.7, 0, 0, 0, -3.0598e-08, -0.7, 0, 0.7, -3.0598e-08, 0, 0.285058, 0 )
+mesh = SubResource( 3 )
+material/0 = null

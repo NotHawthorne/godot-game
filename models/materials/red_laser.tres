@@ -2,5 +2,5 @@
 
 [resource]
 resource_name = "Star_Fighter_Fire"
-albedo_color = Color( 0.64, 0.166179, 0, 1 )
-metallic = 0.48
+albedo_color = Color( 0.192157, 0.054902, 0.0235294, 1 )
+metallic = 0.42
