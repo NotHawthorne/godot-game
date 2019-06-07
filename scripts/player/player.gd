@@ -99,8 +99,8 @@ func	_physics_process(delta):
 					rpc_unreliable("do_update", new_spawn, player_id)
 				else :
 					rpc_id(1, "choose_spawn", player_id)
-				health = 100
-				ammo = 50
+				update_health(player_id, 100)
+				rpc_unreliable("update_health", player_id, 100)
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -177,12 +177,11 @@ func			_update():
 func			flip_cooldown():
 	can_fire = true
 
-remote func		update_health_ammo(pid, health, ammo) :
+remote func		update_health(pid, health) :
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
 	if (pnode):
 		pnode.health = health
-		pnode.ammo = ammo
 	else:
 		print("Couldn't update position for " + str(pid))
 
@@ -255,7 +254,7 @@ remote	func	set_weapon(id, wid):
 
 func			_deal_damage(shot, shooter, amt):
 	shot.health -= amt;
-	if shot.health < 0 :
+	if shot.health - amt < 0 :
 		global.kills += 1
 		print("TRYING TO KILL")
 		if (shooter == 1):
@@ -264,10 +263,11 @@ func			_deal_damage(shot, shooter, amt):
 			rpc_unreliable("do_update", new_spawn, shot.player_id)
 		else:
 			rpc_id(1, "choose_spawn", shot.player_id)
-		update_health_ammo(shot.player_id, 100, 50)
-		rpc_unreliable("update_health_ammo", shot.player_id, 100, 50)
+		update_health(shot.player_id, 100)
+		rpc_unreliable("update_health", shot.player_id, 100)
 		rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills) 
-
+	else :
+		update_health(shot.player_id, shot.health - amt)
 #	STATS_ADD_KILL
 #	NEEDS TO NOT UPDATE ON EVERY KILL
 #	CAUSES SERVER LAG
@@ -457,14 +457,14 @@ func	_input(event):
 		else:
 			global.target = null
 	if Input.is_action_just_pressed("restart") and control == true:
-		ammo = 50
-		health = 100
 		if player_id == 1 :
 			var new_spawn = spawn()
 			self.set_global_transform(new_spawn)
 			rpc_unreliable("do_update", new_spawn, player_id)
 		else :
 			rpc_id(1, "choose_spawn", player_id)
+		update_health(player_id, 100)
+		rpc_unreliable("update_health", player_id, 100)
 	if Input.is_action_just_pressed("start_chat") and control == true :
 		global.player.control = false
 		#get_tree().set_input_as_handled()
