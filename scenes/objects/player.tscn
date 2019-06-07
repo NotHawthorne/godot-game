@@ -9,7 +9,7 @@
 [ext_resource path="res://scenes/objects/current_health.gd" type="Script" id=7]
 [ext_resource path="res://scenes/objects/player_name.gd" type="Script" id=8]
 [ext_resource path="res://scenes/objects/kills.gd" type="Script" id=9]
-[ext_resource path="res://scenes/objects/ChatBox.gd" type="Script" id=10]
+[ext_resource path="res://scenes/objects/UI/LineEdit.gd" type="Script" id=10]
 [ext_resource path="res://scenes/objects/current_ammo.gd" type="Script" id=11]
 
 [sub_resource type="CapsuleShape" id=1]
@@ -100,7 +100,6 @@ margin_bottom = 595.63
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
-script = ExtResource( 10 )
 
 [node name="ChatText" type="RichTextLabel" parent="Head/Camera/ChatBox"]
 margin_left = 7.0
@@ -131,6 +130,8 @@ margin_right = 340.0
 margin_bottom = 92.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+editable = false
+script = ExtResource( 10 )
 
 [node name="WallCast1" type="RayCast" parent="Head/Camera"]
 transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0.457476, -0.31057, 0 )

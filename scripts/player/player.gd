@@ -49,6 +49,7 @@ var time_off_ground		= 0
 var shoot_sound = AudioStreamPlayer.new()
 
 func _ready():
+	$Head/Camera/ChatBox/Control/LineEdit.set_process_input(false)
 	update_timer.set_wait_time(1)
 	update_timer.connect("timeout", self, "_update")
 	add_child(update_timer)
@@ -449,8 +450,11 @@ func	_input(event):
 			rpc_id(1, "choose_spawn", player_id)
 	if Input.is_action_just_pressed("start_chat") and control == true:
 		control = false
+		#get_tree().set_input_as_handled()
+		$Head/Camera/ChatBox/Control/LineEdit.set_editable(true)
+		$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
 		$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
-		
+
 	if event is InputEventMouseButton and control == true and ammo > 0 and can_fire == true:
 		#var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		#var	bullet			= bullet_scene.instance()
