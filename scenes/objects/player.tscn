@@ -92,7 +92,7 @@ margin_bottom = 58.16
 script = ExtResource( 9 )
 
 [node name="ChatBox" type="PanelContainer" parent="Head/Camera"]
-self_modulate = Color( 1, 1, 1, 0.533333 )
+self_modulate = Color( 1, 1, 1, 0.517647 )
 margin_left = 660.424
 margin_top = 439.63
 margin_right = 1014.0
@@ -102,6 +102,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="ChatText" type="RichTextLabel" parent="Head/Camera/ChatBox"]
+show_behind_parent = true
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 337.0
@@ -131,6 +132,7 @@ margin_bottom = 92.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 editable = false
+context_menu_enabled = false
 script = ExtResource( 10 )
 
 [node name="WallCast1" type="RayCast" parent="Head/Camera"]
