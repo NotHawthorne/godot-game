@@ -465,7 +465,7 @@ func	_input(event):
 			rpc_unreliable("do_update", new_spawn, player_id)
 		else :
 			rpc_id(1, "choose_spawn", player_id)
-	if Input.is_action_just_pressed("start_chat") and control == true and player_id == global.player_id :
+	if Input.is_action_just_pressed("start_chat") and control == true :
 		global.player.control = false
 		#get_tree().set_input_as_handled()
 		$Head/Camera/ChatBox/Control/LineEdit.set_editable(true)
