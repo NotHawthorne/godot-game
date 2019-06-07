@@ -78,6 +78,8 @@ func	spawn() :
 
 remote func	choose_spawn(id) :
 	var chosen = spawn()
+	if id == player_id :
+		global.player.get_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
 
 func	_physics_process(delta):
