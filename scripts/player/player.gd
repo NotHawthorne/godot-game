@@ -448,12 +448,12 @@ func	_input(event):
 			rpc_unreliable("do_update", new_spawn, player_id)
 		else :
 			rpc_id(1, "choose_spawn", player_id)
-	if Input.is_action_just_pressed("start_chat") and control == true:
-		control = false
-		#get_tree().set_input_as_handled()
-		$Head/Camera/ChatBox/Control/LineEdit.set_editable(true)
-		$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
-		$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
+	#if Input.is_action_just_pressed("start_chat") and control == true:
+	#	control = false
+	#	#get_tree().set_input_as_handled()
+	#	$Head/Camera/ChatBox/Control/LineEdit.set_editable(true)
+	#	$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
+	#	$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
 
 	if event is InputEventMouseButton and control == true and ammo > 0 and can_fire == true:
 		#var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
