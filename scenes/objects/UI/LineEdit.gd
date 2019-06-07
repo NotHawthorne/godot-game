@@ -8,18 +8,17 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func _input(event):
-	if event is InputEventKey and event.pressed:
-		if event.scancode == KEY_ENTER || event.scancode == KEY_ESCAPE:
-			if event.scancode == KEY_ENTER :
-				global.player.get_message(global.player_name + ": " + self.get_text())
-			get_tree().set_input_as_handled()
-			#get_node('ChatText').add_text()
-			#get_node('ChatText').newline()
-			self.clear()
-			self.set_process_input(false)
-			self.release_focus()
-			global.player.control = true
+#func _input(event):
+#	if event is InputEventKey and event.pressed:
+#		if event.scancode == KEY_ENTER || event.scancode == KEY_ESCAPE:
+#			if event.scancode == KEY_ENTER :
+#				global.player.get_message(global.player_name + ": " + self.get_text())
+#			#get_node('ChatText').add_text()
+#			#get_node('ChatText').newline()
+#			self.clear()
+#			self.set_process_input(false)
+#			self.release_focus()
+#			global.player.control = true
 
 #func _on_text_entered(text) :
 #	self.release_focus()
