@@ -11,7 +11,7 @@ func _ready():
 func _input(event):
 	if event is InputEventKey and event.pressed :
 		if event.scancode == KEY_ENTER || event.scancode == KEY_ESCAPE:
-			if event.scancode == KEY_ENTER :
+			if event.scancode == KEY_ENTER and self.get_text() != "" :
 				global.player.get_message(global.player_name + ": " + self.get_text())
 			#get_node('ChatText').add_text()
 			#get_node('ChatText').newline()
