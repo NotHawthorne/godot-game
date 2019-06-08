@@ -27,15 +27,16 @@ var	move				= "stop"
 var		tree			= {}
 var		health			= 100
 var		max_health		= 200
-var		starting_ammo	= 50
+var		starting_ammo	= 125
 var		ammo			= starting_ammo
-var		max_ammo		= 200
+var		max_ammo		= 250
 var		dead			= false
 var		to_update		= []
 var		weapon			= weapons.pistol
 var		can_fire		= true
 var		vr_player		= false
 var		server_map
+var		respawning		= false
 
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -107,7 +108,7 @@ func	_physics_process(delta):
 		direction	= Vector3()
 		if $JumpCast.is_colliding():
 			time_off_ground = 0
-		if $JumpCast.is_colliding() :
+		if $JumpCast.is_colliding() and respawning == false :
 			var col_obj = get_node("JumpCast").get_collider()
 			if col_obj.get_name() == "Danger_Zone_Body" :
 				ammo = starting_ammo
@@ -117,8 +118,10 @@ func	_physics_process(delta):
 					rpc_unreliable("do_update", new_spawn, player_id)
 				else :
 					rpc_id(1, "choose_spawn", player_id)
+				get_message(player_name + " has fallen and they can't get up!")
 				update_health(player_id, 100)
 				rpc_unreliable("update_health", player_id, 100)
+				respawning = true
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -202,6 +205,7 @@ remote	func	do_update(_transform, pid):
 		pnode.set_global_transform(_transform)
 	else:
 		print("Couldn't update position for " + str(pid))
+	respawning = false
 
 remote	func	do_move(position, pid):
 	var	root	= get_parent()
@@ -268,6 +272,7 @@ remote func		sync_health(pid, hp):
 func			_deal_damage(shot, amt):
 	if control == true :
 		if shot.health - amt <= 0 :
+			get_message(shot.player_name + " was fragged by " + player_name + "!")
 			global.kills += 1
 			print("TRYING TO KILL")
 			if (player_id == 1):
