@@ -39,7 +39,8 @@ func			_player_connected(id):
 	pass
 
 func			_player_disconnected(id):
-	send_message(players[id] + " has left!")
+	if (get_tree().is_network_server()):
+		send_message(players[id] + " has left!")
 	unregister_player(id)
 	print("PLAYER LEFT")
 	rpc("unregister_player", id)
