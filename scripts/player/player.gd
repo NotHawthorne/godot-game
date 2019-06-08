@@ -179,14 +179,6 @@ func			_update():
 func			flip_cooldown():
 	can_fire = true
 
-remote func		update_health(pid, health) :
-	var	root	= get_parent()
-	var	pnode	= root.get_node(str(pid))
-	if (pnode):
-		pnode.health = health
-	else:
-		print("Couldn't update position for " + str(pid))
-
 remote	func	do_update(_transform, pid):
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
@@ -254,22 +246,31 @@ remote	func	set_weapon(id, wid):
 		print("INVALID WEAPON SET REQUEST")
 	pass
 
+remote func		update_health(pid, health) :
+	var	root	= get_parent()
+	var	pnode	= root.get_node(str(pid))
+	if (pnode):
+		pnode.health = health
+	else:
+		print("Couldn't update position for " + str(pid))
+
 func			_deal_damage(shot, shooter, amt):
-	if shot.health - amt < 0 :
-		global.kills += 1
-		print("TRYING TO KILL")
-		if (shooter == 1):
-			var new_spawn = spawn()
-			shot.set_global_transform(new_spawn)
-			rpc_unreliable("do_update", new_spawn, shot.player_id)
-		else:
-			rpc_id(1, "choose_spawn", shot.player_id)
-		update_health(shot.player_id, 100)
-		rpc_unreliable("update_health", shot.player_id, 100)
-		rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills) 
-	else :
-		update_health(shot.player_id, shot.health - amt)
-		rpc_unreliable("update_health", shot.player_id, shot.health - amt)
+	if control == true :
+		if shot.health - amt < 0 :
+			global.kills += 1
+			print("TRYING TO KILL")
+			if (shooter == 1):
+				var new_spawn = spawn()
+				shot.set_global_transform(new_spawn)
+				rpc_unreliable("do_update", new_spawn, shot.player_id)
+			else:
+				rpc_id(1, "choose_spawn", shot.player_id)
+			update_health(shot.player_id, 100)
+			rpc_unreliable("update_health", shot.player_id, 100)
+			rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills) 
+		else :
+			update_health(shot.player_id, shot.health - amt)
+			rpc_unreliable("update_health", shot.player_id, shot.health - amt)
 #	STATS_ADD_KILL
 #	NEEDS TO NOT UPDATE ON EVERY KILL
 #	CAUSES SERVER LAG
