@@ -23,9 +23,11 @@ func flip_cooldown():
 func collided(body):
 	if body and "health" in body :
 		if body.health + health_to_add > body.max_health :
-			body.health = body.max_health
+			global.player.update_health(global.player.player_id, global.player.max_health)
+			global.player.rpc_unreliable("update_health", global.player.player_id, global.player.max_health)
 		else :
-			body.health += health_to_add
+			global.player.update_health(global.player.player_id, global.player.health + health_to_add)
+			global.player.rpc_unreliable("update_health", global.player.player_id, global.player.health + health_to_add)
 		self.remove_child(capsule)
 		cooldown.start()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
