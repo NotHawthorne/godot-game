@@ -278,8 +278,8 @@ func			_deal_damage(shot, shooter, amt):
 			rpc_id(1, "sync_health", shot.player_id, 100)
 			rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills) 
 		else :
-			update_health(shot.player_id, shot.health - amt)
 			rpc_id(1, "sync_health", shot.player_id, shot.health - amt)
+			update_health(shot.player_id, shot.health - amt)
 #	STATS_ADD_KILL
 #	NEEDS TO NOT UPDATE ON EVERY KILL
 #	CAUSES SERVER LAG
