@@ -71,9 +71,21 @@ func _ready():
 	self.add_child(shoot_sound)
 	shoot_sound.stream = load("res://sounds/shoot_sound.wav")
 	if (control == true):
+		var players = get_parent().find_node("network").players
+		for id in players :
+			if id.player_id != player_id :
+				rpc_id(id.player_id, "ask_for_health", player_id)
 		$Head/Camera/Sprite.visible = true
 		$Head/Camera/player_info.visible = true
 		$Head/Camera/ChatBox.visible = true
+
+remote func inform_of_health(pid, health) :
+	var player = get_parent().find_node(str(pid))
+	if player :
+		player.health = health
+
+remote func ask_for_health(pid) :
+	rpc_id(pid, "inform_of_health", player_id, health)
 
 func	spawn() :
 	print("finding spawns")
@@ -489,9 +501,12 @@ func	_input(event):
 		if ($Head/Camera/CamCast.is_colliding()):
 			print($Head/Camera/CamCast.get_collision_normal())
 		#bullet.target = $Head/Camera/CamCast.get_collision_point()
-		if $Head/Camera/CamCast.get_collider() and $Head/Camera/CamCast.get_collider().has_method("_deal_damage"):
-			print("CALLING SEND DAMAGE")
-			self._deal_damage($Head/Camera/CamCast.get_collider(), weapon.damage)
+		if $Head/Camera/CamCast.get_collider() :
+			if $Head/Camera/CamCast.get_collider().has_method("_deal_damage") :
+				print("CALLING SEND DAMAGE")
+				self._deal_damage($Head/Camera/CamCast.get_collider(), weapon.damage)
+			elif $Head/Camera/CamCast.get_collider().get_parent().has_method("pop_capsule") :
+				$Head/Camera/CamCast.get_collider().get_parent().pop_capsule()
 		#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 		
 		#$Head/gun_container.add_child(bullet)

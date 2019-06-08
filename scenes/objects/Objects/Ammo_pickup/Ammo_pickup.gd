@@ -20,6 +20,10 @@ func _ready():
 func flip_cooldown():
 	self.add_child(capsule)
 
+func pop_capsule() :
+	self.remove_child(capsule)
+	cooldown.start()
+
 func collided(body):
 	if body and "ammo" in body :
 		if body.ammo + ammo_to_add > body.max_ammo :

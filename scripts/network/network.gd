@@ -192,7 +192,6 @@ func			spawn_player(id, name, map, vr):
 	print("server map is" + map)
 	#global.define_level($PanelContainer/Panel/Control.selection)
 	#for peer_id in players :
-
 	if id == get_tree().get_network_unique_id():
 		player.set_network_master(id)
 		player.control		= true
@@ -204,3 +203,9 @@ func			spawn_player(id, name, map, vr):
 		if admin == name and global.lobby_map_selection != map:
 			rpc_id(1, "_change_map", global.lobby_map_selection)
 			_change_map(global.lobby_map_selection)
+	if player.player_id == 1 :
+		var new_spawn = player.spawn()
+		player.set_global_transform(new_spawn)
+		player.rpc_unreliable("do_update", new_spawn, player.player_id)
+	else :
+		player.rpc_id(1, "choose_spawn", player.player_id)
