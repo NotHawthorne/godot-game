@@ -506,7 +506,7 @@ func	_input(event):
 				print("CALLING SEND DAMAGE")
 				self._deal_damage($Head/Camera/CamCast.get_collider(), weapon.damage)
 			elif $Head/Camera/CamCast.get_collider().get_parent().has_method("pop_capsule") :
-				$Head/Camera/CamCast.get_collider().get_parent().pop_capsule()
+				$Head/Camera/CamCast.get_collider().get_parent().pop_capsule($Head/Camera/CamCast.get_collider().get_parent().get_name())
 		#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 		
 		#$Head/gun_container.add_child(bullet)
