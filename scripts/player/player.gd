@@ -258,6 +258,7 @@ remote func		sync_health(pid, hp):
 	#if get_tree().is_network_server():
 	var network_interface = get_parent().find_node("network")
 	for id in network_interface.players:
+		print("yo")
 		rpc_id(id, "update_health", pid, hp)
 	update_health(pid, hp)
 
