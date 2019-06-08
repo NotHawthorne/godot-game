@@ -72,12 +72,12 @@ func _ready():
 	self.add_child(shoot_sound)
 	shoot_sound.stream = load("res://sounds/shoot_sound.wav")
 	if (control == true):
-		var players = get_parent().find_node("network").players
-		for id in players :
-			print("ttest")
-			if id != player_id :
-				print("asking " + str(id) + " for info")
-				rpc_id(id, "ask_for_health", player_id)
+		#var players = get_parent().find_node("network").players
+		#for id in players :
+		#	print("ttest")
+		#	if id != player_id :
+		#		print("asking " + str(id) + " for info")
+		#		rpc_id(id, "ask_for_health", player_id)
 		$Head/Camera/Sprite.visible = true
 		$Head/Camera/player_info.visible = true
 		$Head/Camera/ChatBox.visible = true
