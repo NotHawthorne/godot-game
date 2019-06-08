@@ -72,13 +72,17 @@ func _ready():
 	self.add_child(shoot_sound)
 	shoot_sound.stream = load("res://sounds/shoot_sound.wav")
 	if (control == true):
-		#var players = get_parent().find_node("network").players
-		#for id in players :
-		#	if id != player_name :
-		#		rpc_id(id, "ask_for_health", player_id)
+		var players = get_parent().find_node("network").players
+		for id in players :
+			print("ttest")
+			if id != player_id :
+				print("asking " + str(id) + " for info")
+				rpc_id(id, "ask_for_health", player_id)
 		$Head/Camera/Sprite.visible = true
 		$Head/Camera/player_info.visible = true
 		$Head/Camera/ChatBox.visible = true
+		if (player_id != 1):
+			rpc_id(1, "gamestate_request", player_id)
 
 remote func inform_of_health(pid, health) :
 	var player = get_parent().find_node(str(pid))
@@ -101,6 +105,24 @@ remote func	choose_spawn(id) :
 		print("spawning self")
 		global.player.set_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
+
+func		gamestate_update(data):
+	for player in data.players:
+		var pnode = get_parent().get_node(str(player.id))
+		pnode.health = player.health
+
+remote func	gamestate_request(pid):
+	var gamestate	= {}
+	var n_node		= get_parent().get_node('network')
+	var players		= n_node.players
+	gamestate.players = []
+	for peer_id in players:
+		var player_data = {}
+		var player_node = get_parent().get_node(str(peer_id))
+		player_data.id = peer_id
+		player_data.health = player_node.health
+		gamestate.players.push_back(player_data)
+	rpc_id(pid, "gamestate_update", gamestate)
 
 func	_physics_process(delta):
 	if (control == true):
