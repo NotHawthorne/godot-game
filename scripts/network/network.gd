@@ -197,7 +197,7 @@ func			spawn_player(id, name, map, vr):
 		global.player		= player
 	get_parent().add_child(player)
 	if (name):
-		print(name + " joined!")
+		send_message(name + " joined!")
 	for admin in global.admins :
 		if admin == name and global.lobby_map_selection != map:
 			rpc_id(1, "_change_map", global.lobby_map_selection)
