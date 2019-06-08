@@ -45,6 +45,7 @@ cast_to = Vector3( 0, -10000, 0 )
 collide_with_areas = true
 
 [node name="Sprite" type="Sprite" parent="Head/Camera"]
+visible = false
 script = ExtResource( 3 )
 
 [node name="crosshair" type="Sprite" parent="Head/Camera/Sprite"]
@@ -65,6 +66,7 @@ margin_bottom = -21.1992
 script = ExtResource( 6 )
 
 [node name="player_info" type="Sprite" parent="Head/Camera"]
+visible = false
 
 [node name="player_name" type="Label" parent="Head/Camera/player_info"]
 margin_right = 168.0
@@ -92,6 +94,7 @@ margin_bottom = 58.16
 script = ExtResource( 9 )
 
 [node name="ChatBox" type="PanelContainer" parent="Head/Camera"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.517647 )
 margin_left = 660.424
 margin_top = 439.63

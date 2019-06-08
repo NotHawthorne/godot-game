@@ -70,6 +70,10 @@ func _ready():
 		set_weapon(player_id, 1)
 	self.add_child(shoot_sound)
 	shoot_sound.stream = load("res://sounds/shoot_sound.wav")
+	if (control == true):
+		$Head/Camera/Sprite.visible = true
+		$Head/Camera/player_info.visible = true
+		$Head/Camera/ChatBox.visible = true
 
 func	spawn() :
 	print("finding spawns")
