@@ -106,8 +106,10 @@ remote func	choose_spawn(id) :
 		global.player.set_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
 
-func		gamestate_update(data):
+remote func		gamestate_update(data):
+	print("received update request")
 	for player in data.players:
+		print("updating player " + str(player.id))
 		var pnode = get_parent().get_node(str(player.id))
 		pnode.health = player.health
 
@@ -122,6 +124,12 @@ remote func	gamestate_request(pid):
 		player_data.id = peer_id
 		player_data.health = player_node.health
 		gamestate.players.push_back(player_data)
+	var server_player = {}
+	server_player.id = 1
+	server_player.health = global.player.health
+	gamestate.players.push_back(server_player)
+	for player in gamestate.players:
+		print(str(player.id) + ":" + str(player.health))
 	rpc_id(pid, "gamestate_update", gamestate)
 
 func	_physics_process(delta):
