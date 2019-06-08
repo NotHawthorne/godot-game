@@ -25,8 +25,8 @@ remote func pop_capsule(id) :
 	get_parent().get_node(id).cooldown.start()
 
 func collided(body):
-	if body and "ammo" in body :
-		if body.ammo + ammo_to_add > body.max_ammo :
+	if body and "ammo" in body and body.player_id == global.player_id :
+		if body.ammo + ammo_to_add >= body.max_ammo :
 			body.ammo = body.max_ammo
 		else :
 			body.ammo += ammo_to_add
