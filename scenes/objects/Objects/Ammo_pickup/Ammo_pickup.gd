@@ -20,9 +20,9 @@ func _ready():
 func flip_cooldown():
 	self.add_child(capsule)
 
-remote func pop_capsule(name) :
-	get_parent().get_node(name).remove_child(capsule)
-	get_parent().get_node(name).cooldown.start()
+remote func pop_capsule(id) :
+	get_parent().get_node(id).remove_child(capsule)
+	get_parent().get_node(id).cooldown.start()
 
 func collided(body):
 	if body and "ammo" in body :
