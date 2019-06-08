@@ -39,6 +39,7 @@ func			_player_connected(id):
 	pass
 
 func			_player_disconnected(id):
+	send_message(players[id] + " has left!")
 	unregister_player(id)
 	print("PLAYER LEFT")
 	rpc("unregister_player", id)
@@ -196,7 +197,7 @@ func			spawn_player(id, name, map, vr):
 		player.control		= true
 		global.player		= player
 	get_parent().add_child(player)
-	if (name):
+	if (name && player.control == true):
 		send_message(name + " joined!")
 	for admin in global.admins :
 		if admin == name and global.lobby_map_selection != map:
