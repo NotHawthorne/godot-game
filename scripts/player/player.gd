@@ -222,20 +222,6 @@ remote	func	fire_bullet(id, amt, target):
 		#else:
 		pnode.find_node('gun_container', true, false).add_child(bullet)
 
-remote	func	damage(shot, shooter, amt):
-	var shot_node = get_parent().get_node(str(shot))
-	var shooter_node = get_parent().get_node(str(shooter))
-	if !shot_node || !shooter_node:
-		return
-	print(str(shooter) + " hit " + str(shot))
-	shot_node.health -= amt;
-	if shot_node.health < 0 :
-		if (player_id == 1):
-			choose_spawn(shot)
-		else:
-			rpc_id(1, "choose_spawn", shot)
-		
-
 remote	func	set_weapon(id, wid):
 	var pnode = get_parent().get_node(str(id))
 	print("SET WEAPON CALLED ON " + str(id))
@@ -269,7 +255,7 @@ remote func		sync_health(pid, hp):
 
 func			_deal_damage(shot, amt):
 	if control == true :
-		if shot.health - amt < 0 :
+		if shot.health - amt <= 0 :
 			global.kills += 1
 			print("TRYING TO KILL")
 			if (player_id == 1):
