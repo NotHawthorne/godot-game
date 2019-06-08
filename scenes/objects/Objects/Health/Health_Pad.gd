@@ -20,6 +20,10 @@ func _ready():
 func flip_cooldown():
 	self.add_child(capsule)
 
+func pop_capsule() :
+	self.remove_child(capsule)
+	cooldown.start()
+
 func collided(body):
 	if body and "health" in body :
 		if body.health + health_to_add > body.max_health :
