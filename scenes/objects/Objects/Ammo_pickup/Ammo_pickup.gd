@@ -20,9 +20,9 @@ func _ready():
 func flip_cooldown():
 	self.add_child(capsule)
 
-func pop_capsule() :
-	self.remove_child(capsule)
-	cooldown.start()
+remote func pop_capsule(name) :
+	get_parent().get_node(name).remove_child(capsule)
+	get_parent().get_node(name).cooldown.start()
 
 func collided(body):
 	if body and "ammo" in body :
@@ -30,8 +30,8 @@ func collided(body):
 			body.ammo = body.max_ammo
 		else :
 			body.ammo += ammo_to_add
-		self.remove_child(capsule)
-		cooldown.start()
+		pop_capsule(self.get_name())
+		rpc_unreliable("pop_capsule", self.get_name())
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
