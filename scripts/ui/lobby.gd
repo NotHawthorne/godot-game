@@ -106,7 +106,6 @@ func _on_Button_pressed():
 		global.map = global.lobby_map_selection
 	get_tree().change_scene(global.map)
 
-
 func _on_boi_request_completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	print(json.result)
