@@ -27,7 +27,8 @@ var	move				= "stop"
 var		tree			= {}
 var		health			= 100
 var		max_health		= 200
-var		ammo			= 50
+var		starting_ammo	= 50
+var		ammo			= starting_ammo
 var		max_ammo		= 200
 var		dead			= false
 var		to_update		= []
@@ -93,6 +94,7 @@ func	_physics_process(delta):
 		if $JumpCast.is_colliding() :
 			var col_obj = get_node("JumpCast").get_collider()
 			if col_obj.get_name() == "Danger_Zone_Body" :
+				ammo = starting_ammo
 				if player_id == 1 :
 					var new_spawn = spawn()
 					self.set_global_transform(new_spawn)
@@ -253,7 +255,6 @@ remote	func	set_weapon(id, wid):
 	pass
 
 func			_deal_damage(shot, shooter, amt):
-	shot.health -= amt;
 	if shot.health - amt < 0 :
 		global.kills += 1
 		print("TRYING TO KILL")
@@ -268,6 +269,7 @@ func			_deal_damage(shot, shooter, amt):
 		rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills) 
 	else :
 		update_health(shot.player_id, shot.health - amt)
+		rpc_unreliable("update_health", shot.player_id, shot.health - amt)
 #	STATS_ADD_KILL
 #	NEEDS TO NOT UPDATE ON EVERY KILL
 #	CAUSES SERVER LAG
@@ -457,6 +459,7 @@ func	_input(event):
 		else:
 			global.target = null
 	if Input.is_action_just_pressed("restart") and control == true:
+		ammo = starting_ammo
 		if player_id == 1 :
 			var new_spawn = spawn()
 			self.set_global_transform(new_spawn)
