@@ -254,6 +254,13 @@ remote func		update_health(pid, health) :
 	else:
 		print("Couldn't update position for " + str(pid))
 
+remote func		sync_health(pid, hp):
+	if get_tree().is_network_server():
+		var network_interface = get_parent().find_node("network")
+		for id in network_interface.players:
+			rpc_id(id, "update_health", pid, hp)
+		update_health(pid, hp)
+
 func			_deal_damage(shot, shooter, amt):
 	if control == true :
 		if shot.health - amt < 0 :
@@ -266,11 +273,11 @@ func			_deal_damage(shot, shooter, amt):
 			else:
 				rpc_id(1, "choose_spawn", shot.player_id)
 			update_health(shot.player_id, 100)
-			rpc_unreliable("update_health", shot.player_id, 100)
+			rpc_id(1, "sync_health", shot.player_id, 100)
 			rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills) 
 		else :
 			update_health(shot.player_id, shot.health - amt)
-			rpc_unreliable("update_health", shot.player_id, shot.health - amt)
+			rpc_id(1, "sync_health", shot.player_id, shot.health - amt)
 #	STATS_ADD_KILL
 #	NEEDS TO NOT UPDATE ON EVERY KILL
 #	CAUSES SERVER LAG
@@ -485,6 +492,7 @@ func	_input(event):
 			print($Head/Camera/CamCast.get_collision_normal())
 		#bullet.target = $Head/Camera/CamCast.get_collision_point()
 		if $Head/Camera/CamCast.get_collider() and $Head/Camera/CamCast.get_collider().has_method("_deal_damage"):
+			print("CALLING SEND DAMAGE")
 			self._deal_damage($Head/Camera/CamCast.get_collider(), player_id, weapon.damage)
 		#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 		
