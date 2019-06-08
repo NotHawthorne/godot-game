@@ -50,6 +50,7 @@ var time_off_ground		= 0
 var shoot_sound = AudioStreamPlayer.new()
 
 func _ready():
+	print("Spawned as player!")
 	$Head/Camera/ChatBox/Control/LineEdit.set_process_input(false)
 	update_timer.set_wait_time(1)
 	update_timer.connect("timeout", self, "_update")
