@@ -84,14 +84,6 @@ func _ready():
 		if (player_id != 1):
 			rpc_id(1, "gamestate_request", player_id)
 
-remote func inform_of_health(pid, health) :
-	var player = get_parent().find_node(str(pid))
-	if player :
-		player.health = health
-
-remote func ask_for_health(pid) :
-	rpc_id(pid, "inform_of_health", player_id, health)
-
 func	spawn() :
 	print("finding spawns")
 	var spawns = get_tree().get_nodes_in_group("spawns")
@@ -299,6 +291,9 @@ remote func		sync_health(pid, hp):
 		rpc_id(id, "update_health", pid, hp)
 	update_health(pid, hp)
 
+remote func		reset_ammo() :
+	ammo = starting_ammo
+
 func			_deal_damage(shot, amt):
 	if control == true :
 		if shot.health - amt <= 0 :
@@ -317,7 +312,8 @@ func			_deal_damage(shot, amt):
 				stats_add_kill(player_id, global.player_id, global.kills)
 			else:
 				rpc_id(1, "sync_health", shot.player_id, 100)
-				rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills) 
+				rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills)
+			rpc_id(shot.player_id, "reset_ammo")
 		else :
 			if (player_id == 1):
 				sync_health(shot.player_id, shot.health - amt)

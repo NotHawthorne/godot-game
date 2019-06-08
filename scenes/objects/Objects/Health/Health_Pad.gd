@@ -25,8 +25,8 @@ remote func pop_capsule(id) :
 	get_parent().get_node(id).cooldown.start()
 
 func collided(body):
-	if body and "health" in body :
-		if body.health + health_to_add > body.max_health :
+	if body and "health" in body and body.player_id == global.player_id :
+		if body.health + health_to_add >= body.max_health :
 			if global.player_id == 1 :
 				global.player.sync_health(global.player_id, global.player.max_health)
 			else:
