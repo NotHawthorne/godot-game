@@ -24,6 +24,12 @@ config/icon="res://img/ui/icon.png"
 weapons="*res://scripts/weapons.gd"
 global="*res://scripts/global.gd"
 
+[display]
+
+window/size/resizable=false
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
 [gdnative]
 
 singletons=[ "res://addons/godot-openvr/godot_openvr.gdnlib" ]
@@ -96,6 +102,11 @@ change_map={
 start_chat={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":84,"unicode":0,"echo":false,"script":null)
+ ]
+}
+fullscreen={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":76,"unicode":0,"echo":false,"script":null)
  ]
 }
 
