@@ -6,7 +6,7 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 var game_timer = Timer.new()
-var game_length = 30
+var game_length = 150
 var message_timer = Timer.new()
 func _ready():
 	message_timer.set_wait_time(2)

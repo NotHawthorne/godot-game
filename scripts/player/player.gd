@@ -530,6 +530,29 @@ func	stats_init():
 func	get_message(message):
 	get_parent().find_node('network').send_message(message)
 
+
+
+func	display_stats(pid, data) :
+	var textbox = $Head/Camera/game_stats/stats_text
+	textbox.clear()
+	if player_id == 1 :
+		data = get_parent().find_node("mode_manager").gamestate
+		if pid != 1 :
+			rpc_id(pid, "display_stats", pid, data)
+	for pnode in data.id :
+		textbox.add_text(data.players[pnode] + " kills: " + str(data.kills[pnode]) + " deaths: " + str(data.deaths[pnode]))
+		textbox.newline()
+	$Head/Camera/game_stats.visible = true
+
+func	get_gamestats(action) :
+	if action == "show" :
+		if player_id == 1 :
+			display_stats(1, null)
+		else :
+			rpc_id(1, "display_stats", player_id, null)
+	if action == "hide" :
+		$Head/Camera/game_stats.visible = false	
+
 func	_input(event):
 	if event is InputEventMouseMotion and !global.ui_mode and control == true:
 		var change = 0
@@ -554,6 +577,10 @@ func	_input(event):
 			global.target = selection.collider
 		else:
 			global.target = null
+	if Input.is_action_just_pressed("ui_focus_next") and control == true and !global.ui_mode :
+		get_gamestats("show")
+	if Input.is_action_just_released("ui_focus_next") and control == true and !global.ui_mode :
+		get_gamestats("hide")
 	if Input.is_action_just_pressed("restart") and control == true:
 		ammo = starting_ammo
 		if player_id == 1 :
