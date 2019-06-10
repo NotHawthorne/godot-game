@@ -178,7 +178,6 @@ func	send_message(message):
 	chat_node.newline()
 	rpc_unreliable("rpc_message", message)
 	#rpc_id(1, "_broadcast_message", message)
-	
 
 func			spawn_player(id, name, map, vr, team):
 
@@ -220,4 +219,6 @@ func			spawn_player(id, name, map, vr, team):
 			rpc_id(1, "_change_map", global.lobby_map_selection)
 			_change_map(global.lobby_map_selection)
 	if player.player_id == global.player_id:
-		player.choose_spawn(id, null)
+		if OS.has_feature("Server") :
+			player.is_headless = true
+		player.choose_spawn(player.player_id, null)

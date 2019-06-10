@@ -38,6 +38,7 @@ var		vr_player		= false
 var		server_map
 var		respawning		= false
 var		team			= null
+var		is_headless		= false
 
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -126,9 +127,9 @@ func	spawn(id) :
 	print("finding spawns")
 	var spawns
 	var chosen
-	if global.teams == false or OS.has_feature("Server"):
+	if global.teams == false or get_parent().get_node(str(id)).is_headless :
 		spawns = get_tree().get_nodes_in_group("spawns")
-	elif team != null :
+	elif get_parent().get_node(str(id)).team != null :
 		print("teams enabled")
 		if get_parent().get_node(str(id)).team == "blue" :
 			spawns = get_tree().get_nodes_in_group("b_spawns")
