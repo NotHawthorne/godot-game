@@ -142,6 +142,7 @@ remote func	choose_spawn(id, chosen) :
 	print("spawning: " + str(id))
 	if player_id != 1 and chosen == null :
 		rpc_id(1, "choose_spawn", id, chosen)
+		return
 	if player_id == 1 :
 		chosen = spawn(id)
 		if id != 1 :
