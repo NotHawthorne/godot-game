@@ -86,6 +86,7 @@ func _ready():
 			rpc_id(1, "gamestate_request", player_id)
 		if (player_id == 1) :
 			get_parent().find_node("mode_manager").start_game()
+			get_parent().find_node("mode_manager").add_player(1, player_name)
 
 func	spawn() :
 	print("finding spawns")
@@ -100,6 +101,7 @@ remote func	choose_spawn(id) :
 		print("spawning self")
 		global.player.set_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
+
 
 remote func		gamestate_update(data):
 	print("received update request")
@@ -129,26 +131,34 @@ remote func	gamestate_request(pid):
 	gamestate.chat_log = global.player.get_node('Head/Camera/ChatBox/ChatText').get_text()
 	rpc_id(pid, "gamestate_update", gamestate)
 
+remote func leaderboard_add_stat(id, kill, death) :
+	get_parent().find_node("mode_manager").add_stat(player_id, kill, death)
+
 func	_physics_process(delta):
 	if (control == true):
 		# Reset player direction
 		direction	= Vector3()
 		if $JumpCast.is_colliding():
+			if get_node("JumpCast").get_collider().get_name() != "Danger_Zone_Body" :
+				respawning == false
 			time_off_ground = 0
 		if $JumpCast.is_colliding() and respawning == false :
 			var col_obj = get_node("JumpCast").get_collider()
 			if col_obj.get_name() == "Danger_Zone_Body" :
+				print("hit the floor hard")
 				ammo = starting_ammo
+				respawning = true
+				get_message(player_name + " has fallen and they can't get up!")
+				update_health(player_id, 100)
+				rpc_unreliable("update_health", player_id, 100)
 				if player_id == 1 :
 					var new_spawn = spawn()
 					self.set_global_transform(new_spawn)
 					rpc_unreliable("do_update", new_spawn, player_id)
+					get_parent().find_node("mode_manager").add_stat(player_id, 0, 1)
 				else :
 					rpc_id(1, "choose_spawn", player_id)
-				get_message(player_name + " has fallen and they can't get up!")
-				update_health(player_id, 100)
-				rpc_unreliable("update_health", player_id, 100)
-				respawning = true
+					rpc_id(1, "leaderboard_add_stat", player_id, 0, 1)
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -309,15 +319,17 @@ func			_deal_damage(shot, amt):
 				var new_spawn = spawn()
 				shot.set_global_transform(new_spawn)
 				rpc_unreliable("do_update", new_spawn, shot.player_id)
-			else:
-				rpc_id(1, "choose_spawn", shot.player_id)
-			update_health(shot.player_id, 100)
-			if (player_id == 1):
 				sync_health(shot.player_id, 100)
 				stats_add_kill(player_id, global.player_id, global.kills)
+				get_parent().find_node("mode_manager").add_stat(shot.player_id, 0, 1)
+				get_parent().find_node("mode_manager").add_stat(player_id, 1, 0)
 			else:
+				rpc_id(1, "choose_spawn", shot.player_id)
 				rpc_id(1, "sync_health", shot.player_id, 100)
 				rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills)
+				rpc_id(1, "leaderboard_add_stat", shot.player_id, 0, 1)
+				rpc_id(1, "leaderboard_add_stat", player_id, 1, 0)
+			update_health(shot.player_id, 100)
 			rpc_id(shot.player_id, "reset_ammo")
 		else :
 			if (player_id == 1):
@@ -517,8 +529,10 @@ func	_input(event):
 			var new_spawn = spawn()
 			self.set_global_transform(new_spawn)
 			rpc_unreliable("do_update", new_spawn, player_id)
+			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1)
 		else :
 			rpc_id(1, "choose_spawn", player_id)
+			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1)
 		update_health(player_id, 100)
 		rpc_unreliable("update_health", player_id, 100)
 	if Input.is_action_just_pressed("start_chat") and control == true :
