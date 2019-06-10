@@ -101,7 +101,7 @@ remote func	choose_spawn(id) :
 
 remote func		gamestate_update(data):
 	print("received update request")
-	$Head/Camera/ChatBox/ChatText.set_text(data.chat_log)
+	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(data.chat_log)
 	for player in data.players:
 		print("updating player " + str(player.id))
 		var pnode = get_parent().get_node(str(player.id))
@@ -124,7 +124,7 @@ remote func	gamestate_request(pid):
 	gamestate.players.push_back(server_player)
 	for player in gamestate.players:
 		print(str(player.id) + ":" + str(player.health))
-	gamestate.chat_log = $Head/Camera/ChatBox/ChatText.get_text()
+	gamestate.chat_log = global.player.get_node('Head/Camera/ChatBox/ChatText').get_text()
 	rpc_id(pid, "gamestate_update", gamestate)
 
 func	_physics_process(delta):
