@@ -197,6 +197,23 @@ rect_scale = Vector2( 6, 6 )
 text = "
 YOU LOSE :("
 
+[node name="game_stats" type="PanelContainer" parent="Head/Camera"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -302.48
+margin_top = -130.147
+margin_right = 297.52
+margin_bottom = 169.853
+
+[node name="stats_text" type="RichTextLabel" parent="Head/Camera/game_stats"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 593.0
+margin_bottom = 293.0
+
 [node name="gun_container" type="Spatial" parent="Head"]
 transform = Transform( 0.999969, 0, 0.00788296, 0, 1, 0, -0.00788296, 0, 0.999969, 0.414887, -0.220135, -0.342562 )
 
