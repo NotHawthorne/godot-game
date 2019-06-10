@@ -60,6 +60,8 @@ func			_connected_ok(id):
 remote	func	user_ready(id, player_name, vr, team):
 	if get_tree().is_network_server():
 		if global.teams :
+			if !team :
+				team = "blue"
 			rpc_id(id, "register_in_game", global.map, vr, team)
 		else :
 			rpc_id(id, "register_in_game", global.map, vr, null)
