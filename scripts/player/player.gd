@@ -496,7 +496,6 @@ func	_input(event):
 				$Head/gun_container.rotate_x(deg2rad(change))
 				camera_angle += change
 			rpc_unreliable("do_rot", $Head.get_rotation_degrees(), $Head/Camera.get_rotation_degrees(), global.player_id)
-		
 		#Detect what we're mousing over
 		
 		var center_pos = Vector2()
@@ -527,7 +526,7 @@ func	_input(event):
 		$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
 		$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
 
-	if event is InputEventMouseButton and control == true and ammo > 0 and can_fire == true:
+	if Input.is_action_just_pressed("shoot") and control == true and ammo > 0 and can_fire == true:
 		#var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		#var	bullet			= bullet_scene.instance()
 		#bullet.bullet_owner = player_id
