@@ -6,8 +6,8 @@
 [ext_resource path="res://scripts/ui/console.gd" type="Script" id=4]
 [ext_resource path="res://scenes/levels/mode_manager.gd" type="Script" id=5]
 [ext_resource path="res://level1.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/objects/Objects/Health/Health_Pad.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/objects/Objects/Ammo_pickup/Ammo_pickup.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/objects/Objects/Ammo_pickup/Ammo_pickup.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/objects/Objects/Health/Health_Pad.tscn" type="PackedScene" id=8]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -179,66 +179,66 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5974, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.19171, 0 )
 shape = SubResource( 3 )
 
-[node name="health_pad1" parent="." instance=ExtResource( 7 )]
+[node name="health_pad1" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.1211, 10.2029, 69.2379 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad2" parent="." instance=ExtResource( 7 )]
+[node name="health_pad2" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 57.228, 29.9585, 134.504 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad3" parent="." instance=ExtResource( 7 )]
+[node name="health_pad3" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 62.1826, 69.9955, 125.961 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad8" parent="." instance=ExtResource( 7 )]
+[node name="health_pad8" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 171.963, 69.9955, 87.3425 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="Ammo_Pad8" parent="." instance=ExtResource( 8 )]
+[node name="Ammo_Pad8" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 171.831, 69.9585, 79.9568 )
 
-[node name="health_pad4" parent="." instance=ExtResource( 7 )]
+[node name="health_pad4" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0475, 64.8864, 168.034 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad5" parent="." instance=ExtResource( 7 )]
+[node name="health_pad5" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.3871, 49.646, -57.1528 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad6" parent="." instance=ExtResource( 7 )]
+[node name="health_pad6" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 198.226, 20.0115, 55.0985 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad7" parent="." instance=ExtResource( 7 )]
+[node name="health_pad7" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 63.2868, -0.268072, 55.0985 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="Ammo_Pad1" parent="." instance=ExtResource( 8 )]
+[node name="Ammo_Pad1" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.26013, 9.91936, 76.3158 )
 
-[node name="Ammo_Pad2" parent="." instance=ExtResource( 8 )]
+[node name="Ammo_Pad2" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 57.292, 29.8209, 125.852 )
 
-[node name="Ammo_Pad3" parent="." instance=ExtResource( 8 )]
+[node name="Ammo_Pad3" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 62.1185, 69.9585, 119.203 )
 
-[node name="Ammo_Pad4" parent="." instance=ExtResource( 8 )]
+[node name="Ammo_Pad4" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0584, 64.9011, 174.833 )
 
-[node name="Ammo_Pad5" parent="." instance=ExtResource( 8 )]
+[node name="Ammo_Pad5" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 41.7369, 49.7477, -57.2424 )
 
-[node name="Ammo_Pad6" parent="." instance=ExtResource( 8 )]
+[node name="Ammo_Pad6" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 198.153, 19.9256, 62.7375 )
 
-[node name="Ammo_Pad7" parent="." instance=ExtResource( 8 )]
+[node name="Ammo_Pad7" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 63.2926, -0.151988, 62.7375 )

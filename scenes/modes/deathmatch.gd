@@ -43,12 +43,18 @@ func end_game() :
 			global.player.match_info("win")
 		else :
 			global.player.rpc_id(winner_id, "match_info", "win")
-	for pnode in gamestate.id :
-		if pnode != winner_id :
+		for pnode in gamestate.id :
+			if pnode != winner_id :
+				if pnode == 1 :
+					global.player.match_info("lose")
+				else :
+					global.player.rpc_id(pnode, "match_info", "lose")
+	else :
+		for pnode in gamestate.id :
 			if pnode == 1 :
-				global.player.match_info("lose")
+				global.player.match_info("tied")
 			else :
-				global.player.rpc_id(pnode, "match_info", "lose")
+				global.player.rpc_id(pnode, "match_info", "tied")
 	message_timer.start()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

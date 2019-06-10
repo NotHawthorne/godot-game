@@ -102,12 +102,15 @@ remote func match_info(message) :
 	$Head/Camera/match_messages/round_start.visible = false
 	$Head/Camera/match_messages/you_win.visible = false
 	$Head/Camera/match_messages/you_lose.visible = false
+	$Head/Camera/match_messages/tied_game.visible = false
 	if message == "start" :
 		$Head/Camera/match_messages/round_start.visible = true
 	if message == "win" :
 		$Head/Camera/match_messages/you_win.visible = true
 	if message == "lose" :
 		$Head/Camera/match_messages/you_lose.visible = true
+	if message == "tied" :
+		$Head/Camera/match_messages/tied_game.visible = true
 	$Head/Camera/match_messages.visible = true
 	message_timer.start()
 

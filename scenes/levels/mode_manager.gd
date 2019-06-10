@@ -38,6 +38,12 @@ func reset_game() :
 	for p in gamestate.id :
 		gamestate.kills[p] = 0
 		gamestate.deaths[p] = 0
+		gamestate.team_kills["red"] = 0
+		gamestate.team_kills["blue"] = 0
+		gamestate.team_deaths["red"] = 0
+		gamestate.team_deaths["blue"] = 0
+		gamestate.team_captures["red"] = 0
+		gamestate.team_captures["blue"] = 0
 	global.player.reset_players()
 
 func start_game() :
@@ -50,11 +56,19 @@ func start_game() :
 		gamestate.team_kills = {}
 		gamestate.team_deaths = {}
 		gamestate.team_captures = {}
+		gamestate.team_kills["red"] = 0
+		gamestate.team_kills["blue"] = 0
+		gamestate.team_deaths["red"] = 0
+		gamestate.team_deaths["blue"] = 0
+		gamestate.team_captures["red"] = 0
+		gamestate.team_captures["blue"] = 0
 		if global.mode == "deathmatch" :
 			mode = load("res://scenes/modes/deathmatch.tscn")
-			mode_scene = mode.instance()
-			self.add_child(mode_scene)
-			mode_scene.start_game()
+		if global.mode == "team_deathmatch" :
+			mode = load("res://scenes/modes/team_deathmatch.tscn")
+		mode_scene = mode.instance()
+		self.add_child(mode_scene)
+		mode_scene.start_game()
 
 # Replace with function body.
 # Called every frame. 'delta' is the elapsed time since the previous frame.

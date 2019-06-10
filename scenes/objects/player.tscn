@@ -197,6 +197,16 @@ rect_scale = Vector2( 6, 6 )
 text = "
 YOU LOSE :("
 
+[node name="tied_game" type="RichTextLabel" parent="Head/Camera/match_messages"]
+visible = false
+margin_left = 200.0
+margin_top = 200.0
+margin_right = 300.0
+margin_bottom = 250.0
+rect_scale = Vector2( 6, 6 )
+text = "
+TIED GAME"
+
 [node name="game_stats" type="PanelContainer" parent="Head/Camera"]
 visible = false
 anchor_left = 0.5
