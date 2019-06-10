@@ -25,7 +25,7 @@ func			start_server():
 	get_tree().set_network_peer(host)
 	print("Starting server!")
 	global.player_id = 1;
-	spawn_player(1, "Server", global.map, global.vr_selected)
+	spawn_player(1, "Server", global.map, global.vr_selected, global.my_team)
 
 func			join_server():
 	player_name	= global.player_name
@@ -47,29 +47,38 @@ func			_player_disconnected(id):
 
 func			_connected_ok(id):
 	if	global.vr_selected :
-		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true)
+		if global.teams :
+			rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true, global.my_team)
+		else :
+			rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true)
 		return
-	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false)
+	if global.teams :
+		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false, global.my_team)
+	else :
+		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false, global.my_team)
 
-remote	func	user_ready(id, player_name, vr):
+remote	func	user_ready(id, player_name, vr, team):
 	if get_tree().is_network_server():
-		rpc_id(id, "register_in_game", global.map, vr)
+		if global.teams :
+			rpc_id(id, "register_in_game", global.map, vr, team)
+		else :
+			rpc_id(id, "register_in_game", global.map, vr, null)
 
-remote	func	register_in_game(curr_map, vr):
-	rpc("register_new_player", get_tree().get_network_unique_id(), player_name, curr_map, vr)
-	register_new_player(get_tree().get_network_unique_id(), player_name, curr_map, vr)
+remote	func	register_in_game(curr_map, vr, team):
+	rpc("register_new_player", get_tree().get_network_unique_id(), player_name, curr_map, vr, team)
+	register_new_player(get_tree().get_network_unique_id(), player_name, curr_map, vr, team)
 
 func			_server_disconnected():
 	print("server disconnected!")
 	quit_game()
 
-remote	func	register_new_player(id, name, curr_map, vr):
+remote	func	register_new_player(id, name, curr_map, vr, team):
 	if get_tree().is_network_server():
-		rpc_id(id, "register_new_player", 1, player_name, curr_map, vr)
+		rpc_id(id, "register_new_player", 1, player_name, curr_map, vr, team)
 		for peer_id in players:
-			rpc_id(id, "register_new_player", peer_id, players[peer_id], curr_map, vr)
+			rpc_id(id, "register_new_player", peer_id, players[peer_id], curr_map, vr, team)
 	players[id] = name
-	spawn_player(id, name, curr_map, vr)
+	spawn_player(id, name, curr_map, vr, team)
 
 func			_kill_player(id):
 	for peer_id in players:
@@ -169,7 +178,7 @@ func	send_message(message):
 	#rpc_id(1, "_broadcast_message", message)
 	
 
-func			spawn_player(id, name, map, vr):
+func			spawn_player(id, name, map, vr, team):
 
 	# FIXME:
 	# THE BELOW IF CHECK IS A BAND-AID!
@@ -190,6 +199,7 @@ func			spawn_player(id, name, map, vr):
 	player.player_id	= id
 	player.player_name	= name
 	player.server_map = map
+	player.team = team
 	print("global map is" + global.lobby_map_selection)
 	print("server map is" + map)
 	#global.define_level($PanelContainer/Panel/Control.selection)
@@ -206,9 +216,4 @@ func			spawn_player(id, name, map, vr):
 			rpc_id(1, "_change_map", global.lobby_map_selection)
 			_change_map(global.lobby_map_selection)
 	if player.player_id == global.player_id:
-		if player.player_id == 1 :
-			var new_spawn = player.spawn()
-			player.set_global_transform(new_spawn)
-			player.rpc_unreliable("do_update", new_spawn, player.player_id)
-		else :
-			player.rpc_id(1, "choose_spawn", player.player_id)
+		player.choose_spawn(id, null)

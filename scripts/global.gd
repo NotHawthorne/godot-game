@@ -17,6 +17,8 @@ var		stats_inited		= false
 var		lobby_map_selection	= null
 var		map					= "res://scenes/levels/default_level.tscn"
 var		mode				= "deathmatch"
+var		my_team				= null
+var		teams				= false
 var		admins				= [ "cam" , "NotHawthorne" , "jeremy" , "testbot" ]
 # Called when the node enters the scene tree for the first time.
 func _ready():

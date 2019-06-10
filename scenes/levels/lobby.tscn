@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/ui/input_ip.gd" type="Script" id=1]
 [ext_resource path="res://scripts/ui/lobby.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scenes/levels/dropdown.gd" type="Script" id=4]
 [ext_resource path="res://scenes/levels/ServerList_new.gd" type="Script" id=5]
 [ext_resource path="res://scenes/levels/launcher/vr_select.gd" type="Script" id=6]
+[ext_resource path="res://scenes/levels/team_select.gd" type="Script" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.203922, 0.203922, 0.203922, 1 )
@@ -105,7 +106,6 @@ text = "Start Game"
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 6 )
-button_path = NodePath("Button/checkbox")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="vr_select"]
 margin_left = 612.0
@@ -129,15 +129,15 @@ margin_bottom = 24.2619
 focus_next = NodePath("../../PanelContainer/Panel/LineEdit")
 focus_previous = NodePath("../../PanelContainer/Panel/Button")
 
-[node name="Control" type="Control" parent="."]
+[node name="map_select" type="Control" parent="."]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 47.0
 margin_bottom = 47.0
 script = ExtResource( 4 )
-dropdown_path = NodePath("dropdown")
+dropdown_path = NodePath("../map_select/dropdown")
 
-[node name="dropdown" type="OptionButton" parent="Control"]
+[node name="dropdown" type="OptionButton" parent="map_select"]
 margin_left = 598.0
 margin_top = 502.0
 margin_right = 710.0
@@ -145,6 +145,22 @@ margin_bottom = 524.0
 focus_next = NodePath("../../LineEdit")
 focus_previous = NodePath("../../LineEdit")
 text = "select map"
+
+[node name="team_select" type="Control" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 47.0
+margin_bottom = 47.0
+script = ExtResource( 7 )
+
+[node name="dropdown" type="OptionButton" parent="team_select"]
+margin_left = 478.315
+margin_top = 501.876
+margin_right = 595.315
+margin_bottom = 523.876
+focus_next = NodePath("../../LineEdit")
+focus_previous = NodePath("../../LineEdit")
+text = "select team"
 [connection signal="text_changed" from="PanelContainer/Panel/LineEdit" to="." method="_on_LineEdit_text_changed"]
 [connection signal="text_changed" from="PanelContainer/Panel/Username" to="." method="_on_Username_text_changed"]
 [connection signal="pressed" from="PanelContainer/Panel/Button" to="." method="_on_Button_pressed"]

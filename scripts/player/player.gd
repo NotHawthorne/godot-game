@@ -37,6 +37,7 @@ var		can_fire		= true
 var		vr_player		= false
 var		server_map
 var		respawning		= false
+var		team			= null
 
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -91,7 +92,7 @@ func _ready():
 			rpc_id(1, "gamestate_request", player_id)
 		if (player_id == 1) :
 			get_parent().find_node("mode_manager").start_game()
-			get_parent().find_node("mode_manager").add_player(1, player_name)
+			get_parent().find_node("mode_manager").add_player(1, player_name, team)
 			match_info("start")
 
 func hide_messages() :
@@ -113,27 +114,36 @@ remote func match_info(message) :
 func	reset_players() :
 	var players = get_parent().get_node('network').players
 	for p in players :
-		var player_node = get_parent().get_node(str(p))
-		var spawn = spawn()
-		rpc_unreliable("do_update", spawn, player_node.player_id)
-	var my_spawn = spawn()
-	global.player.set_global_transform(my_spawn)
-	rpc_unreliable("do_update", my_spawn, 1)
+		choose_spawn(p, null)
+	choose_spawn(1, null)
 	match_info("start")
 	rpc_unreliable("match_info", "start")
 
-func	spawn() :
+func	spawn(id) :
 	print("finding spawns")
-	var spawns = get_tree().get_nodes_in_group("spawns")
-	var chosen = spawns[randi() % spawns.size()]
+	var spawns
+	var chosen
+	if global.teams == false or OS.has_feature("Server"):
+		spawns = get_tree().get_nodes_in_group("spawns")
+	elif team != null :
+		print("teams enabled")
+		if get_parent().get_node(str(id)).team == "blue" :
+			spawns = get_tree().get_nodes_in_group("b_spawns")
+		else :
+			spawns = get_tree().get_nodes_in_group("r_spawns")
+	chosen = spawns[randi() % spawns.size()]
 	return chosen.get_global_transform()
 
-remote func	choose_spawn(id) :
-	var chosen = spawn()
+remote func	choose_spawn(id, chosen) :
 	print("spawning: " + str(id))
-	if id == 1 :
-		print("spawning self")
-		global.player.set_global_transform(chosen)
+	if player_id != 1 and chosen == null :
+		rpc_id(1, "choose_spawn", id, chosen)
+	if player_id == 1 :
+		chosen = spawn(id)
+		if id != 1 :
+			rpc_id(id, "choose_spawn", id, chosen)
+			return
+	global.player.set_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
 
 remote func		gamestate_update(data):
@@ -162,10 +172,12 @@ remote func	gamestate_request(pid):
 	for player in gamestate.players:
 		print(str(player.id) + ":" + str(player.health))
 	gamestate.chat_log = global.player.get_node('Head/Camera/ChatBox/ChatText').get_text()
+	var pnode = get_parent().get_node(str(pid))
+	get_parent().find_node("mode_manager").add_player(pid, pnode.player_name, pnode.team)
 	rpc_id(pid, "gamestate_update", gamestate)
 
-remote func leaderboard_add_stat(id, kill, death) :
-	get_parent().find_node("mode_manager").add_stat(player_id, kill, death)
+remote func leaderboard_add_stat(id, kill, death, cap) :
+	get_parent().find_node("mode_manager").add_stat(player_id, kill, death, cap)
 
 func	_physics_process(delta):
 	if (control == true):
@@ -181,15 +193,12 @@ func	_physics_process(delta):
 				get_message(player_name + " has fallen and they can't get up!")
 				update_health(player_id, 100)
 				rpc_unreliable("update_health", player_id, 100)
+				choose_spawn(player_id, null)
 				if player_id == 1 :
-					var new_spawn = spawn()
-					self.set_global_transform(new_spawn)
 					respawning = false
-					rpc_unreliable("do_update", new_spawn, player_id)
-					get_parent().find_node("mode_manager").add_stat(player_id, 0, 1)
+					get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
 				else :
-					rpc_id(1, "choose_spawn", player_id)
-					rpc_id(1, "leaderboard_add_stat", player_id, 0, 1)
+					rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -346,20 +355,17 @@ func			_deal_damage(shot, amt):
 			get_message(shot.player_name + " was fragged by " + player_name + "!")
 			global.kills += 1
 			print("TRYING TO KILL")
+			choose_spawn(shot.player_id, null)
 			if (player_id == 1):
-				var new_spawn = spawn()
-				shot.set_global_transform(new_spawn)
-				rpc_unreliable("do_update", new_spawn, shot.player_id)
 				sync_health(shot.player_id, 100)
 				stats_add_kill(player_id, global.player_id, global.kills)
-				get_parent().find_node("mode_manager").add_stat(shot.player_id, 0, 1)
-				get_parent().find_node("mode_manager").add_stat(player_id, 1, 0)
+				get_parent().find_node("mode_manager").add_stat(shot.player_id, 0, 1, 0)
+				get_parent().find_node("mode_manager").add_stat(player_id, 1, 0, 0)
 			else:
-				rpc_id(1, "choose_spawn", shot.player_id)
 				rpc_id(1, "sync_health", shot.player_id, 100)
 				rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills)
-				rpc_id(1, "leaderboard_add_stat", shot.player_id, 0, 1)
-				rpc_id(1, "leaderboard_add_stat", player_id, 1, 0)
+				rpc_id(1, "leaderboard_add_stat", shot.player_id, 0, 1, 0)
+				rpc_id(1, "leaderboard_add_stat", player_id, 1, 0, 0)
 			update_health(shot.player_id, 100)
 			rpc_id(shot.player_id, "reset_ammo")
 		else :
@@ -530,8 +536,6 @@ func	stats_init():
 func	get_message(message):
 	get_parent().find_node('network').send_message(message)
 
-
-
 func	display_stats(pid, data) :
 	var textbox = $Head/Camera/game_stats/stats_text
 	textbox.clear()
@@ -539,8 +543,10 @@ func	display_stats(pid, data) :
 		data = get_parent().find_node("mode_manager").gamestate
 		if pid != 1 :
 			rpc_id(pid, "display_stats", pid, data)
+	textbox.add_text("name			kills			deaths")
+	textbox.newline()
 	for pnode in data.id :
-		textbox.add_text(data.players[pnode] + " kills: " + str(data.kills[pnode]) + " deaths: " + str(data.deaths[pnode]))
+		textbox.add_text(data.players[pnode] + "			" + str(data.kills[pnode]) + "				" + str(data.deaths[pnode]))
 		textbox.newline()
 	$Head/Camera/game_stats.visible = true
 
@@ -583,14 +589,11 @@ func	_input(event):
 		get_gamestats("hide")
 	if Input.is_action_just_pressed("restart") and control == true:
 		ammo = starting_ammo
+		choose_spawn(player_id, null)
 		if player_id == 1 :
-			var new_spawn = spawn()
-			self.set_global_transform(new_spawn)
-			rpc_unreliable("do_update", new_spawn, player_id)
-			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1)
+			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
 		else :
-			rpc_id(1, "choose_spawn", player_id)
-			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1)
+			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 		update_health(player_id, 100)
 		rpc_unreliable("update_health", player_id, 100)
 	if Input.is_action_just_pressed("start_chat") and control == true :
