@@ -26,6 +26,12 @@ func add_stat(id, kill, death) :
 	if kill == 1 :
 		print(gamestate.players[id] + "'s deaths = " + str(gamestate.kills[id]))
 
+func reset_game() :
+	for p in gamestate.id :
+		gamestate.kills[p] = 0
+		gamestate.deaths[p] = 0
+	global.player.reset_players()
+
 func start_game() :
 	if global.player_id == 1 :
 		gamestate.id = {}
@@ -36,7 +42,7 @@ func start_game() :
 			mode = load("res://scenes/modes/deathmatch.tscn")
 			mode_scene = mode.instance()
 			self.add_child(mode_scene)
-			mode_scene.init_game()
+			mode_scene.start_game()
 
 # Replace with function body.
 # Called every frame. 'delta' is the elapsed time since the previous frame.
