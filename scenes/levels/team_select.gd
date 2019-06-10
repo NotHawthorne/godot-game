@@ -1,8 +1,9 @@
 extends Control
 
 func _ready():
-	$dropdown.add_item("red team")
+	$dropdown.add_item("no team")
 	$dropdown.add_separator()
+	$dropdown.add_item("red team")
 	$dropdown.add_item("blue team")
 	$dropdown.connect("item_selected", self, "on_item_selected")
 

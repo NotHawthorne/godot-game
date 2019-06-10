@@ -201,6 +201,8 @@ func			spawn_player(id, name, map, vr, team):
 	player.player_id	= id
 	player.player_name	= name
 	player.server_map = map
+	if !team :
+		team = "blue"
 	player.team = team
 	print("global map is" + global.lobby_map_selection)
 	print("server map is" + map)

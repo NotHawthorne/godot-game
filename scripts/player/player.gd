@@ -548,9 +548,20 @@ func	display_stats(pid, data) :
 			rpc_id(pid, "display_stats", pid, data)
 	textbox.add_text("name			kills			deaths")
 	textbox.newline()
-	for pnode in data.id :
-		textbox.add_text(data.players[pnode] + "			" + str(data.kills[pnode]) + "				" + str(data.deaths[pnode]))
+	if global.mode != "deathmatch" :
+		textbox.add_text("BLUE TEAM:")
 		textbox.newline()
+	for pnode1 in data.id :
+		if global.mode == "deathmatch" or (global.mode != "deathmatch" and get_parent().get_node(str(pnode1)).team == "blue") :
+			textbox.add_text(data.players[pnode1] + "			" + str(data.kills[pnode1]) + "				" + str(data.deaths[pnode1]))
+			textbox.newline()
+	if global.mode != "deathmatch" :
+		textbox.add_text("RED TEAM:")
+		textbox.newline()
+		for pnode2 in data.id :
+			if get_parent().get_node(str(pnode2)).team == "red" :
+				textbox.add_text(data.players[pnode2] + "			" + str(data.kills[pnode2]) + "				" + str(data.deaths[pnode2]))
+				textbox.newline()
 	$Head/Camera/game_stats.visible = true
 
 func	get_gamestats(action) :
