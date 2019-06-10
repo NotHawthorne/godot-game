@@ -39,17 +39,23 @@ func end_game() :
 		winner = null
 	if winner != null :
 		print(winner + " won with " + str(gamestate.team_kills[winner]) + " kills!")
-	for pnode in gamestate.id :
-		if pnode == 1 :
-			if gamestate.team[pnode] == winner :
-				global.player.match_info("win")
+		for pnode in gamestate.id :
+			if pnode == 1 :
+				if gamestate.team[pnode] == winner :
+					global.player.match_info("win")
+				else :
+					global.player.match_info("lose")
 			else :
-				global.player.match_info("lose")
-		else :
-			if gamestate.team[pnode] == winner :
-				global.player.rpc_id(pnode, "match_info", "win")
+				if gamestate.team[pnode] == winner :
+					global.player.rpc_id(pnode, "match_info", "win")
+				else :
+					global.player.rpc_id(pnode, "match_info", "lose")
+	else :
+		for pnode in gamestate.id :
+			if pnode == 1 :
+				global.player.match_info("tied")
 			else :
-				global.player.rpc_id(pnode, "match_info", "lose")
+				global.player.rpc_id(pnode, "match_info", "tied")
 	message_timer.start()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
