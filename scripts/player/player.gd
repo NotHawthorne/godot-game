@@ -84,6 +84,8 @@ func _ready():
 		$Head/Camera/ChatBox.visible = true
 		if (player_id != 1):
 			rpc_id(1, "gamestate_request", player_id)
+		if (player_id == 1) :
+			get_parent().find_node("mode_manager").start_game()
 
 func	spawn() :
 	print("finding spawns")
