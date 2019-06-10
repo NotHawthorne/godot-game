@@ -157,12 +157,14 @@ remote func		_change_map(map):
 #	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
 
 remote func rpc_message(message) :
-	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(message)
-	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
+	var chat_node = global.player.get_node('Head/Camera/ChatBox/ChatText')
+	chat_node.add_text(message)
+	chat_node.newline()
 
 func	send_message(message):
-	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(message)
-	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
+	var chat_node = global.player.get_node('Head/Camera/ChatBox/ChatText')
+	chat_node.add_text(message)
+	chat_node.newline()
 	rpc_unreliable("rpc_message", message)
 	#rpc_id(1, "_broadcast_message", message)
 	
