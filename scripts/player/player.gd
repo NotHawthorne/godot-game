@@ -45,6 +45,7 @@ const DASH_SPEED = 80
 var update_timer		= Timer.new()
 var db_timer			= Timer.new()
 var fire_cooldown		= Timer.new()
+var message_timer		= Timer.new()
 
 var time_off_ground		= 0
 
@@ -60,6 +61,10 @@ func _ready():
 	fire_cooldown.one_shot = true
 	fire_cooldown.connect("timeout", self, "flip_cooldown")
 	add_child(fire_cooldown)
+	message_timer.set_wait_time(1)
+	message_timer.one_shot = true
+	message_timer.connect("timeout", self, "hide_messages")
+	add_child(message_timer)
 	if (get_tree().is_network_server()):
 		db_timer.set_wait_time(10)
 		db_timer.connect("timeout", self, "update_stats")
@@ -87,6 +92,35 @@ func _ready():
 		if (player_id == 1) :
 			get_parent().find_node("mode_manager").start_game()
 			get_parent().find_node("mode_manager").add_player(1, player_name)
+			match_info("start")
+
+func hide_messages() :
+	$Head/Camera/match_messages.visible = false
+
+remote func match_info(message) :
+	$Head/Camera/match_messages/round_start.visible = false
+	$Head/Camera/match_messages/you_win.visible = false
+	$Head/Camera/match_messages/you_lose.visible = false
+	if message == "start" :
+		$Head/Camera/match_messages/round_start.visible = true
+	if message == "win" :
+		$Head/Camera/match_messages/you_win.visible = true
+	if message == "lose" :
+		$Head/Camera/match_messages/you_lose.visible = true
+	$Head/Camera/match_messages.visible = true
+	message_timer.start()
+
+func	reset_players() :
+	var players = get_parent().get_node('network').players
+	for p in players :
+		var player_node = get_parent().get_node(str(p))
+		var spawn = spawn()
+		rpc_unreliable("do_update", spawn, player_node.player_id)
+	var my_spawn = spawn()
+	global.player.set_global_transform(my_spawn)
+	rpc_unreliable("do_update", my_spawn, 1)
+	match_info("start")
+	rpc_unreliable("match_info", "start")
 
 func	spawn() :
 	print("finding spawns")
@@ -101,7 +135,6 @@ remote func	choose_spawn(id) :
 		print("spawning self")
 		global.player.set_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
-
 
 remote func		gamestate_update(data):
 	print("received update request")
@@ -139,13 +172,10 @@ func	_physics_process(delta):
 		# Reset player direction
 		direction	= Vector3()
 		if $JumpCast.is_colliding():
-			if get_node("JumpCast").get_collider().get_name() != "Danger_Zone_Body" :
-				respawning == false
 			time_off_ground = 0
 		if $JumpCast.is_colliding() and respawning == false :
 			var col_obj = get_node("JumpCast").get_collider()
 			if col_obj.get_name() == "Danger_Zone_Body" :
-				print("hit the floor hard")
 				ammo = starting_ammo
 				respawning = true
 				get_message(player_name + " has fallen and they can't get up!")
@@ -154,6 +184,7 @@ func	_physics_process(delta):
 				if player_id == 1 :
 					var new_spawn = spawn()
 					self.set_global_transform(new_spawn)
+					respawning = false
 					rpc_unreliable("do_update", new_spawn, player_id)
 					get_parent().find_node("mode_manager").add_stat(player_id, 0, 1)
 				else :
