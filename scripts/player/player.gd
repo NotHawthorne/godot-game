@@ -118,8 +118,8 @@ remote func match_info(message) :
 func	reset_players() :
 	var players = get_parent().get_node('network').players
 	for p in players :
-		choose_spawn(p, null)
-	choose_spawn(1, null)
+		choose_spawn(p)
+	choose_spawn(1)
 	match_info("start")
 	rpc_unreliable("match_info", "start")
 
@@ -140,7 +140,7 @@ func	spawn(id) :
 
 remote func	choose_spawn(id) :
 	print("spawning: " + str(id))
-	chosen = spawn(id)
+	var chosen = spawn(id)
 	print("spawn chosen")
 	get_parent().get_node(str(id)).set_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
@@ -192,7 +192,7 @@ func	_physics_process(delta):
 				get_message(player_name + " has fallen and they can't get up!")
 				update_health(player_id, 100)
 				rpc_unreliable("update_health", player_id, 100)
-				choose_spawn(player_id, null)
+				choose_spawn(player_id)
 				if player_id == 1 :
 					respawning = false
 					get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
@@ -354,18 +354,18 @@ func			_deal_damage(shot, amt):
 			get_message(shot.player_name + " was fragged by " + player_name + "!")
 			global.kills += 1
 			print("TRYING TO KILL")
-			choose_spawn(shot.player_id, null)
 			if (player_id == 1):
+				choose_spawn(player_id)
 				sync_health(shot.player_id, 100)
 				stats_add_kill(player_id, global.player_id, global.kills)
 				get_parent().find_node("mode_manager").add_stat(shot.player_id, 0, 1, 0)
 				get_parent().find_node("mode_manager").add_stat(player_id, 1, 0, 0)
 			else:
+				rpc_id(1, "choose_spawn", player_id)
 				rpc_id(1, "sync_health", shot.player_id, 100)
 				rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills)
 				rpc_id(1, "leaderboard_add_stat", shot.player_id, 0, 1, 0)
 				rpc_id(1, "leaderboard_add_stat", player_id, 1, 0, 0)
-			update_health(shot.player_id, 100)
 			rpc_id(shot.player_id, "reset_ammo")
 		else :
 			if (player_id == 1):

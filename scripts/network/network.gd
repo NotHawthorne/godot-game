@@ -221,4 +221,7 @@ func			spawn_player(id, name, map, vr, team):
 	if player.player_id == global.player_id:
 		if OS.has_feature("Server") :
 			player.is_headless = true
-		player.choose_spawn(player.player_id, null)
+	if player.player_id == 1 :
+		player.choose_spawn(player.player_id)
+	else :
+		player.rpc_id(1, "choose_spawn", player.player_id)
