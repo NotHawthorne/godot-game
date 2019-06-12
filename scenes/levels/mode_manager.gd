@@ -20,6 +20,14 @@ func add_player(id, pname, team) :
 	if team :
 		gamestate.team[id] = team
 
+func remove_player(id) :
+	gamestate.id[id].erase()
+	gamestate.players[id].erase()
+	gamestate.kills[id].erase()
+	gamestate.deaths[id].erase()
+	if gamestate.team[id] :
+		gamestate.team[id].erase()
+
 func add_stat(id, kill, death, caps) :
 	gamestate.kills[id] += kill
 	gamestate.deaths[id] += death
