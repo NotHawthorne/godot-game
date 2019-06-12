@@ -209,7 +209,9 @@ func			spawn_player(id, name, map, vr, team):
 	#for peer_id in players :
 	if id == get_tree().get_network_unique_id():
 		if OS.has_feature("Server"):
-			player.player_name = "Headless Server"
+			print("setting name to server"
+			global.player_name = "Headless Server"
+			player.player_name = global.player_name
 		player.set_network_master(id)
 		player.control		= true
 		global.player		= player
