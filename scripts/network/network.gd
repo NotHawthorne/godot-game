@@ -40,6 +40,7 @@ func			_player_connected(id):
 
 func			_player_disconnected(id):
 	if (get_tree().is_network_server()):
+		get_parent().get_node("mode_manager").remove_player(id)
 		send_message(players[id] + " has left!")
 	unregister_player(id)
 	print("PLAYER LEFT")
@@ -221,4 +222,7 @@ func			spawn_player(id, name, map, vr, team):
 	if player.player_id == global.player_id:
 		if OS.has_feature("Server") :
 			player.is_headless = true
-		player.choose_spawn(player.player_id, null)
+	if player.player_id == 1 :
+		player.choose_spawn(player.player_id)
+	else :
+		player.rpc_id(1, "choose_spawn", player.player_id)
