@@ -536,27 +536,29 @@ func	get_message(message):
 	get_parent().find_node('network').send_message(message)
 
 remote func		display_stats(data) :
-	var textbox = $Head/Camera/game_stats/stats_text
-	textbox.clear()
-	textbox.add_text("name			kills			deaths")
-	textbox.newline()
-	if global.mode != "deathmatch" :
-		textbox.add_text("BLUE TEAM:")
+	print("got data")
+	if control == true:
+		var textbox = $Head/Camera/game_stats/stats_text
+		textbox.clear()
+		textbox.add_text("name			kills			deaths")
 		textbox.newline()
-	for pnode1 in data.id :
-		if global.mode == "deathmatch" or (global.mode != "deathmatch" and get_parent().get_node(str(pnode1)).team == "blue") :
-			textbox.add_text(data.players[pnode1] + "			" + str(data.kills[pnode1]) + "				" + str(data.deaths[pnode1]))
+		if global.mode != "deathmatch" :
+			textbox.add_text("BLUE TEAM:")
 			textbox.newline()
-	if global.mode != "deathmatch" :
-		textbox.add_text("RED TEAM:")
-		textbox.newline()
-		for pnode2 in data.id :
-			if get_parent().get_node(str(pnode2)).team == "red" :
-				textbox.add_text(data.players[pnode2] + "			" + str(data.kills[pnode2]) + "				" + str(data.deaths[pnode2]))
+		for pnode1 in data.id :
+			if global.mode == "deathmatch" or (global.mode != "deathmatch" and get_parent().get_node(str(pnode1)).team == "blue") :
+				textbox.add_text(data.players[pnode1] + "			" + str(data.kills[pnode1]) + "				" + str(data.deaths[pnode1]))
 				textbox.newline()
-	$Head/Camera/game_stats.visible = true
+		if global.mode != "deathmatch" :
+			textbox.add_text("RED TEAM:")
+			textbox.newline()
+			for pnode2 in data.id :
+				if get_parent().get_node(str(pnode2)).team == "red" :
+					textbox.add_text(data.players[pnode2] + "			" + str(data.kills[pnode2]) + "				" + str(data.deaths[pnode2]))
+					textbox.newline()
+		$Head/Camera/game_stats.visible = true
 
-func	get_leaderboard(pid) :
+remote func		get_leaderboard(pid) :
 	var data = get_parent().find_node("mode_manager").gamestate
 	if pid == 1 :
 		display_stats(data)
