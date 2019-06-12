@@ -535,13 +535,9 @@ func	stats_init():
 func	get_message(message):
 	get_parent().find_node('network').send_message(message)
 
-func	display_stats(pid, data) :
+func	display_stats(data) :
 	var textbox = $Head/Camera/game_stats/stats_text
 	textbox.clear()
-	if player_id == 1 :
-		data = get_parent().find_node("mode_manager").gamestate
-		if pid != 1 :
-			rpc_id(pid, "display_stats", pid, data)
 	textbox.add_text("name			kills			deaths")
 	textbox.newline()
 	if global.mode != "deathmatch" :
@@ -560,12 +556,19 @@ func	display_stats(pid, data) :
 				textbox.newline()
 	$Head/Camera/game_stats.visible = true
 
+func	get_leaderboard(pid, data) :
+	data = get_parent().find_node("mode_manager").gamestate
+	if pid == 1 :
+		display_stats(data)
+	else :
+		rpc_id(pid, "display_stats", data)
+
 func	get_gamestats(action) :
 	if action == "show" :
 		if player_id == 1 :
-			display_stats(1, null)
+			get_leaderboard(1, null)
 		else :
-			rpc_id(1, "display_stats", player_id, null)
+			rpc_id(1, "get_leaderboard", player_id, null)
 	if action == "hide" :
 		$Head/Camera/game_stats.visible = false	
 
