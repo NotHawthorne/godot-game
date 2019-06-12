@@ -208,6 +208,8 @@ func			spawn_player(id, name, map, vr, team):
 	#global.define_level($PanelContainer/Panel/Control.selection)
 	#for peer_id in players :
 	if id == get_tree().get_network_unique_id():
+		if OS.has_feature("Server"):
+			player.player_name = "Headless Server"
 		player.set_network_master(id)
 		player.control		= true
 		global.player		= player
