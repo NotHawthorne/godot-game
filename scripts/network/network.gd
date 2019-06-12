@@ -40,6 +40,7 @@ func			_player_connected(id):
 
 func			_player_disconnected(id):
 	if (get_tree().is_network_server()):
+		get_parent().get_node("mode_manager").remove_player(id)
 		send_message(players[id] + " has left!")
 	unregister_player(id)
 	print("PLAYER LEFT")
