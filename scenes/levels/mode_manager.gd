@@ -22,12 +22,12 @@ func add_player(id, pname, team) :
 
 func remove_player(id) :
 	print("removing player: " + str(id))
-	gamestate.id[id].erase()
-	gamestate.players[id].erase()
-	gamestate.kills[id].erase()
-	gamestate.deaths[id].erase()
+	gamestate.id.erase(id)
+	gamestate.players.erase(id)
+	gamestate.kills.erase(id)
+	gamestate.deaths.erase(id)
 	if gamestate.team[id] :
-		gamestate.team[id].erase()
+		gamestate.team.erase(id)
 
 func add_stat(id, kill, death, caps) :
 	gamestate.kills[id] += kill
