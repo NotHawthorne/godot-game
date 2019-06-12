@@ -138,20 +138,11 @@ func	spawn(id) :
 	chosen = spawns[randi() % spawns.size()]
 	return chosen.get_global_transform()
 
-remote func	choose_spawn(id, chosen) :
+remote func	choose_spawn(id) :
 	print("spawning: " + str(id))
-	if player_id != 1 and chosen == null :
-		print("sending to p1")
-		rpc_id(1, "choose_spawn", id, chosen)
-		return
-	if player_id == 1 :
-		print("looking for spawn")
-		chosen = spawn(id)
-		print("spawn chosen")
-		if id != 1 :
-			rpc_id(id, "choose_spawn", id, chosen)
-			return
-	global.player.set_global_transform(chosen)
+	chosen = spawn(id)
+	print("spawn chosen")
+	get_parent().get_node(str(id)).set_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
 
 remote func		gamestate_update(data):
@@ -608,11 +599,13 @@ func	_input(event):
 		get_gamestats("hide")
 	if Input.is_action_just_pressed("restart") and control == true:
 		ammo = starting_ammo
-		choose_spawn(player_id, null)
+		
 		if player_id == 1 :
 			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
+			choose_spawn(player_id)
 		else :
 			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
+			rpc_id(1, "choose_spawn", player_id)
 		update_health(player_id, 100)
 		rpc_unreliable("update_health", player_id, 100)
 	if Input.is_action_just_pressed("start_chat") and control == true :
