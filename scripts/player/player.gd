@@ -546,7 +546,7 @@ remote func		display_stats(data, teams) :
 			textbox.add_text("BLUE TEAM:")
 			textbox.newline()
 		for pnode1 in data.id :
-			if global.mode == "deathmatch" or (global.mode != "deathmatch" and get_parent().get_node(str(pnode1)).team == "blue") :
+			if !teams or (teams and get_parent().get_node(str(pnode1)).team == "blue") :
 				textbox.add_text(data.players[pnode1] + "			" + str(data.kills[pnode1]) + "				" + str(data.deaths[pnode1]))
 				textbox.newline()
 		if teams :
