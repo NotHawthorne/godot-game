@@ -118,8 +118,8 @@ remote func match_info(message) :
 func	reset_players() :
 	var players = get_parent().get_node('network').players
 	for p in players :
-		choose_spawn(p, null)
-	choose_spawn(1, null)
+		choose_spawn(p)
+	choose_spawn(1)
 	match_info("start")
 	rpc_unreliable("match_info", "start")
 
@@ -138,17 +138,11 @@ func	spawn(id) :
 	chosen = spawns[randi() % spawns.size()]
 	return chosen.get_global_transform()
 
-remote func	choose_spawn(id, chosen) :
+remote func	choose_spawn(id) :
 	print("spawning: " + str(id))
-	if player_id != 1 and chosen == null :
-		rpc_id(1, "choose_spawn", id, chosen)
-		return
-	if player_id == 1 :
-		chosen = spawn(id)
-		if id != 1 :
-			rpc_id(id, "choose_spawn", id, chosen)
-			return
-	global.player.set_global_transform(chosen)
+	var chosen = spawn(id)
+	print("spawn chosen")
+	get_parent().get_node(str(id)).set_global_transform(chosen)
 	rpc_unreliable("do_update", chosen, id)
 
 remote func		gamestate_update(data):
@@ -182,7 +176,7 @@ remote func	gamestate_request(pid):
 	rpc_id(pid, "gamestate_update", gamestate)
 
 remote func leaderboard_add_stat(id, kill, death, cap) :
-	get_parent().find_node("mode_manager").add_stat(player_id, kill, death, cap)
+	get_parent().find_node("mode_manager").add_stat(id, kill, death, cap)
 
 func	_physics_process(delta):
 	if (control == true):
@@ -198,7 +192,7 @@ func	_physics_process(delta):
 				get_message(player_name + " has fallen and they can't get up!")
 				update_health(player_id, 100)
 				rpc_unreliable("update_health", player_id, 100)
-				choose_spawn(player_id, null)
+				choose_spawn(player_id)
 				if player_id == 1 :
 					respawning = false
 					get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
@@ -360,18 +354,18 @@ func			_deal_damage(shot, amt):
 			get_message(shot.player_name + " was fragged by " + player_name + "!")
 			global.kills += 1
 			print("TRYING TO KILL")
-			choose_spawn(shot.player_id, null)
 			if (player_id == 1):
+				choose_spawn(shot.player_id)
 				sync_health(shot.player_id, 100)
 				stats_add_kill(player_id, global.player_id, global.kills)
 				get_parent().find_node("mode_manager").add_stat(shot.player_id, 0, 1, 0)
 				get_parent().find_node("mode_manager").add_stat(player_id, 1, 0, 0)
 			else:
+				rpc_id(1, "choose_spawn", shot.player_id)
 				rpc_id(1, "sync_health", shot.player_id, 100)
 				rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills)
 				rpc_id(1, "leaderboard_add_stat", shot.player_id, 0, 1, 0)
 				rpc_id(1, "leaderboard_add_stat", player_id, 1, 0, 0)
-			update_health(shot.player_id, 100)
 			rpc_id(shot.player_id, "reset_ammo")
 		else :
 			if (player_id == 1):
@@ -541,37 +535,42 @@ func	stats_init():
 func	get_message(message):
 	get_parent().find_node('network').send_message(message)
 
-func	display_stats(pid, data) :
-	var textbox = $Head/Camera/game_stats/stats_text
-	textbox.clear()
-	if player_id == 1 :
-		data = get_parent().find_node("mode_manager").gamestate
-		if pid != 1 :
-			rpc_id(pid, "display_stats", pid, data)
-	textbox.add_text("name			kills			deaths")
-	textbox.newline()
-	if global.mode != "deathmatch" :
-		textbox.add_text("BLUE TEAM:")
+remote func		display_stats(data, teams) :
+	print("got data")
+	if control == true:
+		var textbox = $Head/Camera/game_stats/stats_text
+		textbox.clear()
+		textbox.add_text("name			kills			deaths")
 		textbox.newline()
-	for pnode1 in data.id :
-		if global.mode == "deathmatch" or (global.mode != "deathmatch" and get_parent().get_node(str(pnode1)).team == "blue") :
-			textbox.add_text(data.players[pnode1] + "			" + str(data.kills[pnode1]) + "				" + str(data.deaths[pnode1]))
+		if teams :
+			textbox.add_text("BLUE TEAM:")
 			textbox.newline()
-	if global.mode != "deathmatch" :
-		textbox.add_text("RED TEAM:")
-		textbox.newline()
-		for pnode2 in data.id :
-			if get_parent().get_node(str(pnode2)).team == "red" :
-				textbox.add_text(data.players[pnode2] + "			" + str(data.kills[pnode2]) + "				" + str(data.deaths[pnode2]))
+		for pnode1 in data.id :
+			if !teams or (teams and get_parent().get_node(str(pnode1)).team == "blue") :
+				textbox.add_text(data.players[pnode1] + "			" + str(data.kills[pnode1]) + "				" + str(data.deaths[pnode1]))
 				textbox.newline()
-	$Head/Camera/game_stats.visible = true
+		if teams :
+			textbox.add_text("RED TEAM:")
+			textbox.newline()
+			for pnode2 in data.id :
+				if get_parent().get_node(str(pnode2)).team == "red" :
+					textbox.add_text(data.players[pnode2] + "			" + str(data.kills[pnode2]) + "				" + str(data.deaths[pnode2]))
+					textbox.newline()
+		$Head/Camera/game_stats.visible = true
+
+remote func		get_leaderboard(pid) :
+	var data = get_parent().find_node("mode_manager").gamestate
+	if pid == 1 :
+		display_stats(data, global.teams)
+	else :
+		rpc_id(pid, "display_stats", data, global.teams)
 
 func	get_gamestats(action) :
 	if action == "show" :
 		if player_id == 1 :
-			display_stats(1, null)
+			get_leaderboard(1)
 		else :
-			rpc_id(1, "display_stats", player_id, null)
+			rpc_id(1, "get_leaderboard", player_id)
 	if action == "hide" :
 		$Head/Camera/game_stats.visible = false	
 
@@ -605,11 +604,13 @@ func	_input(event):
 		get_gamestats("hide")
 	if Input.is_action_just_pressed("restart") and control == true:
 		ammo = starting_ammo
-		choose_spawn(player_id, null)
+		
 		if player_id == 1 :
 			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
+			choose_spawn(player_id)
 		else :
 			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
+			rpc_id(1, "choose_spawn", player_id)
 		update_health(player_id, 100)
 		rpc_unreliable("update_health", player_id, 100)
 	if Input.is_action_just_pressed("start_chat") and control == true :
