@@ -535,7 +535,7 @@ func	stats_init():
 func	get_message(message):
 	get_parent().find_node('network').send_message(message)
 
-func	display_stats(data) :
+remote func		display_stats(data) :
 	var textbox = $Head/Camera/game_stats/stats_text
 	textbox.clear()
 	textbox.add_text("name			kills			deaths")
@@ -556,8 +556,8 @@ func	display_stats(data) :
 				textbox.newline()
 	$Head/Camera/game_stats.visible = true
 
-func	get_leaderboard(pid, data) :
-	data = get_parent().find_node("mode_manager").gamestate
+func	get_leaderboard(pid) :
+	var data = get_parent().find_node("mode_manager").gamestate
 	if pid == 1 :
 		display_stats(data)
 	else :
@@ -566,9 +566,9 @@ func	get_leaderboard(pid, data) :
 func	get_gamestats(action) :
 	if action == "show" :
 		if player_id == 1 :
-			get_leaderboard(1, null)
+			get_leaderboard(1)
 		else :
-			rpc_id(1, "get_leaderboard", player_id, null)
+			rpc_id(1, "get_leaderboard", player_id)
 	if action == "hide" :
 		$Head/Camera/game_stats.visible = false	
 
