@@ -535,21 +535,21 @@ func	stats_init():
 func	get_message(message):
 	get_parent().find_node('network').send_message(message)
 
-remote func		display_stats(data) :
+remote func		display_stats(data, teams) :
 	print("got data")
 	if control == true:
 		var textbox = $Head/Camera/game_stats/stats_text
 		textbox.clear()
 		textbox.add_text("name			kills			deaths")
 		textbox.newline()
-		if global.mode != "deathmatch" :
+		if teams :
 			textbox.add_text("BLUE TEAM:")
 			textbox.newline()
 		for pnode1 in data.id :
 			if global.mode == "deathmatch" or (global.mode != "deathmatch" and get_parent().get_node(str(pnode1)).team == "blue") :
 				textbox.add_text(data.players[pnode1] + "			" + str(data.kills[pnode1]) + "				" + str(data.deaths[pnode1]))
 				textbox.newline()
-		if global.mode != "deathmatch" :
+		if teams :
 			textbox.add_text("RED TEAM:")
 			textbox.newline()
 			for pnode2 in data.id :
@@ -561,9 +561,9 @@ remote func		display_stats(data) :
 remote func		get_leaderboard(pid) :
 	var data = get_parent().find_node("mode_manager").gamestate
 	if pid == 1 :
-		display_stats(data)
+		display_stats(data, global.teams)
 	else :
-		rpc_id(pid, "display_stats", data)
+		rpc_id(pid, "display_stats", data, global.teams)
 
 func	get_gamestats(action) :
 	if action == "show" :
