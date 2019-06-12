@@ -69,7 +69,7 @@ remote	func	user_ready(id, player_name, vr, team):
 
 remote	func	register_in_game(curr_map, vr, team):
 	var host = get_tree().get_network_unique_id()
-	var host_node = get_tree().get_root().find_node(host)
+	var host_node = get_tree().get_root().find_node(str(host))
 	rpc("register_new_player", host, player_name, curr_map, vr, host_node.team)
 	register_new_player(get_tree().get_network_unique_id(), player_name, curr_map, vr, team)
 
