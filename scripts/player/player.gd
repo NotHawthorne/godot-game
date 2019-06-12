@@ -176,7 +176,7 @@ remote func	gamestate_request(pid):
 	rpc_id(pid, "gamestate_update", gamestate)
 
 remote func leaderboard_add_stat(id, kill, death, cap) :
-	get_parent().find_node("mode_manager").add_stat(player_id, kill, death, cap)
+	get_parent().find_node("mode_manager").add_stat(id, kill, death, cap)
 
 func	_physics_process(delta):
 	if (control == true):
@@ -355,13 +355,13 @@ func			_deal_damage(shot, amt):
 			global.kills += 1
 			print("TRYING TO KILL")
 			if (player_id == 1):
-				choose_spawn(player_id)
+				choose_spawn(shot.player_id)
 				sync_health(shot.player_id, 100)
 				stats_add_kill(player_id, global.player_id, global.kills)
 				get_parent().find_node("mode_manager").add_stat(shot.player_id, 0, 1, 0)
 				get_parent().find_node("mode_manager").add_stat(player_id, 1, 0, 0)
 			else:
-				rpc_id(1, "choose_spawn", player_id)
+				rpc_id(1, "choose_spawn", shot.player_id)
 				rpc_id(1, "sync_health", shot.player_id, 100)
 				rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills)
 				rpc_id(1, "leaderboard_add_stat", shot.player_id, 0, 1, 0)
