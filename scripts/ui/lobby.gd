@@ -3,6 +3,7 @@ extends Spatial
 func _ready():
 	if OS.has_feature("Server"):
 		global.server_selection = '0.0.0.0'
+		global.player_name = "Headless Server"
 		if global.mode != "deathmatch" :
 			global.teams = true
 		get_tree().change_scene(global.map)
