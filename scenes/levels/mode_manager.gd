@@ -21,6 +21,7 @@ func add_player(id, pname, team) :
 		gamestate.team[id] = team
 
 func remove_player(id) :
+	print("removing player: " + str(id))
 	gamestate.id[id].erase()
 	gamestate.players[id].erase()
 	gamestate.kills[id].erase()
