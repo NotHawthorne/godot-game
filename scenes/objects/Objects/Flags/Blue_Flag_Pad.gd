@@ -11,6 +11,7 @@ func _ready():
 	capsule.connect("body_entered", self, "collided")
 
 remote func reset_flag() :
+	print("resetting flag on " + global.player_name + "'s client")
 	if self.has_node("Flag") :
 		return
 	self.add_child(capsule)
