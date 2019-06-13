@@ -7,6 +7,7 @@ func _ready():
 		if global.mode == "ctf" or global.mode == "team_deathmatch" :
 			print("teams enabled")
 			global.teams = true
+		print("starting headless server")
 		get_tree().change_scene(global.map)
 		return
 	get_node('PanelContainer/Panel/LineEdit').grab_focus()
