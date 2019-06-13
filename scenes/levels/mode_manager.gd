@@ -13,6 +13,9 @@ func _ready():
 	pass
 
 func add_player(id, pname, team) :
+	if global.mode == "ctf" :
+		var player_node = get_parent().get_node(str(id))
+		get_parent().get_node("local_settings").rpc_id(player_node.player_id, "spawn_flags")
 	gamestate.id[id] = id
 	gamestate.players[id] = pname
 	gamestate.kills[id] = 0

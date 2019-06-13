@@ -18,10 +18,6 @@ func _ready():
 	game_timer.connect("timeout", self, "end_game")
 	add_child(game_timer)
 	get_parent().get_parent().get_node("local_settings").spawn_flags()
-	var players = get_parent().get_parent().get_node("network").players
-	for p in players :
-		var player_node = get_parent().get_node(str(p))
-		get_parent().get_node("local_settings").rpc_id(player_node.player_id, "spawn_flags")
 
 func start_game() :
 	print("game started")
