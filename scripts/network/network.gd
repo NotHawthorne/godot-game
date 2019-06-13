@@ -197,5 +197,5 @@ func			spawn_player(id, name, map, vr, team):
 		global.player.gamestate_request(player.player_id)
 		global.player.choose_spawn(player.player_id)
 	else :
-		global.player.rpc_id(1, "gamestate_request", player.player_id )
+		player.rpc_id(1, "gamestate_request", player.player_id )
 		player.rpc_id(1, "choose_spawn", player.player_id)
