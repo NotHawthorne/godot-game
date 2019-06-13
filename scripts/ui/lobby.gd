@@ -107,6 +107,8 @@ func _on_Button_pressed():
 	if not global.interface :
 		global.vr_selected = false
 	if global.server_selection == "0.0.0.0" :
+		if global.mode != "deathmatch" :
+			global.teams = true
 		global.map = global.lobby_map_selection
 	get_tree().change_scene(global.map)
 

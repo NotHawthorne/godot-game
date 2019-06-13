@@ -39,6 +39,7 @@ var		server_map
 var		respawning		= false
 var		team			= null
 var		is_headless		= false
+var		has_flag		= null
 
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -98,6 +99,28 @@ func _ready():
 
 func hide_messages() :
 	$Head/Camera/match_messages.visible = false
+
+remote func set_flag_owner(id, flag_team) :
+	var pnode = get_parent().get_node(str(id))
+	pnode.has_flag = flag_team
+
+remote func pickup_flag(id, flag_team) :
+	if flag_team == "blue" :
+		get_parent().get_node("Blue_Flag_Pad").pop_flag()
+		get_parent().get_node("Blue_Flag_Pad").rpc_unreliable("pop_flag")
+	if flag_team == "red" :
+		get_parent().get_node("Red_Flag_Pad").pop_flag()
+		get_parent().get_node("Red_Flag_Pad").rpc_unreliable("pop_flag")
+	set_flag_owner(id, flag_team)
+	rpc_unreliable("set_flag_owner", id, flag_team)
+
+remote func reset_flag(id, flag_team) :
+	if flag_team == "blue" :
+		get_parent().get_node("Blue_Flag_Pad").reset_flag()
+	if flag_team == "red" :
+		get_parent().get_node("Red_Flag_Pad").reset_flag()
+	set_flag_owner(id, null)
+	rpc_unreliable("set_flag_owner", id, null)
 
 remote func match_info(message) :
 	$Head/Camera/match_messages/round_start.visible = false
@@ -545,12 +568,16 @@ remote func		display_stats(data, teams) :
 		if teams :
 			textbox.add_text("BLUE TEAM:")
 			textbox.newline()
+			textbox.add_text("captures: " + str(data.team_captures["blue"]))
+			textbox.newline()
 		for pnode1 in data.id :
 			if !teams or (teams and get_parent().get_node(str(pnode1)).team == "blue") :
 				textbox.add_text(data.players[pnode1] + "			" + str(data.kills[pnode1]) + "				" + str(data.deaths[pnode1]))
 				textbox.newline()
 		if teams :
 			textbox.add_text("RED TEAM:")
+			textbox.newline()
+			textbox.add_text("captures: " + str(data.team_captures["red"]))
 			textbox.newline()
 			for pnode2 in data.id :
 				if get_parent().get_node(str(pnode2)).team == "red" :

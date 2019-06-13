@@ -17,6 +17,7 @@ var		stats_inited		= false
 var		lobby_map_selection	= null
 var		map					= "res://scenes/levels/default_level.tscn"
 var		mode				= "deathmatch"
+# set mode to "ctf", "deathmatch", or "team_deathmatch"
 var		my_team				= null
 var		teams				= false
 var		admins				= [ "cam" , "NotHawthorne" , "jeremy" , "testbot" ]
