@@ -118,8 +118,10 @@ remote func pickup_flag(id, flag_team) :
 remote func reset_flag(id, flag_team) :
 	if flag_team == "blue" :
 		get_parent().get_node("Blue_Flag_Pad").reset_flag()
+		get_parent().get_node("Blue_Flag_Pad").rpc_unreliable("reset flag")
 	if flag_team == "red" :
 		get_parent().get_node("Red_Flag_Pad").reset_flag()
+		get_parent().get_node("Red_Flag_Pad").rpc_unreliable("reset flag")
 	set_flag_owner(id, null)
 	rpc_unreliable("set_flag_owner", id, null)
 
