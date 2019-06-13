@@ -40,7 +40,7 @@ var		respawning		= false
 var		team			= null
 var		is_headless		= false
 var		has_flag		= null
-
+ 
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
 const DASH_SPEED = 80
