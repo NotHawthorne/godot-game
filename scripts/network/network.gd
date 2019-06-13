@@ -24,7 +24,11 @@ func			start_server():
 	var	err		= host.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(host)
 	print("Starting server!")
-	global.player_id = 1;
+	global.player_id = 1
+	# uncomment to give headless server a team
+	if global.teams and !global.my_team :
+		print("server team is blue")
+		global.my_team = "blue"
 	spawn_player(1, "Server", global.map, global.vr_selected, global.my_team)
 
 func			join_server():
@@ -48,22 +52,32 @@ func			_player_disconnected(id):
 
 func			_connected_ok(id):
 	if	global.vr_selected :
-		if global.teams :
-			rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true, global.my_team)
-		else :
-			rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true)
-		return
-	if global.teams :
-		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false, global.my_team)
+		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true, global.my_team)
 	else :
 		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false, global.my_team)
 
 remote	func	user_ready(id, player_name, vr, team):
 	if get_tree().is_network_server():
-		if global.teams :
-			if !team :
-				team = "blue"
-			rpc_id(id, "register_in_game", global.map, vr, team)
+		var state = get_parent().get_node("mode_manager").gamestate
+		if global.teams == true :
+			if team == "blue" :
+				if state.team_size["red"] < 1 :
+					rpc_id(id, "register_in_game", global.map, vr, "red")
+				elif state.team_size["blue"] - state.team_size["red"] >= 4 :
+					rpc_id(id, "register_in_game", global.map, vr, "red")
+				else :
+					rpc_id(id, "register_in_game", global.map, vr, team)
+			elif team == "red" :
+				if state.team_size["blue"] < 1 :
+					rpc_id(id, "register_in_game", global.map, vr, "blue")
+				elif state.team_size["red"] - state.team_size["blue"] >= 4 :
+					rpc_id(id, "register_in_game", global.map, vr, "blue")
+				else :
+					rpc_id(id, "register_in_game", global.map, vr, team)
+			elif team :
+				rpc_id(id, "register_in_game", global.map, vr, team)
+			else :
+				rpc_id(id, "register_in_game", global.map, vr, "red")
 		else :
 			rpc_id(id, "register_in_game", global.map, vr, null)
 
@@ -77,42 +91,11 @@ func			_server_disconnected():
 
 remote	func	register_new_player(id, name, curr_map, vr, team):
 	if get_tree().is_network_server():
-		rpc_id(id, "register_new_player", 1, player_name, curr_map, vr, team)
+		rpc_id(id, "register_new_player", 1, player_name, global.map, global.vr_selected, global.player.team)
 		for peer_id in players:
-			rpc_id(id, "register_new_player", peer_id, players[peer_id], curr_map, vr, team)
+			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, vr, team)
 	players[id] = name
-	spawn_player(id, name, curr_map, vr, team)
-
-func			_kill_player(id):
-	for peer_id in players:
-		var node = get_tree().get_root().find_node(str(peer_id))
-		if (node.dead == true):
-			rpc_unreliable("do_update", get_tree().get_root().find_node('Spawn').get_global_transform(), peer_id)
-			#DOESNT UPDATE SERVER
-
-remote	func	deal_damage(id, tid, amt):
-#	if (get_tree().is_network_server()):
-#		rpc_id(id, "deal_damage", tid, 15)
-#		for peer_id in players:
-#			rpc_id(id, "register_new_player", tid, 15)
-#	else:
-#		rpc_id(1, "deal_damage", tid, amt)
-#	var user = get_tree().get_root().find_node(str(tid), true, false)
-#	user.health -= 15
-#	print("DEALING DAMAGE: " + user.health)
-#	if (user.health < 0):
-#		user.health = 0;
-#		print("USER DIED")
-#		user.dead = true;
-	pass
-
-#remote	func	register_player(id, name):
-#	if get_tree().is_network_server():
-#		rpc_id(id, "register_player", 1, player_name)
-#		for peer_id in players:
-#			rpc_id(id, "register_player", peer_id, players[peer_id])
-#			rpc_id(peer_id, "register_player", id, name)
-#	players[id] = name
+	spawn_player(id, name, global.map, vr, team)
 
 remote	func	unregister_player(id):
 	if (get_parent().get_node(str(id))):
@@ -201,8 +184,6 @@ func			spawn_player(id, name, map, vr, team):
 	player.player_id	= id
 	player.player_name	= name
 	player.server_map = map
-	if !team :
-		team = "blue"
 	player.team = team
 	print("global map is" + global.lobby_map_selection)
 	print("server map is" + map)
@@ -212,17 +193,17 @@ func			spawn_player(id, name, map, vr, team):
 		player.set_network_master(id)
 		player.control		= true
 		global.player		= player
-	get_parent().add_child(player)
-	if (name && player.control == true):
-		send_message(name + " joined!")
-	for admin in global.admins :
-		if admin == name and global.lobby_map_selection != map:
-			rpc_id(1, "_change_map", global.lobby_map_selection)
-			_change_map(global.lobby_map_selection)
 	if player.player_id == global.player_id:
 		if OS.has_feature("Server") :
 			player.is_headless = true
-	if player.player_id == 1 :
-		player.choose_spawn(player.player_id)
+	get_parent().add_child(player)
+	if (name && player.control == true):
+		send_message(name + " joined!")
+	#for admin in global.admins :
+	#	if admin == name and global.lobby_map_selection != map:
+	#		rpc_id(1, "_change_map", global.lobby_map_selection)
+	#		_change_map(global.lobby_map_selection)
+	if global.player_id == 1 :
+		global.player.choose_spawn(player.player_id)
 	else :
 		player.rpc_id(1, "choose_spawn", player.player_id)

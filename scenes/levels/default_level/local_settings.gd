@@ -17,4 +17,3 @@ remote func		spawn_flags() :
 	get_parent().add_child(blue_flag)
 	red_flag.global_translate(Vector3(-12.349, 64.864, 186.285))
 	blue_flag.global_translate(Vector3(-3.395, 49.982, -57.952))
-	pass
