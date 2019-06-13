@@ -194,8 +194,6 @@ func			spawn_player(id, name, map, vr, team):
 	#		rpc_id(1, "_change_map", global.lobby_map_selection)
 	#		_change_map(global.lobby_map_selection)
 	if global.player_id == 1 :
-		global.player.gamestate_request(player.player_id)
 		global.player.choose_spawn(player.player_id)
 	else :
-		player.rpc_id(1, "gamestate_request", player.player_id )
 		player.rpc_id(1, "choose_spawn", player.player_id)
