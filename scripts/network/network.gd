@@ -85,7 +85,7 @@ remote	func	register_new_player(id, name, curr_map, vr, team):
 		for peer_id in players:
 			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, vr, team)
 	players[id] = name
-	spawn_player(id, name, curr_map, vr, team)
+	spawn_player(id, name, global.map, vr, team)
 
 remote	func	unregister_player(id):
 	if (get_parent().get_node(str(id))):
@@ -183,6 +183,9 @@ func			spawn_player(id, name, map, vr, team):
 		player.set_network_master(id)
 		player.control		= true
 		global.player		= player
+	if player.player_id == global.player_id:
+		if OS.has_feature("Server") :
+			player.is_headless = true
 	get_parent().add_child(player)
 	if (name && player.control == true):
 		send_message(name + " joined!")
@@ -190,9 +193,6 @@ func			spawn_player(id, name, map, vr, team):
 	#	if admin == name and global.lobby_map_selection != map:
 	#		rpc_id(1, "_change_map", global.lobby_map_selection)
 	#		_change_map(global.lobby_map_selection)
-	if player.player_id == global.player_id:
-		if OS.has_feature("Server") :
-			player.is_headless = true
 	if global.player_id == 1 :
 		global.player.gamestate_request(player.player_id)
 		global.player.choose_spawn(player.player_id)
