@@ -20,8 +20,12 @@ func add_player(id, pname, team) :
 	gamestate.players[id] = pname
 	gamestate.kills[id] = 0
 	gamestate.deaths[id] = 0
-	if team :
+	if global.teams and team :
 		gamestate.team[id] = team
+		if gamestate.team_size[gamestate.team[id]] :
+			gamestate.team_size[gamestate.team[id]] += 1
+		else :
+			gamestate.team_size[gamestate.team[id]] = 1
 
 func remove_player(id) :
 	print("removing player: " + str(id))
@@ -29,13 +33,17 @@ func remove_player(id) :
 	gamestate.players.erase(id)
 	gamestate.kills.erase(id)
 	gamestate.deaths.erase(id)
-	if gamestate.team[id] :
+	if global.teams and gamestate.team[id] :
+		if gamestate.team_size[gamestate.team[id]] :
+			gamestate.team_size[gamestate.team[id]] -= 1
+		else :
+			gamestate.team_size[gamestate.team[id]] = 0
 		gamestate.team.erase(id)
 
 func add_stat(id, kill, death, caps) :
 	gamestate.kills[id] += kill
 	gamestate.deaths[id] += death
-	if gamestate.team[id] :
+	if global.teams and gamestate.team[id] :
 		gamestate.team_kills[gamestate.team[id]] += kill
 		gamestate.team_deaths[gamestate.team[id]] += death
 		gamestate.team_captures[gamestate.team[id]] += caps
@@ -68,6 +76,9 @@ func start_game() :
 		gamestate.team_kills = {}
 		gamestate.team_deaths = {}
 		gamestate.team_captures = {}
+		gamestate.team_size = {}
+		gamestate.team_size["red"] = 0
+		gamestate.team_size["blue"] = 0
 		gamestate.team_kills["red"] = 0
 		gamestate.team_kills["blue"] = 0
 		gamestate.team_deaths["red"] = 0

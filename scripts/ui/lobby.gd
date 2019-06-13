@@ -4,9 +4,10 @@ func _ready():
 	if OS.has_feature("Server"):
 		global.server_selection = '0.0.0.0'
 		global.player_name = "Headless Server"
-		global.team = "blue"
-		if global.mode != "deathmatch" :
+		if global.mode == "ctf" or global.mode == "team_deathmatch" :
+			print("teams enabled")
 			global.teams = true
+		print("starting headless server")
 		get_tree().change_scene(global.map)
 		return
 	get_node('PanelContainer/Panel/LineEdit').grab_focus()
