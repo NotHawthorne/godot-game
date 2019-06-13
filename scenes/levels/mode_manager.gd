@@ -13,8 +13,6 @@ func _ready():
 	pass
 
 func add_player(id, pname, team) :
-	if gamestate.id[id] :
-		return
 	gamestate.id[id] = id
 	gamestate.players[id] = pname
 	gamestate.kills[id] = 0
