@@ -75,6 +75,8 @@ func start_game() :
 			mode = load("res://scenes/modes/deathmatch.tscn")
 		if global.mode == "team_deathmatch" :
 			mode = load("res://scenes/modes/team_deathmatch.tscn")
+		if global.mode == "ctf" :
+			mode = load("res://scenes/modes/CTF.tscn")
 		mode_scene = mode.instance()
 		self.add_child(mode_scene)
 		mode_scene.start_game()
