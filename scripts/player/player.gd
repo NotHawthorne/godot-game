@@ -91,6 +91,7 @@ func _ready():
 		$Head/Camera/player_info.visible = true
 		$Head/Camera/ChatBox.visible = true
 		if (player_id != 1):
+			print("name: " + player_name + "team: " + team)
 			rpc_id(1, "gamestate_request", player_id)
 		if (player_id == 1) :
 			get_parent().find_node("mode_manager").start_game()
