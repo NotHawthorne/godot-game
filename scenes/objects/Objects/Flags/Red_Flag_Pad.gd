@@ -29,3 +29,10 @@ func collided(body):
 				global.player.reset_flag(body.player_id, "red")
 			else :
 				global.player.rpc_id(1, "reset_flag", body.player_id, "red")
+		elif "has_flag" in body and body.has_flag == "blue" and body.team == "red" :
+			if global.player_id == 1 :
+				global.player.reset_flag(body.player_id, "blue")
+				global.player.leaderboard_add_stat(body.player_id, 0, 0, 1)
+			else :
+				global.player.rpc_id(1, "reset_flag", body.player_id, "blue")
+				global.player.rpc_id(1, "leaderboard_add_stat", body.player_id, 0, 0, 1)
