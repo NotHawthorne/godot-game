@@ -5,7 +5,6 @@ func _ready():
 		global.server_selection = '0.0.0.0'
 		global.player_name = "Headless Server"
 		if global.mode != "deathmatch" :
-			global.team = "blue"
 			global.teams = true
 		get_tree().change_scene(global.map)
 		return
