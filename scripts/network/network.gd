@@ -24,7 +24,10 @@ func			start_server():
 	var	err		= host.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(host)
 	print("Starting server!")
-	global.player_id = 1;
+	global.player_id = 1
+	# uncomment to give headless server a team
+	if global.teams and !global.my_team :
+		global.my_team = "blue"
 	spawn_player(1, "Server", global.map, global.vr_selected, global.my_team)
 
 func			join_server():
