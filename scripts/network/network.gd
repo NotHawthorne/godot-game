@@ -59,15 +59,15 @@ remote	func	user_ready(id, player_name, vr, team):
 			if team == "blue" :
 				if state.team_size["red"] < 1 :
 					rpc_id(id, "register_in_game", global.map, vr, "red")
-				else :
-					if state.team_size["blue"] - state.team_size["red"] >= 4 :
-						rpc_id(id, "register_in_game", global.map, vr, "red")
+				elif state.team_size["blue"] - state.team_size["red"] >= 4 :
+					rpc_id(id, "register_in_game", global.map, vr, "red")
 			elif team == "red" :
 				if state.team_size["blue"] < 1 :
 					rpc_id(id, "register_in_game", global.map, vr, "blue")
-				else :
-					if state.team_size["red"] - state.team_size["blue"] >= 4 :
-						rpc_id(id, "register_in_game", global.map, vr, "blue")
+				elif state.team_size["red"] - state.team_size["blue"] >= 4 :
+					rpc_id(id, "register_in_game", global.map, vr, "blue")
+			else :
+				rpc_id(id, "register_in_game", global.map, vr, team)
 		else :
 			rpc_id(id, "register_in_game", global.map, vr, null)
 
