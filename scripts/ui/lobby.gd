@@ -7,7 +7,6 @@ func _ready():
 		if global.mode == "ctf" or global.mode == "team_deathmatch" :
 			print("teams enabled")
 			global.teams = true
-			global.my_team = "red"
 		print("starting headless server")
 		get_tree().change_scene(global.map)
 		return
