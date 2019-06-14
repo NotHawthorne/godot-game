@@ -105,6 +105,16 @@ remote func set_flag_owner(id, flag_team) :
 	var pnode = get_parent().get_node(str(id))
 	pnode.has_flag = flag_team
 
+remote func drop_flag(id, flag_team, location) :
+	if flag_team == "blue" :
+		get_parent().get_node("Blue_Flag_Pad").drop_flag(location)
+		get_parent().get_node("Blue_Flag_Pad").rpc_unreliable("drop_flag", location)
+	if flag_team == "red" :
+		get_parent().get_node("Red_Flag_Pad").drop_flag(location)
+		get_parent().get_node("Red_Flag_Pad").rpc_unreliable("drop_flag", location)
+	set_flag_owner(id, null)
+	rpc_unreliable("set_flag_owner", id, null)
+
 remote func pickup_flag(id, flag_team) :
 	if flag_team == "blue" :
 		get_parent().get_node("Blue_Flag_Pad").pop_flag()
@@ -223,8 +233,12 @@ func	_physics_process(delta):
 				if player_id == 1 :
 					respawning = false
 					get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
+					if has_flag :
+						reset_flag(player_id, has_flag)
 				else :
 					rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
+					if has_flag :
+						rpc_id(1, "reset_flag", player_id, has_flag)
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -635,11 +649,14 @@ func	_input(event):
 		get_gamestats("hide")
 	if Input.is_action_just_pressed("restart") and control == true:
 		ammo = starting_ammo
-		
 		if player_id == 1 :
+			if has_flag != null :
+				drop_flag(player_id, has_flag, self.get_global_transform())
 			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
 			choose_spawn(player_id)
 		else :
+			if has_flag != null :
+				rpc_id(1, "drop_flag", player_id, has_flag, self.get_global_transform())
 			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 			rpc_id(1, "choose_spawn", player_id)
 		update_health(player_id, 100)
