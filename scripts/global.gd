@@ -9,7 +9,7 @@ var		player_name
 var		ui_mode				= false
 var		target
 var		interface			= null
-var		vr_selected			= false
+var		vr_selected			= true
 var		player
 var		kills				= 0
 var		level				= 0
