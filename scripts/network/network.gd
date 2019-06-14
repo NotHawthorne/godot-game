@@ -29,7 +29,7 @@ func			start_server():
 	if global.teams and !global.my_team :
 		print("server team is blue")
 		global.my_team = "blue"
-	spawn_player(1, "Server", global.map, global.vr_selected, global.my_team)
+	spawn_player(1, "Server", global.map, global.vr_selected, global.my_team, null)
 
 func			join_server():
 	player_name	= global.player_name
@@ -82,21 +82,21 @@ remote	func	user_ready(id, player_name, vr, team):
 			rpc_id(id, "register_in_game", global.map, vr, null)
 
 remote	func	register_in_game(curr_map, vr, team):
-	rpc("register_new_player", get_tree().get_network_unique_id(), player_name, curr_map, vr, team)
-	register_new_player(get_tree().get_network_unique_id(), player_name, curr_map, vr, team)
+	rpc_id(1, "register_new_player", get_tree().get_network_unique_id(), player_name, curr_map, vr, team, null)
 
 func			_server_disconnected():
 	print("server disconnected!")
 	quit_game()
 
-remote	func	register_new_player(id, name, curr_map, vr, team):
+remote	func	register_new_player(id, name, curr_map, vr, team, location):
 	if get_tree().is_network_server():
-		rpc_id(id, "register_new_player", 1, player_name, global.map, global.vr_selected, global.player.team)
+		rpc_id(id, "register_new_player", id, name, curr_map, vr, team, null)
+		rpc_id(id, "register_new_player", 1, player_name, global.map, global.vr_selected, global.player.team, get_parent().get_node("1").get_global_transform())
 		for peer_id in players:
 			var pnode = get_parent().get_node(str(peer_id))
-			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, pnode.vr_player, pnode.team)
+			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, pnode.vr_player, pnode.team, pnode.get_global_transform)
 	players[id] = name
-	spawn_player(id, name, global.map, vr, team)
+	spawn_player(id, name, global.map, vr, team, location)
 
 remote	func	unregister_player(id):
 	if (get_parent().get_node(str(id))):
@@ -164,7 +164,7 @@ func	send_message(message):
 	rpc_unreliable("rpc_message", message)
 	#rpc_id(1, "_broadcast_message", message)
 
-func			spawn_player(id, name, map, vr, team):
+func			spawn_player(id, name, map, vr, team, location):
 
 	# FIXME:
 	# THE BELOW IF CHECK IS A BAND-AID!
@@ -204,7 +204,10 @@ func			spawn_player(id, name, map, vr, team):
 	#	if admin == name and global.lobby_map_selection != map:
 	#		rpc_id(1, "_change_map", global.lobby_map_selection)
 	#		_change_map(global.lobby_map_selection)
-	if global.player_id == 1 :
-		global.player.choose_spawn(player.player_id)
+	if location == null :
+		if global.player_id == 1 :
+			global.player.choose_spawn(player.player_id)
+		else :
+			player.rpc_id(1, "choose_spawn", player.player_id)
 	else :
-		player.rpc_id(1, "choose_spawn", player.player_id)
+		player.set_global_transform(location)
