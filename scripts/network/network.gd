@@ -213,7 +213,6 @@ func			spawn_player(id, name, map, vr, team, location):
 		player.set_network_master(id)
 		player.control		= true
 		global.player		= player
-	if player.player_id == global.player_id:
 		if OS.has_feature("Server") :
 			player.is_headless = true
 	get_parent().add_child(player)
