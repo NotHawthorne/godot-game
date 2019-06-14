@@ -47,8 +47,7 @@ func add_stat(id, kill, death, caps) :
 		gamestate.team_kills[gamestate.team[id]] += kill
 		gamestate.team_deaths[gamestate.team[id]] += death
 		gamestate.team_captures[gamestate.team[id]] += caps
-		if global.mode == "ctf" and self.has_node("ctf"):
-			self.get_node("ctf").check_score(gamestate)
+	self.get_node("gamemode").check_score(id, gamestate)
 	if death == 1 :
 		print(gamestate.players[id] + "'s deaths = " + str(gamestate.deaths[id]))
 	if kill == 1 :

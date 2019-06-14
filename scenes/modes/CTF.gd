@@ -6,9 +6,9 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 var game_timer = Timer.new()
-var game_length = 150
+var game_length = 600
 var message_timer = Timer.new()
-var score_limit	= 2
+var score_limit	= 10
 
 func _ready():
 	message_timer.set_wait_time(2)
@@ -25,7 +25,7 @@ func start_game() :
 	print("game started")
 	game_timer.start()
 
-func check_score(state) :
+func check_score(id, state) :
 	if state.team_captures["red"] >= score_limit :
 		end_game()
 	if state.team_captures["blue"] >= score_limit :
