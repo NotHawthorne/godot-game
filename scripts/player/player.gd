@@ -396,12 +396,16 @@ func			_deal_damage(shot, amt):
 			global.kills += 1
 			print("TRYING TO KILL")
 			if (player_id == 1):
+				if shot.has_flag != null :
+					drop_flag(shot.player_id, shot.has_flag, shot.get_global_transform())
 				choose_spawn(shot.player_id)
 				sync_health(shot.player_id, 100)
 				stats_add_kill(player_id, global.player_id, global.kills)
 				get_parent().find_node("mode_manager").add_stat(shot.player_id, 0, 1, 0)
 				get_parent().find_node("mode_manager").add_stat(player_id, 1, 0, 0)
 			else:
+				if shot.has_flag != null :
+					rpc_id(1, "drop_flag", shot.player_id, shot.has_flag, shot.get_global_transform())
 				rpc_id(1, "choose_spawn", shot.player_id)
 				rpc_id(1, "sync_health", shot.player_id, 100)
 				rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills)
