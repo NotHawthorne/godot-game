@@ -56,7 +56,7 @@ func			_connected_ok(id):
 	else :
 		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false, global.my_team)
 
-remote	func	user_ready(id, player_name, vr, team):
+remote	func	user_ready(id, p_name, vr, team):
 	if get_tree().is_network_server():
 		var state = get_parent().get_node("mode_manager").gamestate
 		if global.teams == true :
@@ -75,11 +75,11 @@ remote	func	user_ready(id, player_name, vr, team):
 			#	else :
 			#		rpc_id(id, "register_in_game", global.map, vr, team)
 			if team :
-				rpc_id(id, "register_in_game", global.map, vr, team)
+				register_new_player(id, p_name, global.map, vr, team, null)
 			else :
-				rpc_id(id, "register_in_game", global.map, vr, "red")
+				register_new_player(id, p_name, global.map, vr, "blue", null)
 		else :
-			rpc_id(id, "register_in_game", global.map, vr, null)
+			register_new_player(id, p_name, global.map, vr, null, null)
 
 remote	func	register_in_game(curr_map, vr, team):
 	rpc_id(1, "register_new_player", get_tree().get_network_unique_id(), player_name, curr_map, vr, team, null)
@@ -88,13 +88,32 @@ func			_server_disconnected():
 	print("server disconnected!")
 	quit_game()
 
+func	choose_spawn_on_join(team) :
+	var spawns
+	var chosen
+	if global.teams == false :
+		spawns = get_tree().get_nodes_in_group("spawns")
+	elif team != null :
+		print("teams enabled")
+		if team == "blue" :
+			spawns = get_tree().get_nodes_in_group("b_spawns")
+		else :
+			spawns = get_tree().get_nodes_in_group("r_spawns")
+	chosen = spawns[randi() % spawns.size()]
+	return chosen.get_global_transform()
+
+
 remote	func	register_new_player(id, name, curr_map, vr, team, location):
 	if get_tree().is_network_server():
-		rpc_id(id, "register_new_player", id, name, curr_map, vr, team, null)
-		rpc_id(id, "register_new_player", 1, player_name, global.map, global.vr_selected, global.player.team, get_parent().get_node("1").get_global_transform())
+		var spawn = choose_spawn_on_join(team)
+		rpc_id(id, "register_new_player", id, name, curr_map, vr, team, spawn)
+		rpc_id(id, "register_new_player", 1, player_name, global.map, global.vr_selected, global.player.team, global.player.get_global_transform())
 		for peer_id in players:
 			var pnode = get_parent().get_node(str(peer_id))
 			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, pnode.vr_player, pnode.team, pnode.get_global_transform)
+		players[id] = name
+		spawn_player(id, name, global.map, vr, team, spawn)
+		return
 	players[id] = name
 	spawn_player(id, name, global.map, vr, team, location)
 
