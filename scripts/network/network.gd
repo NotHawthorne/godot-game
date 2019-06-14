@@ -227,8 +227,8 @@ func			spawn_player(id, name, map, vr, team, location):
 	#	print("transforming player to given position")
 	#	player.set_global_transform(location)
 	#else :
-	#	if global.player_id == 1 :
-	#		global.player.choose_spawn(player.player_id)
-	#	else :
-	#		player.rpc_id(1, "choose_spawn", player.player_id)
-	#print("finished spawning new player")
+	if global.player_id == 1 :
+		global.player.choose_spawn(player.player_id)
+	else :
+		player.rpc_id(1, "choose_spawn", player.player_id)
+	print("finished spawning new player")
