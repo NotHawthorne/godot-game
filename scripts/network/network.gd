@@ -223,6 +223,7 @@ func			spawn_player(id, name, map, vr, team, location):
 	#	if admin == name and global.lobby_map_selection != map:
 	#		rpc_id(1, "_change_map", global.lobby_map_selection)
 	#		_change_map(global.lobby_map_selection)
+	print("trying to spawn new player")
 	if location != null :
 		player.set_global_transform(location)
 	else :
