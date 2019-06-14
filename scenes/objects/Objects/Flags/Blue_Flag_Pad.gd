@@ -3,7 +3,7 @@ extends Area
 # var a = 2
 # var b = "text"
 var capsule
-var model = load("res://scenes/objects/Objects/Flags/Flag.tscn")
+var model = load("res://scenes/objects/Objects/Flags/Blue_Flag.tscn")
 var picked_up = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
