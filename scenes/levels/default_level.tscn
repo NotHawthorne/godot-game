@@ -6,8 +6,8 @@
 [ext_resource path="res://scripts/ui/console.gd" type="Script" id=4]
 [ext_resource path="res://scenes/levels/mode_manager.gd" type="Script" id=5]
 [ext_resource path="res://scenes/objects/Objects/Ammo_pickup/Ammo_pickup.tscn" type="PackedScene" id=6]
-[ext_resource path="res://level1.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/objects/Objects/Health/Health_Pad.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/objects/Objects/Health/Health_Pad.tscn" type="PackedScene" id=7]
+[ext_resource path="res://level1.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/levels/default_level/local_settings.gd" type="Script" id=11]
 
 [sub_resource type="CubeMesh" id=1]
@@ -74,17 +74,22 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.14624, 18 )
 [node name="b_spawn1" type="Spatial" parent="." groups=[
 "b_spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.21181, 50.8949, -47.4181 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 191.798, 21.1297, 45.8082 )
 
 [node name="b_spawn2" type="Spatial" parent="." groups=[
 "b_spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 46.8541, 50.8949, -17.5812 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 77.3693, 50.1889, -32.4652 )
+
+[node name="b_spawn4" type="Spatial" parent="." groups=[
+"b_spawns",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 149.972, 40.6023, -58.4434 )
 
 [node name="b_spawn3" type="Spatial" parent="." groups=[
 "b_spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 54.2441, 50.8949, -40.1978 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 85.6751, 0.758736, 34.4619 )
 
 [node name="Spawn2" type="Spatial" parent="." groups=[
 "spawns",
@@ -114,7 +119,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.967, 30.9701, 86.544 )
 [node name="Spawn7" type="Spatial" parent="." groups=[
 "spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 88.6902, 38.3702, 7.57605 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8038, 50.4974, -49.7021 )
+
+[node name="Spawn10" type="Spatial" parent="." groups=[
+"spawns",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 130.635, 40.4095, -54.8873 )
 
 [node name="Spawn8" type="Spatial" parent="." groups=[
 "spawns",
@@ -129,19 +139,24 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5082, 66.2503, 183.568 )
 [node name="r_spawn3" type="Spatial" parent="." groups=[
 "r_spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.1047, 66.2503, 157.929 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24.4227, 30.3492, 105.143 )
+
+[node name="r_spawn4" type="Spatial" parent="." groups=[
+"r_spawns",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.07138, 10.477, 105.143 )
 
 [node name="r_spawn2" type="Spatial" parent="." groups=[
 "r_spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.0702, 60.4546, 166.662 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 62.7994, 70.2857, 147.591 )
 
 [node name="Spawn9" type="Spatial" parent="." groups=[
 "spawns",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.9548, 52.3944, -45.2962 )
 
-[node name="Spatial" parent="." instance=ExtResource( 7 )]
+[node name="Spatial" parent="." instance=ExtResource( 8 )]
 transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -2.74612, 20.2736 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
@@ -183,22 +198,22 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5974, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.19171, 0 )
 shape = SubResource( 3 )
 
-[node name="health_pad1" parent="." instance=ExtResource( 8 )]
+[node name="health_pad1" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.1211, 10.2029, 69.2379 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad2" parent="." instance=ExtResource( 8 )]
+[node name="health_pad2" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 57.228, 29.9585, 134.504 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad3" parent="." instance=ExtResource( 8 )]
+[node name="health_pad3" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 62.1826, 69.9955, 125.961 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad8" parent="." instance=ExtResource( 8 )]
+[node name="health_pad8" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 171.963, 69.9955, 87.3425 )
 collision_layer = 6
 collision_mask = 6
@@ -206,23 +221,28 @@ collision_mask = 6
 [node name="Ammo_Pad8" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 171.831, 69.9585, 79.9568 )
 
-[node name="health_pad4" parent="." instance=ExtResource( 8 )]
+[node name="health_pad4" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0475, 64.8864, 168.034 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad5" parent="." instance=ExtResource( 8 )]
+[node name="health_pad5" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.3871, 49.646, -57.1528 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad6" parent="." instance=ExtResource( 8 )]
+[node name="health_pad6" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 198.226, 20.0115, 55.0985 )
 collision_layer = 6
 collision_mask = 6
 
-[node name="health_pad7" parent="." instance=ExtResource( 8 )]
+[node name="health_pad7" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 63.2868, -0.268072, 55.0985 )
+collision_layer = 6
+collision_mask = 6
+
+[node name="health_pad9" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 160.623, 39.7062, -66.6163 )
 collision_layer = 6
 collision_mask = 6
 
@@ -246,3 +266,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 198.153, 19.9256, 62.7375 )
 
 [node name="Ammo_Pad7" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 63.2926, -0.151988, 62.7375 )
+
+[node name="Ammo_Pad9" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 167.538, 39.7034, -66.7613 )

@@ -2,5 +2,5 @@
 
 [ext_resource path="res://scenes/modes/deathmatch.gd" type="Script" id=1]
 
-[node name="deathmatch" type="Node"]
+[node name="gamemode" type="Node"]
 script = ExtResource( 1 )
