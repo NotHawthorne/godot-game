@@ -93,10 +93,10 @@ func _ready():
 		if (player_id != 1):
 			print("name: " + player_name + "team: " + team)
 			rpc_id(1, "gamestate_request", player_id)
-		#if (player_id == 1) :
-		#	get_parent().find_node("mode_manager").start_game()
-		#	get_parent().find_node("mode_manager").add_player(1, player_name, team)
-		#	match_info("start")
+		if (player_id == 1) :
+			get_parent().find_node("mode_manager").start_game()
+			get_parent().find_node("mode_manager").add_player(1, player_name, team)
+			match_info("start")
 
 func hide_messages() :
 	$Head/Camera/match_messages.visible = false
