@@ -225,6 +225,7 @@ func			spawn_player(id, name, map, vr, team, location):
 	#		_change_map(global.lobby_map_selection)
 	print("trying to spawn new player")
 	if location != null :
+		print("transforming player to given position")
 		player.set_global_transform(location)
 	else :
 		if global.player_id == 1 :
