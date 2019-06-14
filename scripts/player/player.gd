@@ -155,7 +155,13 @@ remote func match_info(message) :
 func	reset_players() :
 	var players = get_parent().get_node('network').players
 	for p in players :
+		if global.mode == "ctf" :
+			var pnode = get_parent().get_node(str(p))
+			if pnode.has_flag != null :
+				reset_flag(p, pnode.has_flag)
 		choose_spawn(p)
+	if global.mode == "ctf" and has_flag != null :
+		reset_flag(player_id, has_flag)
 	choose_spawn(1)
 	match_info("start")
 	rpc_unreliable("match_info", "start")
