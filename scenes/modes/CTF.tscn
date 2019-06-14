@@ -2,5 +2,5 @@
 
 [ext_resource path="res://scenes/modes/CTF.gd" type="Script" id=1]
 
-[node name="Main" type="Node"]
+[node name="ctf" type="Node"]
 script = ExtResource( 1 )
