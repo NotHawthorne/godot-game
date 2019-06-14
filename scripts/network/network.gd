@@ -60,21 +60,21 @@ remote	func	user_ready(id, player_name, vr, team):
 	if get_tree().is_network_server():
 		var state = get_parent().get_node("mode_manager").gamestate
 		if global.teams == true :
-			if team == "blue" :
-				if state.team_size["red"] < 1 :
-					rpc_id(id, "register_in_game", global.map, vr, "red")
-				elif state.team_size["blue"] - state.team_size["red"] >= 4 :
-					rpc_id(id, "register_in_game", global.map, vr, "red")
-				else :
-					rpc_id(id, "register_in_game", global.map, vr, team)
-			elif team == "red" :
-				if state.team_size["blue"] < 1 :
-					rpc_id(id, "register_in_game", global.map, vr, "blue")
-				elif state.team_size["red"] - state.team_size["blue"] >= 4 :
-					rpc_id(id, "register_in_game", global.map, vr, "blue")
-				else :
-					rpc_id(id, "register_in_game", global.map, vr, team)
-			elif team :
+			#if team == "blue" :
+			#	if state.team_size["red"] < 1 :
+			#		rpc_id(id, "register_in_game", global.map, vr, "red")
+			#	elif state.team_size["blue"] - state.team_size["red"] >= 4 :
+			#		rpc_id(id, "register_in_game", global.map, vr, "red")
+			#	else :
+			#		rpc_id(id, "register_in_game", global.map, vr, team)
+			#elif team == "red" :
+			#	if state.team_size["blue"] < 1 :
+			#		rpc_id(id, "register_in_game", global.map, vr, "blue")
+			#	elif state.team_size["red"] - state.team_size["blue"] >= 4 :
+			#		rpc_id(id, "register_in_game", global.map, vr, "blue")
+			#	else :
+			#		rpc_id(id, "register_in_game", global.map, vr, team)
+			if team :
 				rpc_id(id, "register_in_game", global.map, vr, team)
 			else :
 				rpc_id(id, "register_in_game", global.map, vr, "red")
@@ -93,7 +93,8 @@ remote	func	register_new_player(id, name, curr_map, vr, team):
 	if get_tree().is_network_server():
 		rpc_id(id, "register_new_player", 1, player_name, global.map, global.vr_selected, global.player.team)
 		for peer_id in players:
-			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, vr, team)
+			var pnode = get_parent().get_node(str(peer_id))
+			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, pnode.vr_player, pnode.team)
 	players[id] = name
 	spawn_player(id, name, global.map, vr, team)
 
