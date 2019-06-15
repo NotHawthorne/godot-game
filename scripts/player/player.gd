@@ -584,9 +584,11 @@ func	stats_init():
 			return
 		else:
 			print(text.result)
-			if (text.result[0].kills):
+			if (text.result[0] and text.result[0].kills):
 				global.kills = text.result[0].kills
-			print("Kills: " + str(text.result[0].kills))
+			else :
+				global.kills = 0
+			print("Kills: " + str(global.kills))
 	else:
 		print("No response...")
 	pass
