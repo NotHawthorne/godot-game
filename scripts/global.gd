@@ -15,6 +15,7 @@ var		kills				= 0
 var		level				= 0
 var		stats_inited		= false
 var		lobby_map_selection	= null
+var		game_uptime			= 0
 var		map					= "res://scenes/levels/default_level.tscn"
 var		mode				= "ctf"
 # set mode to "ctf", "deathmatch", or "team_deathmatch"
