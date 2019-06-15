@@ -206,6 +206,8 @@ func			spawn_player(id, name, map, vr, team, location):
 	player.player_name	= name
 	player.server_map = map
 	player.team = team
+	player.has_flag_dict["blue"] = false
+	player.has_flag_dict["red"] = false
 	print("global map is" + global.lobby_map_selection)
 	print("server map is" + map)
 	#global.define_level($PanelContainer/Panel/Control.selection)
