@@ -337,7 +337,7 @@ func			_update():
 		global.game_uptime += 1
 		if global.player_name != "Headless Server" and global.game_uptime % 10 == 0:
 			print("(10 update ticks) position update packet " + str(player_id) + "|" + str(global.player_id))
-		if global.player_name == "Headless Server" and global.game_uptime % 40 == 0:
+		if global.player_name == "Headless Server" and global.game_uptime % 20 == 0:
 			print("(40 update ticks) headless server update packet " + str(player_id) + "|" + str(global.player_id))
 
 func			flip_cooldown():
