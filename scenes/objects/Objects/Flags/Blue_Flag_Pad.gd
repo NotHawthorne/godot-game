@@ -40,6 +40,7 @@ remote func drop_flag(location) :
 func pad_collided(body) :
 	if picked_up == false :
 		if "has_flag" in body and body.has_flag == "red" and body.team == "blue" :
+			print("collided with flag pad")
 			if global.player_id == 1 :
 				global.player.reset_flag(body.player_id, "red")
 				global.player.leaderboard_add_stat(body.player_id, 0, 0, 1)
