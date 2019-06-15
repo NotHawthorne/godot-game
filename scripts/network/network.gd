@@ -111,7 +111,7 @@ remote	func	register_new_player(id, name, curr_map, vr, team, location):
 		rpc_id(id, "register_new_player", 1, player_name, global.map, global.vr_selected, global.player.team, global.player.get_global_transform())
 		for peer_id in players:
 			var pnode = get_parent().get_node(str(peer_id))
-			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, pnode.vr_player, pnode.team, pnode.get_global_transform)
+			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, pnode.vr_player, pnode.team, pnode.get_global_transform())
 		players[id] = name
 		spawn_player(id, name, global.map, vr, team, spawn)
 		return

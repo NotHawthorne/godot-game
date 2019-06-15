@@ -293,9 +293,9 @@ func	_physics_process(delta):
 					velocity -= aim.z * (DASH_SPEED * 1.2)
 			if $JumpCast.is_colliding():
 				jumps = 0
-				print("colliding")
+				#print("colliding")
 			if jumps < 2:
-				print("jumping...")
+				#print("jumping...")
 				direction.y = 1 + (direction.y * delta)
 				velocity.y += JUMP_SPEED * delta
 				jumps += 1
@@ -332,9 +332,12 @@ func	_physics_process(delta):
 
 func			_update():
 	if control == true:
-		print("Sending position update packet! " + str(player_id) + "|" + str(global.player_id))
+		global.game_uptime += 1
+		if global.player_name != "Headless Server" and global.game_uptime % 10 == 0:
+			print("(10 update ticks) Sending position update packet! " + str(player_id) + "|" + str(global.player_id))
+		if global.player_name == "Headless Server" and global.game_uptime % 40 == 0:
+			print("headless server update (40 update ticks)")
 		rpc_unreliable("do_update", get_global_transform(), player_id)
-
 func			flip_cooldown():
 	can_fire = true
 
