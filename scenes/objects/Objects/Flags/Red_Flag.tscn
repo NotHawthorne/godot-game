@@ -5,12 +5,12 @@ extents = Vector3( 0.286006, 1.56817, 4.94384 )
 
 [sub_resource type="CylinderMesh" id=2]
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=3]
 resource_name = "Star_Fighter_Fire"
 albedo_color = Color( 0.988235, 0.188235, 0, 1 )
 metallic = 0.4
 
-[sub_resource type="CubeMesh" id=3]
+[sub_resource type="CubeMesh" id=4]
 
 [sub_resource type="SpatialMaterial" id=5]
 resource_name = "Star_Fighter_Fire"
@@ -26,9 +26,9 @@ shape = SubResource( 1 )
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 0.1, 0, 0, 0, 5, 0, 0, 0, 0.1, 0, 4.95301, 0 )
 mesh = SubResource( 2 )
-material/0 = SubResource( 4 )
+material/0 = SubResource( 3 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="."]
 transform = Transform( 0.1, 0, 0, 0, 1, 0, 0, 0, 1.5, 0, 8.75171, -1.43573 )
-mesh = SubResource( 3 )
+mesh = SubResource( 4 )
 material/0 = SubResource( 5 )

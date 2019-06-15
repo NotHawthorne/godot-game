@@ -37,8 +37,10 @@ remote func drop_flag(location) :
 	self.get_node("Flag").set_global_transform(location)
 
 func pad_collided(body) :
+	print("flag pad collided")
 	if picked_up == false :
 		if "has_flag" in body and body.has_flag == "blue" and body.team == "red" :
+			print("collided with flag pad")
 			if global.player_id == 1 :
 				global.player.reset_flag(body.player_id, "blue")
 				global.player.leaderboard_add_stat(body.player_id, 0, 0, 1)
@@ -47,6 +49,7 @@ func pad_collided(body) :
 				global.player.rpc_id(1, "leaderboard_add_stat", body.player_id, 0, 0, 1)
 	if picked_up == true :
 		if "has_flag" in body and body.has_flag == "blue" and body.team == "blue" :
+			print("flag returned")
 			if global.player_id == 1 :
 				global.player.reset_flag(body.player_id, "blue")
 			else :

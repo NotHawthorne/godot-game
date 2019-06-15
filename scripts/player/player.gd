@@ -108,33 +108,41 @@ remote func set_flag_owner(id, flag_team) :
 remote func drop_flag(id, flag_team, location) :
 	if flag_team == "blue" :
 		get_parent().get_node("Blue_Flag_Pad").drop_flag(location)
-		get_parent().get_node("Blue_Flag_Pad").rpc_unreliable("drop_flag", location)
+		for p in get_parent().get_node("network").players :
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "drop_flag", location)
 	if flag_team == "red" :
 		get_parent().get_node("Red_Flag_Pad").drop_flag(location)
-		get_parent().get_node("Red_Flag_Pad").rpc_unreliable("drop_flag", location)
+		for p in get_parent().get_node("network").players :
+			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "drop_flag", location)
 	set_flag_owner(id, null)
 	rpc_unreliable("set_flag_owner", id, null)
 
 remote func pickup_flag(id, flag_team) :
+	set_flag_owner(id, flag_team)
 	if flag_team == "blue" :
 		get_parent().get_node("Blue_Flag_Pad").pop_flag()
-		get_parent().get_node("Blue_Flag_Pad").rpc_unreliable("pop_flag")
+		for p in get_parent().get_node("network").players :
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "pop_flag")
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, team)
 	if flag_team == "red" :
 		get_parent().get_node("Red_Flag_Pad").pop_flag()
-		get_parent().get_node("Red_Flag_Pad").rpc_unreliable("pop_flag")
-	set_flag_owner(id, flag_team)
-	rpc_unreliable("set_flag_owner", id, flag_team)
+		for p in get_parent().get_node("network").players :
+			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "pop_flag")
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, team)
 
 remote func reset_flag(id, flag_team) :
 	print("resetting flag")
+	set_flag_owner(id, null)
 	if flag_team == "blue" :
 		get_parent().get_node("Blue_Flag_Pad").reset_flag()
-		get_parent().get_node("Blue_Flag_Pad").rpc_unreliable("reset_flag")
+		for p in get_parent().get_node("network").players :
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "reset_flag")
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, null)
 	if flag_team == "red" :
 		get_parent().get_node("Red_Flag_Pad").reset_flag()
-		get_parent().get_node("Red_Flag_Pad").rpc_unreliable("reset_flag")
-	set_flag_owner(id, null)
-	rpc_unreliable("set_flag_owner", id, null)
+		for p in get_parent().get_node("network").players :
+			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "reset_flag")
+			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "set_flag_owner", id, null)
 
 remote func match_info(message) :
 	$Head/Camera/match_messages/round_start.visible = false
@@ -159,12 +167,12 @@ func	reset_players() :
 			var pnode = get_parent().get_node(str(p))
 			if pnode.has_flag != null :
 				reset_flag(p, pnode.has_flag)
+		rpc_id(p, "match_info", "start")
 		choose_spawn(p)
 	if global.mode == "ctf" and has_flag != null :
 		reset_flag(player_id, has_flag)
 	choose_spawn(1)
 	match_info("start")
-	rpc_unreliable("match_info", "start")
 
 func	spawn(id) :
 	print("finding spawns")
@@ -661,12 +669,12 @@ func	_input(event):
 		ammo = starting_ammo
 		if player_id == 1 :
 			if has_flag != null :
-				drop_flag(player_id, has_flag, self.get_global_transform())
+				reset_flag(player_id, has_flag)
 			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
 			choose_spawn(player_id)
 		else :
 			if has_flag != null :
-				rpc_id(1, "drop_flag", player_id, has_flag, self.get_global_transform())
+				rpc_id(1, "reset_flag", player_id, has_flag)
 			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 			rpc_id(1, "choose_spawn", player_id)
 		update_health(player_id, 100)
@@ -678,7 +686,7 @@ func	_input(event):
 		$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
 		$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
 
-	if Input.is_action_just_pressed("shoot") and control == true and ammo > 0 and can_fire == true:
+	if Input.is_action_pressed("shoot") and control == true and ammo > 0 and can_fire == true:
 		#var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		#var	bullet			= bullet_scene.instance()
 		#bullet.bullet_owner = player_id
