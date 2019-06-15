@@ -112,18 +112,19 @@ remote func set_flag_owner(id, flag_team) :
 		pnode.has_flag_bool = false
 		print(pnode.player_name + "dropped all their flags")
 
-remote func drop_flag(id, flag_team, location) :
-	set_flag_owner(id, flag_team)
-	if flag_team == "blue":
+remote func drop_flag(id, flag_dict, location) :
+	if flag_dict["blue"] :
+		set_flag_owner(id, "blue")
 		get_parent().get_node("Blue_Flag_Pad").drop_flag(location)
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "drop_flag", location)
-			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, flag_team)
-	if flag_team == "red" :
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, "blue")
+	if flag_dict["red"] :
+		set_flag_owner(id, "red")
 		get_parent().get_node("Red_Flag_Pad").drop_flag(location)
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "drop_flag", location)
-			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, flag_team)
+			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "set_flag_owner", id, "red")
 
 remote func pickup_flag(id, flag_team) :
 	set_flag_owner(id, flag_team)
@@ -418,7 +419,7 @@ func			_deal_damage(shot, amt):
 			global.kills += 1
 			print("TRYING TO KILL")
 			if (player_id == 1):
-				if shot.has_flag == true :
+				if shot.has_flag_bool == true :
 					drop_flag(shot.player_id, shot.has_flag_dict, shot.get_global_transform())
 				choose_spawn(shot.player_id)
 				sync_health(shot.player_id, 100)
