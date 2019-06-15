@@ -53,7 +53,7 @@ func add_stat(id, kill, death, caps) :
 	if kill == 1 :
 		print(gamestate.players[id] + "'s deaths = " + str(gamestate.kills[id]))
 	if caps == 1 :
-		print(gamestate.players[id] + "scored for team " + gamestate.team[id])
+		print(gamestate.players[id] + " scored for team " + gamestate.team[id])
 
 func reset_game() :
 	for p in gamestate.id :

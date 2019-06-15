@@ -110,7 +110,7 @@ remote func set_flag_owner(id, flag_team) :
 		pnode.has_flag_bool = true
 	else :
 		pnode.has_flag_bool = false
-		print(pnode.player_name + "dropped all their flags")
+		print(pnode.player_name + " dropped all their flags")
 
 remote func drop_flag(id, flag_dict, location) :
 	if flag_dict["blue"] :
@@ -140,7 +140,7 @@ remote func pickup_flag(id, flag_team) :
 			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, team)
 
 remote func reset_flag(id, flag_team) :
-	print("resetting flag")
+	print("trying to reset flag")
 	set_flag_owner(id, flag_team)
 	if flag_team == "blue" :
 		get_parent().get_node("Blue_Flag_Pad").reset_flag()
