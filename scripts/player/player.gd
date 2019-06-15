@@ -332,12 +332,14 @@ func	_physics_process(delta):
 
 func			_update():
 	if control == true:
+		if global.game_uptime == 0 :
+			print("first position update packet! " + str(player_id) + "|" + str(global.player_id))
 		global.game_uptime += 1
 		if global.player_name != "Headless Server" and global.game_uptime % 10 == 0:
-			print("(10 update ticks) Sending position update packet! " + str(player_id) + "|" + str(global.player_id))
+			print("(10 update ticks) position update packet " + str(player_id) + "|" + str(global.player_id))
 		if global.player_name == "Headless Server" and global.game_uptime % 40 == 0:
-			print("headless server update (40 update ticks)")
-		rpc_unreliable("do_update", get_global_transform(), player_id)
+			print("(40 update ticks) headless server update packet " + str(player_id) + "|" + str(global.player_id))
+
 func			flip_cooldown():
 	can_fire = true
 
