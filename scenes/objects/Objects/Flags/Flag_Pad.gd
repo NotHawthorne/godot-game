@@ -19,7 +19,7 @@ func _ready():
 	self.connect("body_entered", self, "pad_collided")
 
 remote func reset_flag() :
-	print("resetting flag on " + global.player_name + "'s client")
+	print("trying to reset flag on " + global.player_name + "'s client")
 	picked_up = false
 	self.add_child(capsule)
 	self.get_node("Flag").set_global_transform(self.get_global_transform())
