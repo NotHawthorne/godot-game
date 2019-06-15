@@ -39,7 +39,8 @@ var		server_map
 var		respawning		= false
 var		team			= null
 var		is_headless		= false
-var		has_flag		= null
+var		has_flag_dict	= {}
+var		has_flag_bool	= false
  
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -103,19 +104,26 @@ func hide_messages() :
 
 remote func set_flag_owner(id, flag_team) :
 	var pnode = get_parent().get_node(str(id))
-	pnode.has_flag = flag_team
+	print("setting flag owner: " + pnode.player_name)
+	pnode.has_flag_dict[flag_team] = !(pnode.has_flag_dict[flag_team])
+	if pnode.has_flag_dict["blue"] or pnode.has_flag_dict["red"] :
+		pnode.has_flag_bool = true
+	else :
+		pnode.has_flag_bool = false
+		print(pnode.player_name + "dropped all their flags")
 
 remote func drop_flag(id, flag_team, location) :
-	if flag_team == "blue" :
+	set_flag_owner(id, flag_team)
+	if flag_team == "blue":
 		get_parent().get_node("Blue_Flag_Pad").drop_flag(location)
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "drop_flag", location)
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, flag_team)
 	if flag_team == "red" :
 		get_parent().get_node("Red_Flag_Pad").drop_flag(location)
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "drop_flag", location)
-	set_flag_owner(id, null)
-	rpc_unreliable("set_flag_owner", id, null)
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, flag_team)
 
 remote func pickup_flag(id, flag_team) :
 	set_flag_owner(id, flag_team)
@@ -132,17 +140,17 @@ remote func pickup_flag(id, flag_team) :
 
 remote func reset_flag(id, flag_team) :
 	print("resetting flag")
-	set_flag_owner(id, null)
+	set_flag_owner(id, flag_team)
 	if flag_team == "blue" :
 		get_parent().get_node("Blue_Flag_Pad").reset_flag()
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "reset_flag")
-			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, null)
+			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, flag_team)
 	if flag_team == "red" :
 		get_parent().get_node("Red_Flag_Pad").reset_flag()
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "reset_flag")
-			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "set_flag_owner", id, null)
+			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "set_flag_owner", id, flag_team)
 
 remote func match_info(message) :
 	$Head/Camera/match_messages/round_start.visible = false
@@ -165,12 +173,12 @@ func	reset_players() :
 	for p in players :
 		if global.mode == "ctf" :
 			var pnode = get_parent().get_node(str(p))
-			if pnode.has_flag != null :
+			if pnode.has_flag == true :
 				reset_flag(p, pnode.has_flag)
 		rpc_id(p, "match_info", "start")
 		choose_spawn(p)
-	if global.mode == "ctf" and has_flag != null :
-		reset_flag(player_id, has_flag)
+	if global.mode == "ctf" and has_flag_bool == true :
+		reset_flag(player_id, has_flag_dict)
 	choose_spawn(1)
 	match_info("start")
 
@@ -247,12 +255,12 @@ func	_physics_process(delta):
 				if player_id == 1 :
 					respawning = false
 					get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
-					if has_flag :
-						reset_flag(player_id, has_flag)
+					if has_flag_bool == true :
+						reset_flag(player_id, has_flag_dict)
 				else :
 					rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
-					if has_flag :
-						rpc_id(1, "reset_flag", player_id, has_flag)
+					if has_flag_bool == true :
+						rpc_id(1, "reset_flag", player_id, has_flag_dict)
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -410,16 +418,16 @@ func			_deal_damage(shot, amt):
 			global.kills += 1
 			print("TRYING TO KILL")
 			if (player_id == 1):
-				if shot.has_flag != null :
-					drop_flag(shot.player_id, shot.has_flag, shot.get_global_transform())
+				if shot.has_flag == true :
+					drop_flag(shot.player_id, shot.has_flag_dict, shot.get_global_transform())
 				choose_spawn(shot.player_id)
 				sync_health(shot.player_id, 100)
 				stats_add_kill(player_id, global.player_id, global.kills)
 				get_parent().find_node("mode_manager").add_stat(shot.player_id, 0, 1, 0)
 				get_parent().find_node("mode_manager").add_stat(player_id, 1, 0, 0)
 			else:
-				if shot.has_flag != null :
-					rpc_id(1, "drop_flag", shot.player_id, shot.has_flag, shot.get_global_transform())
+				if shot.has_flag_bool == true :
+					rpc_id(1, "drop_flag", shot.player_id, shot.has_flag_dict, shot.get_global_transform())
 				rpc_id(1, "choose_spawn", shot.player_id)
 				rpc_id(1, "sync_health", shot.player_id, 100)
 				rpc_id(1, "stats_add_kill", player_id, global.player_id, global.kills)
@@ -670,13 +678,13 @@ func	_input(event):
 	if Input.is_action_just_pressed("restart") and control == true:
 		ammo = starting_ammo
 		if player_id == 1 :
-			if has_flag != null :
-				reset_flag(player_id, has_flag)
+			if has_flag_bool == true :
+				reset_flag(player_id, has_flag_dict)
 			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
 			choose_spawn(player_id)
 		else :
-			if has_flag != null :
-				rpc_id(1, "reset_flag", player_id, has_flag)
+			if has_flag_bool == true :
+				rpc_id(1, "reset_flag", player_id, has_flag_dict)
 			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 			rpc_id(1, "choose_spawn", player_id)
 		update_health(player_id, 100)
