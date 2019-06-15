@@ -141,17 +141,18 @@ remote func pickup_flag(id, flag_team) :
 
 remote func reset_flag(id, flag_team) :
 	print("trying to reset flag")
-	set_flag_owner(id, flag_team)
-	if flag_team == "blue" :
+	if flag_team["blue"] :
+		set_flag_owner(id, "blue")
 		get_parent().get_node("Blue_Flag_Pad").reset_flag()
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "reset_flag")
-			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, flag_team)
-	if flag_team == "red" :
+			rpc_id(p, "set_flag_owner", id, "blue")
+	if flag_team["red"] :
+		set_flag_owner(id, "red")
 		get_parent().get_node("Red_Flag_Pad").reset_flag()
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "reset_flag")
-			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "set_flag_owner", id, flag_team)
+			rpc_id(p, "set_flag_owner", id, "red")
 
 remote func match_info(message) :
 	$Head/Camera/match_messages/round_start.visible = false
