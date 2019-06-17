@@ -28,7 +28,6 @@ global="*res://scripts/global.gd"
 
 window/size/resizable=false
 window/stretch/mode="viewport"
-window/stretch/aspect="keep"
 
 [gdnative]
 

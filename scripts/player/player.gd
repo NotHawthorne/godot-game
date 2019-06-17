@@ -41,6 +41,8 @@ var		team			= null
 var		is_headless		= false
 var		has_flag_dict	= {}
 var		has_flag_bool	= false
+var		anim			= "rifle_idle"
+var		bone_transform
  
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -87,6 +89,9 @@ func _ready():
 		#	if id != player_id :
 		#		print("asking " + str(id) + " for info")
 		#		rpc_id(id, "ask_for_health", player_id)
+		var bone = $xbot/Skeleton.find_bone('mixamorig_Neck')
+		var bone_transform = Transform(Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0))
+		$xbot/Skeleton.set_bone_rest(bone, bone_transform);
 		OS.set_window_size(Vector2(1280, 720))
 		$Head/Camera/Sprite.visible = true
 		$Head/Camera/player_info.visible = true
@@ -98,6 +103,7 @@ func _ready():
 			get_parent().find_node("mode_manager").start_game()
 			get_parent().find_node("mode_manager").add_player(1, player_name, team)
 			match_info("start")
+	bone_transform = $xbot/Skeleton.get_bone_custom_pose($xbot/Skeleton.find_bone("mixamorig_Spine1"))
 
 func hide_messages() :
 	$Head/Camera/match_messages.visible = false
@@ -266,6 +272,7 @@ func	_physics_process(delta):
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
+			anim = "rifle_run_forward"
 		if Input.is_action_pressed("move_backward"):
 			direction += aim.z
 		if Input.is_action_pressed("move_left"):
@@ -275,6 +282,7 @@ func	_physics_process(delta):
 		if (Input.is_action_just_pressed("jump")):
 			var dashing = false
 			if (jumps <= 1):
+				anim = "rifle_jump"
 				if $Head/Camera/WallCast1.is_colliding() or $Head/Camera/WallCast2.is_colliding() or $Head/Camera/WallCast3.is_colliding() or $Head/Camera/WallCast4.is_colliding():
 					print("colliding")
 					dashing = true
@@ -330,6 +338,7 @@ func	_physics_process(delta):
 		velocity	= velocity.linear_interpolate(target, accel)
 		rpc_unreliable("do_move", velocity, player_id)
 		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
+	$xbot/AnimationPlayer.play(anim);
 
 func			_update():
 	if control == true:
@@ -363,9 +372,12 @@ remote	func	do_rot(headrot, camrot, pid):
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
 	var	rot		= Vector3()
-	rot.y = headrot.y
-	rot.x = camrot.x
-	pnode.get_node('Head').set_rotation_degrees(rot)
+	#rot.y = headrot.y
+	#rot.x = camrot.x
+	#pnode.get_node('Head').set_rotation_degrees(rot)
+	var bone = pnode.get_node('xbot').get_node('Skeleton').find_bone('mixamorig_Spine1')
+	pnode.get_node('xbot').get_node('Skeleton').set_bone_custom_pose(bone, camrot);
+	pnode.get_node('xbot').rotatation.y = headrot
 
 remote	func	set_vr_mode(id, mode):
 	vr_player = mode
@@ -389,12 +401,12 @@ remote	func	set_weapon(id, wid):
 	var pnode = get_parent().get_node(str(id))
 	print("SET WEAPON CALLED ON " + str(id))
 	if wid == 1:
-		var to_remove = pnode.get_node('Head/gun_container').get_child(0)
+		var to_remove = pnode.get_node('xbot/Skeleton/BoneAttachment/gun_container').get_child(0)
 		var model = load("res://models/pistol.tscn")
 		var to_replace = model.instance()
 		var old_loc = to_remove.get_global_transform()
-		pnode.get_node('Head/gun_container').remove_child(to_remove)
-		pnode.get_node('Head/gun_container').add_child(to_replace)
+		pnode.get_node('xbot/Skeleton/BoneAttachment/gun_container').remove_child(to_remove)
+		pnode.get_node('xbot/Skeleton/BoneAttachment/gun_container').add_child(to_replace)
 	else:
 		print("INVALID WEAPON SET REQUEST")
 	pass
@@ -660,12 +672,20 @@ func	_input(event):
 		var change = 0
 		if control == true:
 			$Head.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
+			$xbot.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 			change = -event.relative.y * mouse_sensitivity
+			var bone = $xbot/Skeleton.find_bone('mixamorig_Spine1')
+			#var bone_transform = $xbot/Skeleton.get_bone_custom_pose(bone)
+			print(str(bone_transform))
 			if change + camera_angle < 90 and change + camera_angle > -90:
 				$Head/Camera.rotate_x(deg2rad(change))
 				$Head/gun_container.rotate_x(deg2rad(change))
+				var rot_amt = deg2rad(change / 2)
+				bone_transform = bone_transform.rotated(Vector3(1, 0, 0), (-rot_amt))
+				bone_transform = bone_transform.rotated(Vector3(0, 0, 1), (rot_amt))
+				$xbot/Skeleton.set_bone_custom_pose(bone, bone_transform);
 				camera_angle += change
-			rpc_unreliable("do_rot", $Head.get_rotation_degrees(), $Head/Camera.get_rotation_degrees(), global.player_id)
+			rpc_unreliable("do_rot", $xbot.rotation.y, bone_transform, global.player_id)
 		#Detect what we're mousing over
 		
 		var center_pos = Vector2()
