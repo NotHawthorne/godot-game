@@ -6,8 +6,7 @@
 [ext_resource path="res://models/player/animations/rifle_death.anim" type="Animation" id=4]
 [ext_resource path="res://models/player/animations/rifle_run_forward.anim" type="Animation" id=5]
 [ext_resource path="res://body.gd" type="Script" id=6]
-
-[sub_resource type="CubeMesh" id=1]
+[ext_resource path="res://models/pistol.tscn" type="PackedScene" id=7]
 
 [node name="xbot" instance=ExtResource( 3 )]
 script = ExtResource( 6 )
@@ -19,16 +18,13 @@ bones/2/rest = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.101, -0.01 )
 bones/4/rest = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.167, -0.025 )
 
 [node name="BoneAttachment" type="BoneAttachment" parent="Skeleton" index="2"]
-transform = Transform( 0.0303471, -0.998219, -0.0513655, -0.160888, -0.0555969, 0.985406, -0.986505, -0.0216422, -0.162289, -0.172535, 1.27064, 0.154696 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.713332, 1.43813, -0.0505739 )
 bone_name = "mixamorig_RightHand"
 
 [node name="gun_container" type="Spatial" parent="Skeleton/BoneAttachment" index="0"]
-transform = Transform( -0.022218, -0.310501, 0.950313, 0.998934, -0.0453915, 0.00852132, 0.040489, 0.949489, 0.311176, 0.00331107, -0.00353252, -0.00310659 )
+transform = Transform( -0.113389, 0.0240738, 0.993258, 0.975346, -0.187801, 0.115894, 0.189325, 0.981911, -0.0021852, -0.29388, -0.0531437, 0.164999 )
 
-[node name="gunthing" type="MeshInstance" parent="Skeleton/BoneAttachment/gun_container" index="0"]
-transform = Transform( 0.0199921, -0.000538286, 0.00410482, 0.000557664, 0.0181582, -0.20912, 7.59765e-05, 0.00836609, 0.454148, -0.0214006, -0.0172229, -0.00025706 )
-mesh = SubResource( 1 )
-material/0 = null
+[node name="Spatial" parent="Skeleton/BoneAttachment/gun_container" index="0" instance=ExtResource( 7 )]
 
 [node name="AnimationPlayer" parent="." index="1"]
 anims/rifle_death = ExtResource( 4 )
