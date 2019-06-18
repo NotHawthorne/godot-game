@@ -43,7 +43,7 @@ var		has_flag_dict	= {}
 var		has_flag_bool	= false
 var		anim			= "rifle_idle"
 var		bone_transform
- 
+
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
 const DASH_SPEED = 80
@@ -55,10 +55,9 @@ var message_timer		= Timer.new()
 
 var time_off_ground		= 0
 
-var shoot_sound = AudioStreamPlayer.new()
-
 func _ready():
 	$Head/Camera/ChatBox/Control/LineEdit.set_process_input(false)
+	$Head/Camera/Player_SFX.id = player_id
 	update_timer.set_wait_time(1)
 	update_timer.connect("timeout", self, "_update")
 	add_child(update_timer)
@@ -80,8 +79,6 @@ func _ready():
 		global.stats_inited = true
 		stats_init()
 		set_weapon(player_id, 1)
-	self.add_child(shoot_sound)
-	shoot_sound.stream = load("res://sounds/shoot_sound.wav")
 	if (control == true):
 		#var players = get_parent().find_node("network").players
 		#for id in players :
@@ -273,15 +270,36 @@ func	_physics_process(delta):
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
 			anim = "rifle_run_forward"
-		if Input.is_action_pressed("move_backward"):
-			direction += aim.z
-		if Input.is_action_pressed("move_left"):
-			direction -= aim.x
-		if Input.is_action_pressed("move_right"):
-			direction += aim.x
+			if time_off_ground == 0 :
+				$Head/Camera/Player_SFX.start_sound("walk")
+		if $JumpCast.is_colliding() :
+			if Input.is_action_pressed("move_backward"):
+				direction += aim.z
+			if Input.is_action_pressed("move_left"):
+				direction -= aim.x
+			if Input.is_action_pressed("move_right"):
+				direction += aim.x
+			
+			if Input.is_action_pressed("move_backward") and not (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_forward")):
+				$Head/Camera/Player_SFX.start_sound("walk")
+			if Input.is_action_pressed("move_left") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward")):
+				$Head/Camera/Player_SFX.start_sound("walk")
+			if Input.is_action_pressed("move_right") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_backward")):
+				$Head/Camera/Player_SFX.start_sound("walk")
+		else :
+			$Head/Camera/Player_SFX.stop_sound("walk")
+		if Input.is_action_just_released("move_forward") and not (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward")):
+			$Head/Camera/Player_SFX.stop_sound("walk")
+		if Input.is_action_just_released("move_backward") and not (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_forward")):
+			$Head/Camera/Player_SFX.stop_sound("walk")
+		if Input.is_action_just_released("move_left") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward")):
+			$Head/Camera/Player_SFX.stop_sound("walk")
+		if Input.is_action_just_released("move_right") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_backward")):
+			$Head/Camera/Player_SFX.stop_sound("walk")
 		if (Input.is_action_just_pressed("jump")):
 			var dashing = false
 			if (jumps <= 1):
+				$Head/Camera/Player_SFX.stop_sound("walk")
 				anim = "rifle_jump"
 				if $Head/Camera/WallCast1.is_colliding() or $Head/Camera/WallCast2.is_colliding() or $Head/Camera/WallCast3.is_colliding() or $Head/Camera/WallCast4.is_colliding():
 					print("colliding")
@@ -667,6 +685,15 @@ func	get_gamestats(action) :
 	if action == "hide" :
 		$Head/Camera/game_stats.visible = false	
 
+remote func		remote_play_sound(id, sound) :
+	var pnode = get_parent().get_node(str(id))
+	pass
+
+func local_play_sound(sound) :
+	
+	pass
+
+
 func	_input(event):
 	if event is InputEventMouseMotion and !global.ui_mode and control == true:
 		var change = 0
@@ -723,7 +750,6 @@ func	_input(event):
 		$Head/Camera/ChatBox/Control/LineEdit.set_editable(true)
 		$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
 		$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
-
 	if Input.is_action_pressed("shoot") and control == true and ammo > 0 and can_fire == true:
 		#var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		#var	bullet			= bullet_scene.instance()
@@ -743,7 +769,7 @@ func	_input(event):
 		#$Head/gun_container.add_child(bullet)
 		#can_fire = false
 		#fire_cooldown.start()
-		shoot_sound.play()
+		$Head/Camera/Player_SFX.play_sound("shoot")
 		ammo -= 1
 		print("fired!")
 	if Input.is_action_just_pressed("fullscreen") and control == true:

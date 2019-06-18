@@ -56,15 +56,15 @@ func pad_collided(body) :
 		if "player_name" in body and body.has_flag_dict[enemy_team] and body.team == my_team :
 			print("brought enemy flag to pad")
 			if global.player_id == 1 :
-				global.player.reset_flag(body.player_id, enemy_team)
+				global.player.reset_flag(body.player_id, body.has_flag_dict)
 				global.player.leaderboard_add_stat(body.player_id, 0, 0, 1)
 			else :
-				global.player.rpc_id(1, "reset_flag", body.player_id, enemy_team)
+				global.player.rpc_id(1, "reset_flag", body.player_id, body.has_flag_dict)
 				global.player.rpc_id(1, "leaderboard_add_stat", body.player_id, 0, 0, 1)
 	if picked_up == true :
 		if "player_name" in body and body.has_flag_dict[my_team] and body.team == my_team :
 			print("flag returned")
 			if global.player_id == 1 :
-				global.player.reset_flag(body.player_id, my_team)
+				global.player.reset_flag(body.player_id, body.has_flag_dict)
 			else :
-				global.player.rpc_id(1, "reset_flag", body.player_id, my_team)
+				global.player.rpc_id(1, "reset_flag", body.player_id, body.has_flag_dict)
