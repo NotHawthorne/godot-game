@@ -406,7 +406,7 @@ remote	func	do_update(_transform, pid):
 remote	func	do_move(position, pid, packet_id):
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
-	if packet_id_cache["do_move"] and packet_id_cache["do_move"] == packet_id :
+	if packet_id_cache.has("do_move") and packet_id_cache["do_move"] == packet_id :
 		return
 	else :
 		packet_id_cache["do_move"] = packet_id
