@@ -779,6 +779,7 @@ func	_input(event):
 			#if has_flag_bool == true :
 			#	reset_flag(player_id, has_flag_dict)
 			if has_flag_dict["red"] or has_flag_dict["blue"] :
+				print("dropping flag")
 				drop_flag(player_id, has_flag_dict, self.get_global_transform())
 			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
 			choose_spawn(player_id)
@@ -786,6 +787,7 @@ func	_input(event):
 			#if has_flag_bool == true :
 			#	rpc_id(1, "reset_flag", player_id, has_flag_dict)
 			if has_flag_dict["red"] or has_flag_dict["blue"] :
+				print("dropping flag")
 				rpc_id(1, "drop_flag", player_id, has_flag_dict, self.get_global_transform())
 			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 			rpc_id(1, "choose_spawn", player_id)
