@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/capsule_pop1_take1.ogg-e13a1ba3b68853b916694be24df76a71.oggstr"
+
+[deps]
+
+source_file="res://sounds/capsule_pop1_take1.ogg"
+dest_files=[ "res://.import/capsule_pop1_take1.ogg-e13a1ba3b68853b916694be24df76a71.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

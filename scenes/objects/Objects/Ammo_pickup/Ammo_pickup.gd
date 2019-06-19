@@ -30,6 +30,7 @@ func collided(body):
 			body.ammo = body.max_ammo
 		else :
 			body.ammo += ammo_to_add
+		body.play_sound("play", "pop_capsule")
 		pop_capsule(self.get_name())
 		rpc_unreliable("pop_capsule", self.get_name())
 # Called every frame. 'delta' is the elapsed time since the previous frame.
