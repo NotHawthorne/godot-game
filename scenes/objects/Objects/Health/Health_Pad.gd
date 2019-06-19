@@ -36,6 +36,7 @@ func collided(body):
 				global.player.sync_health(global.player_id, global.player.health + health_to_add)
 			else:
 				global.player.rpc_id(1, "sync_health", global.player_id, global.player.health + health_to_add)
+		body.play_sound("play", "pop_capsule")
 		pop_capsule(self.get_name())
 		rpc_unreliable("pop_capsule", self.get_name())
 # Called every frame. 'delta' is the elapsed time since the previous frame.

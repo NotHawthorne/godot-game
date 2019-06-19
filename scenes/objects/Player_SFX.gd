@@ -11,13 +11,19 @@ var walk_cycle = 1
 var play_walk_sound = false
 
 func _ready():
-	walk_timer.wait_time = 0.3
+	walk_timer.wait_time = 0.25
 	self.add_child(walk_timer)
 	walk_timer.connect("timeout", self, "switch_walk_sound")
 
 func play_sound(sound) :
 	if sound == "shoot" :
 		$shoot.play()
+	if sound == "jump" :
+		$jump.play()
+	if sound == "pop_capsule" :
+		$capsule_pop1.play()
+	if sound == "dash" :
+		$dash.play()
 
 func start_sound(sound) :
 	if sound == "walk" and play_walk_sound == false :
