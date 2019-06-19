@@ -6,7 +6,7 @@
 [ext_resource path="res://sounds/footstep1_take2.ogg" type="AudioStream" id=4]
 [ext_resource path="res://sounds/jump1_take1.ogg" type="AudioStream" id=5]
 [ext_resource path="res://sounds/capsule_pop1_take1.ogg" type="AudioStream" id=6]
-[ext_resource path="res://sounds/dash1_take1.ogg" type="AudioStream" id=7]
+[ext_resource path="res://sounds/dash1_take1_mono.ogg" type="AudioStream" id=7]
 
 [node name="Player_SFX" type="Spatial"]
 script = ExtResource( 1 )
