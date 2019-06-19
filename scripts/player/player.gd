@@ -46,7 +46,7 @@ var		bone_transform
 
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
-const DASH_SPEED = 80
+const DASH_SPEED = 150
 
 var update_timer		= Timer.new()
 var db_timer			= Timer.new()
@@ -806,7 +806,7 @@ func	_input(event):
 		#$Head/gun_container.add_child(bullet)
 		#can_fire = false
 		#fire_cooldown.start()
-		#play_sound("player", player_name, "play", "shoot")
+		play_sound("player", player_name, "play", "shoot")
 		ammo -= 1
 		print("fired!")
 	if Input.is_action_just_pressed("fullscreen") and control == true:
