@@ -270,7 +270,8 @@ func	_physics_process(delta):
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
-			anim = "rifle_run_forward"
+			if (anim != "rifle_jump2"):
+				anim = "rifle_run_forward"
 			if time_off_ground == 0 :
 				$Head/Camera/Player_SFX.start_sound("walk")
 		if $JumpCast.is_colliding() :
@@ -303,7 +304,9 @@ func	_physics_process(delta):
 				play_sound("stop", "walk")
 				if jumps == 0 :
 					play_sound("play", "jump")
-				anim = "rifle_jump"
+				if (anim == "rifle_jump2"):
+					$xbot/AnimationPlayer.stop(true)
+				anim = "rifle_jump2"
 				if $Head/Camera/WallCast1.is_colliding() or $Head/Camera/WallCast2.is_colliding() or $Head/Camera/WallCast3.is_colliding() or $Head/Camera/WallCast4.is_colliding():
 					print("colliding")
 					dashing = true
@@ -718,15 +721,15 @@ func	_input(event):
 			$Head.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 			$xbot.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 			change = -event.relative.y * mouse_sensitivity
-			var bone = $xbot/Skeleton.find_bone('mixamorig_Spine1')
+			var bone = $xbot/Skeleton.find_bone('mixamorig_Spine')
 			#var bone_transform = $xbot/Skeleton.get_bone_custom_pose(bone)
 			print(str(bone_transform))
 			if change + camera_angle < 90 and change + camera_angle > -90:
 				$Head/Camera.rotate_x(deg2rad(change))
 				$Head/gun_container.rotate_x(deg2rad(change))
-				var rot_amt = deg2rad(change / 2)
-				bone_transform = bone_transform.rotated(Vector3(1, 0, 0), (-rot_amt))
-				bone_transform = bone_transform.rotated(Vector3(0, 0, 1), (rot_amt))
+				var rot_amt = deg2rad(change)
+				bone_transform = bone_transform.rotated(Vector3(1, 0, 0).normalized(), (-rot_amt) * 0.25)
+				bone_transform = bone_transform.rotated(Vector3(0, 0, 1).normalized(), (rot_amt) * 0.25)
 				$xbot/Skeleton.set_bone_custom_pose(bone, bone_transform);
 				camera_angle += change
 			rpc_unreliable("do_rot", $xbot.rotation.y, bone_transform, global.player_id)
