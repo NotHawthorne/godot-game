@@ -24,6 +24,9 @@ remote func pop_capsule(id) :
 	get_parent().get_node(id).remove_child(capsule)
 	get_parent().get_node(id).cooldown.start()
 
+remote func play_sound(sound) :
+	$pop_capsule.play()
+
 func collided(body):
 	if body and "health" in body and body.player_id == global.player_id :
 		if body.health + health_to_add >= body.max_health :
