@@ -121,13 +121,13 @@ remote func drop_flag(id, flag_dict, location) :
 		get_parent().get_node("Blue_Flag_Pad").drop_flag(location)
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "drop_flag", location)
-			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, "blue")
+			rpc_id(p, "set_flag_owner", id, "blue")
 	if flag_dict["red"] :
 		set_flag_owner(id, "red")
 		get_parent().get_node("Red_Flag_Pad").drop_flag(location)
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "drop_flag", location)
-			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "set_flag_owner", id, "red")
+			rpc_id(p, "set_flag_owner", id, "red")
 
 remote func pickup_flag(id, flag_team) :
 	set_flag_owner(id, flag_team)
@@ -135,12 +135,16 @@ remote func pickup_flag(id, flag_team) :
 		get_parent().get_node("Blue_Flag_Pad").pop_flag()
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "pop_flag")
-			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, team)
+			rpc_id(p, "set_flag_owner", id, flag_team)
 	if flag_team == "red" :
 		get_parent().get_node("Red_Flag_Pad").pop_flag()
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "pop_flag")
-			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "set_flag_owner", id, team)
+			rpc_id(p, "set_flag_owner", id, flag_team)
+	var pnode = get_parent().get_node(str(id))
+	print(pnode.player_name + "picked up", flag_team)
+	if pnode.has_flag_dict[flag_team] :
+		print ("flag in dict")
 
 remote func reset_flag(id, flag_team) :
 	print("trying to reset flag")
@@ -261,14 +265,19 @@ func	_physics_process(delta):
 				update_health(player_id, 100)
 				rpc_unreliable("update_health", player_id, 100)
 				choose_spawn(player_id)
+				respawning = false
 				if player_id == 1 :
-					respawning = false
 					get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
-					if has_flag_bool == true :
+					if has_flag_dict["red"] or has_flag_dict["blue"] :
 						reset_flag(player_id, has_flag_dict)
+					#if has_flag_dict["red"] or has_flag_dict["blue"] :
+					#	drop_flag(player_id, has_flag_dict, self.get_global_transform())
 				else :
 					rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
-					if has_flag_bool == true :
+					#if has_flag_dict["red"] or has_flag_dict["blue"] :
+					#	rpc_id(1, "drop_flag", player_id, has_flag_dict, self.get_global_transform())
+					
+					if has_flag_dict["red"] or has_flag_dict["blue"] :
 						rpc_id(1, "reset_flag", player_id, has_flag_dict)
 		elif !$JumpCast.is_colliding() and respawning == false :
 			time_off_ground += delta * 2
@@ -391,10 +400,9 @@ remote	func	do_update(_transform, pid):
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
 	if (pnode):
-		pnode.set_global_transform(_transform)
+		pnode.set_global_transform(_transform) 
 	else:
 		print("Couldn't update position for " + str(pid))
-	respawning = false
 
 remote	func	do_move(position, pid):
 	var	root	= get_parent()
@@ -471,7 +479,7 @@ func			_deal_damage(shot, amt):
 			global.kills += 1
 			print("TRYING TO KILL")
 			if (player_id == 1):
-				if shot.has_flag_bool == true :
+				if shot.has_flag_dict["red"] or shot.has_flag_dict["blue"] :
 					drop_flag(shot.player_id, shot.has_flag_dict, shot.get_global_transform())
 				choose_spawn(shot.player_id)
 				sync_health(shot.player_id, 100)
@@ -479,7 +487,7 @@ func			_deal_damage(shot, amt):
 				get_parent().find_node("mode_manager").add_stat(shot.player_id, 0, 1, 0)
 				get_parent().find_node("mode_manager").add_stat(player_id, 1, 0, 0)
 			else:
-				if shot.has_flag_bool == true :
+				if shot.has_flag_dict["red"] or shot.has_flag_dict["blue"] :
 					rpc_id(1, "drop_flag", shot.player_id, shot.has_flag_dict, shot.get_global_transform())
 				rpc_id(1, "choose_spawn", shot.player_id)
 				rpc_id(1, "sync_health", shot.player_id, 100)
@@ -700,7 +708,7 @@ func	get_gamestats(action) :
 	if action == "hide" :
 		$Head/Camera/game_stats.visible = false	
 
-remote func		remote_play_sound(node_type, node_name, id, node, mode, sound) :
+remote func		remote_play_sound(node_type, node_name, id, mode, sound) :
 	if node_type == "player" :
 		var pnode = get_parent().get_node(str(id))
 		var sound_node = pnode.get_node("Head/Camera/Player_SFX")
@@ -768,13 +776,17 @@ func	_input(event):
 	if Input.is_action_just_pressed("restart") and control == true:
 		ammo = starting_ammo
 		if player_id == 1 :
-			if has_flag_bool == true :
-				reset_flag(player_id, has_flag_dict)
+			#if has_flag_bool == true :
+			#	reset_flag(player_id, has_flag_dict)
+			if has_flag_dict["red"] or has_flag_dict["blue"] :
+				drop_flag(player_id, has_flag_dict, self.get_global_transform())
 			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
 			choose_spawn(player_id)
 		else :
-			if has_flag_bool == true :
-				rpc_id(1, "reset_flag", player_id, has_flag_dict)
+			#if has_flag_bool == true :
+			#	rpc_id(1, "reset_flag", player_id, has_flag_dict)
+			if has_flag_dict["red"] or has_flag_dict["blue"] :
+				rpc_id(1, "drop_flag", player_id, has_flag_dict, self.get_global_transform())
 			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 			rpc_id(1, "choose_spawn", player_id)
 		update_health(player_id, 100)
