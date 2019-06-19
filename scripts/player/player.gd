@@ -121,6 +121,7 @@ remote func drop_flag(id, flag_dict, location) :
 			rpc_id(p, "set_flag_owner", id, "blue")
 	if flag_dict["red"] :
 		set_flag_owner(id, "red")
+		location.x = location.transform.basis.x - 1
 		get_parent().get_node("Red_Flag_Pad").drop_flag(location)
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "drop_flag", location)
