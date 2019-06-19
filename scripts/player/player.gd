@@ -43,7 +43,7 @@ var		has_flag_dict	= {}
 var		anim			= "rifle_idle"
 var		bone_transform
 var		last_do_move	= null
-var		packet_id_cache = []
+var		packet_id_cache = {}
 
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -406,8 +406,10 @@ remote	func	do_update(_transform, pid):
 remote	func	do_move(position, pid, packet_id):
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
-	if (packet_id_cache[packet_id] != null):
+	if packet_id_cache["do_move"] == packet_id :
 		return
+	else :
+		packet_id_cache["do_move"] = packet_id
 	if (position != last_do_move):
 		pnode.move_and_slide(position)
 		anim = "rifle_run_forward"
