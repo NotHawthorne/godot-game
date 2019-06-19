@@ -108,8 +108,7 @@ remote func set_flag_owner(id, flag_team) :
 	var pnode = get_parent().get_node(str(id))
 	print("setting flag owner: " + pnode.player_name)
 	pnode.has_flag_dict[flag_team] = !(pnode.has_flag_dict[flag_team])
-	if pnode.has_flag_dict["blue"] or pnode.has_flag_dict["red"] :
-	else :
+	if not (pnode.has_flag_dict["blue"] or pnode.has_flag_dict["red"]) :
 		print(pnode.player_name + " dropped all their flags")
 
 remote func drop_flag(id, flag_dict, location) :
@@ -773,19 +772,19 @@ func	_input(event):
 	if Input.is_action_just_pressed("restart") and control == true:
 		ammo = starting_ammo
 		if player_id == 1 :
-			#if has_flag_bool == true :
-			#	reset_flag(player_id, has_flag_dict)
 			if has_flag_dict["red"] or has_flag_dict["blue"] :
-				print("dropping flag")
-				drop_flag(player_id, has_flag_dict, self.get_global_transform())
+				reset_flag(player_id, has_flag_dict)
+			#if has_flag_dict["red"] or has_flag_dict["blue"] :
+			#	print("dropping flag")
+			#	drop_flag(player_id, has_flag_dict, self.get_global_transform())
 			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
 			choose_spawn(player_id)
 		else :
-			#if has_flag_bool == true :
-			#	rpc_id(1, "reset_flag", player_id, has_flag_dict)
 			if has_flag_dict["red"] or has_flag_dict["blue"] :
-				print("dropping flag")
-				rpc_id(1, "drop_flag", player_id, has_flag_dict, self.get_global_transform())
+				rpc_id(1, "reset_flag", player_id, has_flag_dict)
+			#if has_flag_dict["red"] or has_flag_dict["blue"] :
+			#	print("dropping flag")
+			#	rpc_id(1, "drop_flag", player_id, has_flag_dict, self.get_global_transform())
 			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 			rpc_id(1, "choose_spawn", player_id)
 		update_health(player_id, 100)
