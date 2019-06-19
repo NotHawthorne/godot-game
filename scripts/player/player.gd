@@ -43,6 +43,7 @@ var		has_flag_dict	= {}
 var		anim			= "rifle_idle"
 var		bone_transform
 var		last_do_move	= null
+var		packet_id_cache = []
 
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -376,7 +377,7 @@ func	_physics_process(delta):
 		else:
 			accel = RUN_ACCEL * delta
 		velocity	= velocity.linear_interpolate(target, accel)
-		rpc_unreliable("do_move", velocity, player_id)
+		rpc_unreliable("do_move", velocity, player_id, randi())
 		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
 	$xbot/AnimationPlayer.play(anim);
 
@@ -402,14 +403,17 @@ remote	func	do_update(_transform, pid):
 	else:
 		print("Couldn't update position for " + str(pid))
 
-remote	func	do_move(position, pid):
+remote	func	do_move(position, pid, packet_id):
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
+	if (packet_id_cache[packet_id] != null):
+		return
 	if (position != last_do_move):
 		pnode.move_and_slide(position)
 		anim = "rifle_run_forward"
 	else:
 		anim = "rifle_idle"
+	packet_id_cache[packet_id] = 1;
 
 remote	func	do_rot(headrot, camrot, pid):
 	var	root	= get_parent()
