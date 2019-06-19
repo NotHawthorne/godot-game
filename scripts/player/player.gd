@@ -40,7 +40,6 @@ var		respawning		= false
 var		team			= null
 var		is_headless		= false
 var		has_flag_dict	= {}
-var		has_flag_bool	= false
 var		anim			= "rifle_idle"
 var		bone_transform
 
@@ -110,9 +109,7 @@ remote func set_flag_owner(id, flag_team) :
 	print("setting flag owner: " + pnode.player_name)
 	pnode.has_flag_dict[flag_team] = !(pnode.has_flag_dict[flag_team])
 	if pnode.has_flag_dict["blue"] or pnode.has_flag_dict["red"] :
-		pnode.has_flag_bool = true
 	else :
-		pnode.has_flag_bool = false
 		print(pnode.player_name + " dropped all their flags")
 
 remote func drop_flag(id, flag_dict, location) :
@@ -186,7 +183,7 @@ func	reset_players() :
 				reset_flag(p, pnode.has_flag)
 		rpc_id(p, "match_info", "start")
 		choose_spawn(p)
-	if global.mode == "ctf" and has_flag_bool == true :
+	if global.mode == "ctf" and has_flag_dict["red"] or has_flag_dict["blue"] :
 		reset_flag(player_id, has_flag_dict)
 	choose_spawn(1)
 	match_info("start")
