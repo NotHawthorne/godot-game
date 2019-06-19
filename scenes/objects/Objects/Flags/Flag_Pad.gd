@@ -33,7 +33,7 @@ remote func pop_flag() :
 
 func capsule_collided(body):
 	print("colliding with flag: " + my_team)
-	if "player_name" in body and body.team == enemy_team :
+	if "player_name" in body and body.team == enemy_team and body.health > 0:
 		print("trying to pick up flag")
 		picked_up = true
 		if global.player_id == 1 :
