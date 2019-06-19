@@ -278,7 +278,7 @@ func	_physics_process(delta):
 			if (anim != "rifle_jump2"):
 				anim = "rifle_run_forward"
 			if time_off_ground == 0 :
-				$Head/Camera/Player_SFX.start_sound("walk")
+				play_sound("player", player_name, "start", "walk")
 		if $JumpCast.is_colliding() :
 			if Input.is_action_pressed("move_backward"):
 				direction += aim.z
@@ -308,7 +308,7 @@ func	_physics_process(delta):
 			if (jumps <= 1):
 				play_sound("player", player_name, "stop", "walk")
 				if jumps == 0 :
-					play_sound("play", "jump")
+					play_sound("player", player_name, "play", "jump")
 				if (anim == "rifle_jump2"):
 					$xbot/AnimationPlayer.stop(true)
 				anim = "rifle_jump2"
