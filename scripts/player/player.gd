@@ -359,7 +359,6 @@ func	_physics_process(delta):
 					velocity.y -= (JUMP_SPEED * delta) / 2
 					jumps += 1
 		#direction.y = 0
-		if !$JumpCast.is_colliding() and respawning == true :
 			time_off_ground += (delta * 2)
 		velocity.y -= GRAVITY * time_off_ground
 		direction	= direction.normalized()
