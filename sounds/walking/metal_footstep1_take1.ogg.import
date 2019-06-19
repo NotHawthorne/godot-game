@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/metal_footstep1_take1.ogg-0c22341f8a910ed725aec10d9e634487.oggstr"
+
+[deps]
+
+source_file="res://sounds/walking/metal_footstep1_take1.ogg"
+dest_files=[ "res://.import/metal_footstep1_take1.ogg-0c22341f8a910ed725aec10d9e634487.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
