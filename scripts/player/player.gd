@@ -402,7 +402,7 @@ remote	func	do_rot(headrot, camrot, pid):
 	#pnode.get_node('Head').set_rotation_degrees(rot)
 	var bone = pnode.get_node('xbot').get_node('Skeleton').find_bone('mixamorig_Spine1')
 	pnode.get_node('xbot').get_node('Skeleton').set_bone_custom_pose(bone, camrot);
-	pnode.get_node('xbot').rotatation.y = headrot
+	pnode.get_node('xbot').rotation.y = headrot
 
 remote	func	set_vr_mode(id, mode):
 	vr_player = mode
