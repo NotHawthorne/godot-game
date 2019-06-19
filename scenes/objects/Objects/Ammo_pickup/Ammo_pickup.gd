@@ -24,6 +24,9 @@ remote func pop_capsule(id) :
 	get_parent().get_node(id).remove_child(capsule)
 	get_parent().get_node(id).cooldown.start()
 
+func play_sound(sound) :
+	$pop_capsule.play()
+
 func collided(body):
 	if body and "ammo" in body and body.player_id == global.player_id :
 		if body.ammo + ammo_to_add >= body.max_ammo :

@@ -247,6 +247,9 @@ func	_physics_process(delta):
 		# Reset player direction
 		direction	= Vector3()
 		if $JumpCast.is_colliding():
+			#if time_off_ground > 0 and respawning == false :
+			#	print("landed, time off ground: " + str(time_off_ground))
+			#	play_sound("play", "landing")
 			time_off_ground = 0
 			jumps = 0
 		if $JumpCast.is_colliding() and respawning == false :
@@ -267,6 +270,8 @@ func	_physics_process(delta):
 					rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 					if has_flag_bool == true :
 						rpc_id(1, "reset_flag", player_id, has_flag_dict)
+		elif !$JumpCast.is_colliding() and respawning == false :
+			time_off_ground += delta * 2
 		var aim		= $Head/Camera.get_global_transform().basis
 		if Input.is_action_pressed("move_forward"):
 			direction -= aim.z
@@ -283,25 +288,25 @@ func	_physics_process(delta):
 				direction += aim.x
 			
 			if Input.is_action_pressed("move_backward") and not (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_forward")):
-				play_sound("start", "walk")
+				play_sound("player", player_name, "start", "walk")
 			if Input.is_action_pressed("move_left") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward")):
-				play_sound("start", "walk")
+				play_sound("player", player_name, "start", "walk")
 			if Input.is_action_pressed("move_right") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_backward")):
-				play_sound("start", "walk")
+				play_sound("player", player_name, "start", "walk")
 		else :
-			play_sound("stop", "walk")
+			play_sound("player", player_name, "stop", "walk")
 		if Input.is_action_just_released("move_forward") and not (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward")):
-			play_sound("stop", "walk")
+			play_sound("player", player_name, "stop", "walk")
 		if Input.is_action_just_released("move_backward") and not (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_forward")):
-			play_sound("stop", "walk")
+			play_sound("player", player_name, "stop", "walk")
 		if Input.is_action_just_released("move_left") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward")):
-			play_sound("stop", "walk")
+			play_sound("player", player_name, "stop", "walk")
 		if Input.is_action_just_released("move_right") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_backward")):
-			play_sound("stop", "walk")
+			play_sound("player", player_name, "stop", "walk")
 		if (Input.is_action_just_pressed("jump")):
 			var dashing = false
 			if (jumps <= 1):
-				play_sound("stop", "walk")
+				play_sound("player", player_name, "stop", "walk")
 				if jumps == 0 :
 					play_sound("play", "jump")
 				if (anim == "rifle_jump2"):
@@ -335,26 +340,27 @@ func	_physics_process(delta):
 				time_off_ground = 0
 			if jumps == 2:
 				if (Input.is_action_pressed("move_forward")):
-					play_sound("play", "dash")
+					play_sound("player", player_name, "play", "dash")
 					velocity -= aim.z * DASH_SPEED
 					dashing = true
 				if (Input.is_action_pressed("move_backward")):
-					play_sound("play", "dash")
+					play_sound("player", player_name, "play", "dash")
 					velocity += aim.z * DASH_SPEED
 					dashing = true
 				if (Input.is_action_pressed("move_left")):
-					play_sound("play", "dash")
+					play_sound("player", player_name, "play", "dash")
 					velocity -= aim.x * DASH_SPEED
 					dashing = true
 				if (Input.is_action_pressed("move_right")):
-					play_sound("play", "dash")
+					play_sound("player", player_name, "play", "dash")
 					velocity += aim.x * DASH_SPEED
 					dashing = true
 				if dashing == true:
 					velocity.y -= (JUMP_SPEED * delta) / 2
 					jumps += 1
-		direction.y = 0
-		time_off_ground += (delta * 2)
+		#direction.y = 0
+		if !$JumpCast.is_colliding() and respawning == true :
+			time_off_ground += (delta * 2)
 		velocity.y -= GRAVITY * time_off_ground
 		direction	= direction.normalized()
 		var target	= direction * RUN_SPEED
@@ -695,24 +701,34 @@ func	get_gamestats(action) :
 	if action == "hide" :
 		$Head/Camera/game_stats.visible = false	
 
-remote func		remote_play_sound(id, mode, sound) :
-	var pnode = get_parent().get_node(str(id))
-	var sound_node = pnode.get_node("Head/Camera/Player_SFX")
-	if mode == "play" :
-		sound_node.play_sound(sound)
-	if mode == "start" :
-		sound_node.start_sound(sound)
-	if mode == "stop" :
-		sound_node.stop_sound(sound)
+remote func		remote_play_sound(node_type, node_name, id, node, mode, sound) :
+	if node_type == "player" :
+		var pnode = get_parent().get_node(str(id))
+		var sound_node = pnode.get_node("Head/Camera/Player_SFX")
+		if mode == "play" :
+			sound_node.play_sound(sound)
+		if mode == "start" :
+			sound_node.start_sound(sound)
+		if mode == "stop" :
+			sound_node.stop_sound(sound)
+	if node_type == "capsule" :
+		if mode == "play" :
+			print("playing sound on: " + get_parent().get_node(node_name).get_name())
+			get_parent().get_node(node_name).play_sound("pop")
 
-func play_sound(mode, sound) :
-	if mode == "play" :
-		$Head/Camera/Player_SFX.play_sound(sound)
-	if mode == "start" :
-		$Head/Camera/Player_SFX.start_sound(sound)
-	if mode == "stop" :
-		$Head/Camera/Player_SFX.stop_sound(sound)
-	rpc_unreliable("remote_play_sound", player_id, mode, sound)
+func play_sound(node_type, node_name, mode, sound) :
+	if node_type == "player" :
+		if mode == "play" :
+			$Head/Camera/Player_SFX.play_sound(sound)
+		if mode == "start" :
+			$Head/Camera/Player_SFX.start_sound(sound)
+		if mode == "stop" :
+			$Head/Camera/Player_SFX.stop_sound(sound)
+	elif node_type == "capsule" :
+		if mode == "play" :
+			print("playing sound on: " + get_parent().get_node(node_name).get_name())
+			get_parent().get_node(node_name).play_sound("pop")
+	rpc_unreliable("remote_play_sound", node_type, node_name, player_id, mode, sound)
 
 func	_input(event):
 	if event is InputEventMouseMotion and !global.ui_mode and control == true:
@@ -783,13 +799,15 @@ func	_input(event):
 				print("CALLING SEND DAMAGE")
 				self._deal_damage($Head/Camera/CamCast.get_collider(), weapon.damage)
 			elif $Head/Camera/CamCast.get_collider().get_parent().has_method("pop_capsule") :
+				play_sound("capsule", $Head/Camera/CamCast.get_collider().get_parent().get_name(), "play", "pop_capsule")
 				$Head/Camera/CamCast.get_collider().get_parent().pop_capsule($Head/Camera/CamCast.get_collider().get_parent().get_name())
+				#$Head/Camera/CamCast.get_collider().get_parent().get_node("pop_capsule").play()
 		#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 		
 		#$Head/gun_container.add_child(bullet)
 		#can_fire = false
 		#fire_cooldown.start()
-		play_sound("play", "shoot")
+		#play_sound("player", player_name, "play", "shoot")
 		ammo -= 1
 		print("fired!")
 	if Input.is_action_just_pressed("fullscreen") and control == true:

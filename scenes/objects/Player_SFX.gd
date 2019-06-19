@@ -24,6 +24,8 @@ func play_sound(sound) :
 		$capsule_pop1.play()
 	if sound == "dash" :
 		$dash.play()
+	if sound == "landing" :
+		$landing.play()
 
 func start_sound(sound) :
 	if sound == "walk" and play_walk_sound == false :
