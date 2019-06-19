@@ -42,6 +42,7 @@ var		is_headless		= false
 var		has_flag_dict	= {}
 var		anim			= "rifle_idle"
 var		bone_transform
+var		last_do_move	= null
 
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -403,7 +404,11 @@ remote	func	do_update(_transform, pid):
 remote	func	do_move(position, pid):
 	var	root	= get_parent()
 	var	pnode	= root.get_node(str(pid))
-	pnode.move_and_slide(position)
+	if (position != last_do_move):
+		pnode.move_and_slide(position)
+		anim = "rifle_run_forward"
+	else:
+		anim = "rifle_idle"
 
 remote	func	do_rot(headrot, camrot, pid):
 	var	root	= get_parent()
