@@ -802,8 +802,9 @@ func	_input(event):
 		update_health(player_id, 100)
 		rpc_unreliable("update_health", player_id, 100)
 	if Input.is_action_just_pressed("start_chat") and control == true :
+		
 		global.player.control = false
-		#get_tree().set_input_as_handled()
+		get_tree().set_input_as_handled()
 		$Head/Camera/ChatBox/Control/LineEdit.set_editable(true)
 		$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
 		$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
