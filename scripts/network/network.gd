@@ -179,6 +179,8 @@ remote func rpc_message(message) :
 
 func	send_message(message):
 	var chat_node = global.player.get_node('Head/Camera/ChatBox/ChatText')
+	if message.find("/help") != -1 :
+		message = "godot-game made by alkozma and calamber\n/help  - prints this text"
 	chat_node.add_text(message)
 	chat_node.newline()
 	rpc_unreliable("rpc_message", message)
