@@ -46,7 +46,7 @@ func			_player_disconnected(id):
 	if (get_tree().is_network_server()):
 		if get_parent().has_node(str(id)) :
 			get_parent().get_node("mode_manager").remove_player(id)
-		send_message(players[id] + " has left!")
+		send_message(1, players[id] + " has left!")
 	unregister_player(id)
 	print("PLAYER LEFT")
 	rpc("unregister_player", id)
@@ -177,10 +177,20 @@ remote func rpc_message(message) :
 	chat_node.add_text(message)
 	chat_node.newline()
 
-func	send_message(message):
+remote func		send_message(pid, message):
 	var chat_node = global.player.get_node('Head/Camera/ChatBox/ChatText')
-	if message.find("/help") != -1 :
-		message = "godot-game made by alkozma and calamber\n/help  - prints this text"
+	if message.find(": /") != -1:
+		print("trying to run command")
+		if message.find("/help") != -1 :
+			message = "godot-game made by alkozma and calamber\n/help  - prints this text"
+		else :
+			message = "invalid command!"
+		if pid == 1 :
+			chat_node.add_text(message)
+			chat_node.newline()
+		else :
+			rpc_id(pid, "rpc_message", message)
+		return
 	chat_node.add_text(message)
 	chat_node.newline()
 	rpc_unreliable("rpc_message", message)
@@ -222,7 +232,7 @@ func			spawn_player(id, name, map, vr, team, location):
 			player.is_headless = true
 	get_parent().add_child(player)
 	if (name && player.control == true):
-		send_message(name + " joined!")
+		send_message(id, name + " joined!")
 	#for admin in global.admins :
 	#	if admin == name and global.lobby_map_selection != map:
 	#		rpc_id(1, "_change_map", global.lobby_map_selection)

@@ -131,11 +131,13 @@ remote func drop_flag(id, flag_dict, location) :
 remote func pickup_flag(id, flag_team) :
 	set_flag_owner(id, flag_team)
 	if flag_team == "blue" :
+		play_sound("global", player_name, "play", "blue_flag_taken")
 		get_parent().get_node("Blue_Flag_Pad").pop_flag()
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Blue_Flag_Pad").rpc_id(p, "pop_flag")
 			rpc_id(p, "set_flag_owner", id, flag_team)
 	if flag_team == "red" :
+		play_sound("global", player_name, "play", "red_flag_taken")
 		get_parent().get_node("Red_Flag_Pad").pop_flag()
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "pop_flag")
@@ -671,7 +673,10 @@ func	stats_init():
 	pass
 
 func	get_message(message):
-	get_parent().find_node('network').send_message(message)
+	if player_id == 1 :
+		get_parent().find_node('network').send_message(player_id, message)
+	else :
+		get_parent().find_node('network').rpc_id(1, "send_message", player_id, message)
 
 remote func		display_stats(data, teams) :
 	print("got data")
@@ -726,6 +731,10 @@ remote func		remote_play_sound(node_type, node_name, id, mode, sound) :
 			sound_node.start_sound(sound)
 		if mode == "stop" :
 			sound_node.stop_sound(sound)
+	if node_type == "global" :
+		var sound_node = global.player.get_node("Head/Camera/Player_SFX")
+		if mode == "play" :
+			sound_node.play_sound(sound)
 	if node_type == "capsule" :
 		if mode == "play" :
 			print("playing sound on: " + get_parent().get_node(node_name).get_name())
@@ -739,6 +748,10 @@ func play_sound(node_type, node_name, mode, sound) :
 			$Head/Camera/Player_SFX.start_sound(sound)
 		if mode == "stop" :
 			$Head/Camera/Player_SFX.stop_sound(sound)
+	if node_type == "global" :
+		var sound_node = global.player.get_node("Head/Camera/Player_SFX")
+		if mode == "play" :
+			sound_node.play_sound(sound)
 	elif node_type == "capsule" :
 		if mode == "play" :
 			print("playing sound on: " + get_parent().get_node(node_name).get_name())
