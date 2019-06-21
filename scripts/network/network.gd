@@ -45,6 +45,9 @@ func			_player_connected(id):
 func			_player_disconnected(id):
 	if (get_tree().is_network_server()):
 		if get_parent().has_node(str(id)) :
+			var p_node = get_parent().get_node(str(id))
+			if p_node.has_flag_dict["red"] or p_node.has_flag_dict["blue"] :
+				global.player.reset_flag(id, p_node.has_flag_dict)
 			get_parent().get_node("mode_manager").remove_player(id)
 		send_message(1, players[id] + " has left!")
 	unregister_player(id)
