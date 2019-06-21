@@ -22,6 +22,7 @@ var		mode				= "ctf"
 var		my_team				= null
 var		teams				= false
 var		admins				= [ "cam" , "NotHawthorne" , "jeremy" , "testbot" ]
+var		first_load			= true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
