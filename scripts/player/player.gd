@@ -44,7 +44,7 @@ var		anim			= "rifle_idle"
 var		bone_transform
 var		last_do_move	= null
 var		packet_id_cache = {}
-
+var		first_load		= true
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
 const DASH_SPEED = 150
@@ -101,6 +101,8 @@ func _ready():
 			get_parent().find_node("mode_manager").start_game()
 			get_parent().find_node("mode_manager").add_player(1, player_name, team)
 			match_info("start")
+	global.first_load = false
+	first_load = false
 	bone_transform = $xbot/Skeleton.get_bone_custom_pose($xbot/Skeleton.find_bone("mixamorig_Spine1"))
 
 func hide_messages() :
@@ -804,6 +806,7 @@ func	_input(event):
 			#	drop_flag(player_id, has_flag_dict, self.get_global_transform())
 			get_parent().find_node("mode_manager").add_stat(player_id, 0, 1, 0)
 			choose_spawn(player_id)
+			sync_health(player_id, 100)
 		else :
 			if has_flag_dict["red"] or has_flag_dict["blue"] :
 				rpc_id(1, "reset_flag", player_id, has_flag_dict)
@@ -812,8 +815,7 @@ func	_input(event):
 			#	rpc_id(1, "drop_flag", player_id, has_flag_dict, self.get_global_transform())
 			rpc_id(1, "leaderboard_add_stat", player_id, 0, 1, 0)
 			rpc_id(1, "choose_spawn", player_id)
-		update_health(player_id, 100)
-		rpc_unreliable("update_health", player_id, 100)
+			rpc_id(1, "sync_health", player_id, 100)
 	if Input.is_action_just_pressed("start_chat") and control == true :
 		
 		global.player.control = false

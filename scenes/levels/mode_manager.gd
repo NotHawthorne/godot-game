@@ -13,16 +13,16 @@ func _ready():
 	pass
 
 func add_player(id, pname, team) :
-	if global.mode == "ctf" :
-		var player_node = get_parent().get_node(str(id))
-		get_parent().get_node("local_settings").rpc_id(player_node.player_id, "spawn_flags")
+	var player_node = get_parent().get_node(str(id))
+	if global.mode == "ctf" and player_node.first_load :
+		get_parent().get_node("local_settings").rpc_id(id, "spawn_flags")
 	gamestate.id[id] = id
 	gamestate.players[id] = pname
 	gamestate.kills[id] = 0
 	gamestate.deaths[id] = 0
 	if global.teams and team :
 		gamestate.team[id] = team
-		if gamestate.team_size[gamestate.team[id]] :
+		if gamestate.team[id] in gamestate.team_size :
 			gamestate.team_size[gamestate.team[id]] += 1
 		else :
 			gamestate.team_size[gamestate.team[id]] = 1
@@ -33,11 +33,9 @@ func remove_player(id) :
 	gamestate.players.erase(id)
 	gamestate.kills.erase(id)
 	gamestate.deaths.erase(id)
-	if global.teams and gamestate.team[id] :
-		if gamestate.team_size[gamestate.team[id]] :
+	if global.teams and id in gamestate.team :
+		if gamestate.team_size[gamestate.team[id]] > 0 :
 			gamestate.team_size[gamestate.team[id]] -= 1
-		else :
-			gamestate.team_size[gamestate.team[id]] = 0
 		gamestate.team.erase(id)
 
 func add_stat(id, kill, death, caps) :

@@ -182,17 +182,9 @@ remote func rpc_message(message) :
 
 remote func		send_message(pid, message):
 	var chat_node = global.player.get_node('Head/Camera/ChatBox/ChatText')
-	if message.find(": /") != -1:
+	if ": /" in message :
 		print("trying to run command")
-		if message.find("/help") != -1 :
-			message = "godot-game made by alkozma and calamber\n/help  - prints this text"
-		else :
-			message = "invalid command!"
-		if pid == 1 :
-			chat_node.add_text(message)
-			chat_node.newline()
-		else :
-			rpc_id(pid, "rpc_message", message)
+		get_parent().get_node("local_settings").run_command(pid, message, chat_node)
 		return
 	chat_node.add_text(message)
 	chat_node.newline()
