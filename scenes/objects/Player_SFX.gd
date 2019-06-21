@@ -26,6 +26,10 @@ func play_sound(sound) :
 		$dash.play()
 	if sound == "landing" :
 		$landing.play()
+	if sound == "red_flag_taken" :
+		$red_flag_taken.play()
+	if sound == "blue_flag_taken" :
+		$blue_flag_taken.play()
 
 func start_sound(sound) :
 	if sound == "walk" and play_walk_sound == false :

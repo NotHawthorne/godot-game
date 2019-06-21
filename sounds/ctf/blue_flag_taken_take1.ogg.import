@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/blue_flag_taken_take1.ogg-797cde760c4cddd4e5b8e41264e94b17.oggstr"
+
+[deps]
+
+source_file="res://sounds/ctf/blue_flag_taken_take1.ogg"
+dest_files=[ "res://.import/blue_flag_taken_take1.ogg-797cde760c4cddd4e5b8e41264e94b17.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/objects/Player_SFX.gd" type="Script" id=1]
 [ext_resource path="res://sounds/shoot_sound.wav" type="AudioStream" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://sounds/capsule_pop1_take1.ogg" type="AudioStream" id=6]
 [ext_resource path="res://sounds/dash1_take1_mono.ogg" type="AudioStream" id=7]
 [ext_resource path="res://sounds/landing/metal1_landing1_take1.ogg" type="AudioStream" id=8]
+[ext_resource path="res://sounds/ctf/red_flag_taken_take1.ogg" type="AudioStream" id=9]
+[ext_resource path="res://sounds/ctf/blue_flag_taken_take1.ogg" type="AudioStream" id=10]
 
 [node name="Player_SFX" type="Spatial"]
 script = ExtResource( 1 )
@@ -43,3 +45,9 @@ unit_size = 10.0
 [node name="landing" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 8 )
 unit_size = 10.0
+
+[node name="red_flag_taken" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="blue_flag_taken" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
