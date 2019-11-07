@@ -21,6 +21,22 @@ func _on_Button_pressed():
 	var uname = uname_field.text
 	var pwd = pwd_field.text
 	var ip = lineedit.text
+	
+	print("GOING")
+	#for player in global.admins :
+	#	if (player == uname):
+	#		global.define_level($PanelContainer/Panel/Control.selection)
+	if global.vr_selected :
+		global.interface = ARVRServer.find_interface("OpenVR")
+	if not global.interface :
+		global.vr_selected = false
+	if global.server_selection == "0.0.0.0" :
+		if global.mode != "deathmatch" :
+			global.teams = true
+		global.map = global.lobby_map_selection
+	get_tree().change_scene(global.map)
+
+	return
 
 	var http = HTTPClient.new()
 	var err = http.connect_to_host("35.236.33.159", 3000)
@@ -99,19 +115,6 @@ func _on_Button_pressed():
 		["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
 		body
 	)
-	print("GOING")
-	#for player in global.admins :
-	#	if (player == uname):
-	#		global.define_level($PanelContainer/Panel/Control.selection)
-	if global.vr_selected :
-		global.interface = ARVRServer.find_interface("OpenVR")
-	if not global.interface :
-		global.vr_selected = false
-	if global.server_selection == "0.0.0.0" :
-		if global.mode != "deathmatch" :
-			global.teams = true
-		global.map = global.lobby_map_selection
-	get_tree().change_scene(global.map)
 
 func _on_boi_request_completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())

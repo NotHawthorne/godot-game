@@ -590,6 +590,8 @@ remote func		stats_add_kill(id, pname, kills):
 
 func	stats_init():
 	print(str(player_id) + "initializing")
+	global.kills = 0
+	return
 	var http = HTTPClient.new()
 	var err = http.connect_to_host("35.236.33.159", 3000)
 	var headers = [
