@@ -55,10 +55,10 @@ func			_player_disconnected(id):
 	rpc("unregister_player", id)
 
 func			_connected_ok(id):
-	if	global.vr_selected :
-		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true, global.my_team)
-	else :
-		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false, global.my_team)
+	#if	global.vr_selected :
+	#	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true, global.my_team)
+	#else :
+	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false, global.my_team)
 
 remote	func	user_ready(id, p_name, vr, team):
 	if get_tree().is_network_server():
