@@ -241,7 +241,7 @@ remote func	gamestate_request(pid):
 	gamestate.players.push_back(server_player)
 	for player in gamestate.players:
 		print(str(player.id) + ":" + str(player.health))
-	gamestate.chat_log = global.player.get_node('Head/Camera/Viewport-UI/ChatBox/ChatText').get_text()
+	gamestate.chat_log = global.player.get_node('Head/Camera/Viewport-UI/UI/ChatBox/ChatText').get_text()
 	var pnode = get_parent().get_node(str(pid))
 	get_parent().find_node("mode_manager").add_player(pid, pnode.player_name, pnode.team)
 	rpc_id(pid, "gamestate_update", gamestate)
@@ -723,7 +723,7 @@ func	get_gamestats(action) :
 		else :
 			rpc_id(1, "get_leaderboard", player_id)
 	if action == "hide" :
-		$Head/Camera/game_stats.visible = false	
+		$"Head/Camera/Viewport-UI/UI/game_stats".visible = false	
 
 remote func		remote_play_sound(node_type, node_name, id, mode, sound) :
 	if node_type == "player" :
