@@ -55,10 +55,10 @@ func			_player_disconnected(id):
 	rpc("unregister_player", id)
 
 func			_connected_ok(id):
-	#if	global.vr_selected :
-	#	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true, global.my_team)
-	#else :
-	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false, global.my_team)
+	if	global.vr_selected :
+		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, true, global.my_team)
+	else :
+		rpc_id(1, "user_ready", get_tree().get_network_unique_id(), player_name, false, global.my_team)
 
 remote	func	user_ready(id, p_name, vr, team):
 	if get_tree().is_network_server():
@@ -111,12 +111,15 @@ remote	func	register_new_player(id, name, curr_map, vr, team, location):
 	if get_tree().is_network_server():
 		var spawn = choose_spawn_on_join(team)
 		rpc_id(id, "register_new_player", id, name, curr_map, vr, team, spawn)
-		rpc_id(id, "register_new_player", 1, player_name, global.map, global.vr_selected, global.player.team, global.player.get_global_transform())
+		rpc_id(id, "register_new_player", 1, player_name, global.map, false, global.player.team, global.player.get_global_transform())
 		for peer_id in players:
 			var pnode = get_parent().get_node(str(peer_id))
-			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, pnode.vr_player, pnode.team, pnode.get_global_transform())
+			rpc_id(id, "register_new_player", peer_id, players[peer_id], global.map, false, pnode.team, pnode.get_global_transform())
 		players[id] = name
-		spawn_player(id, name, global.map, vr, team, spawn)
+		if (id != 1) :
+			spawn_player(id, name, global.map, false, team, spawn)
+		else :
+			spawn_player(id, name, global.map, vr, team, spawn)
 		return
 	players[id] = name
 	spawn_player(id, name, global.map, vr, team, location)
