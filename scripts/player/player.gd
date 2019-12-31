@@ -218,7 +218,7 @@ remote func	choose_spawn(id) :
 
 remote func		gamestate_update(data):
 	print("received update request")
-	global.player.get_node('Head/Camera/ChatBox/ChatText').add_text(data.chat_log)
+	global.player.get_node('Head/Camera/Viewport-UI/UI/ChatBox/ChatText').add_text(data.chat_log)
 	for player in data.players:
 		print("updating player " + str(player.id))
 		var pnode = get_parent().get_node(str(player.id))
