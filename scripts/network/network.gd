@@ -176,12 +176,12 @@ remote func		_change_map(map):
 #	global.player.get_node('Head/Camera/ChatBox/ChatText').newline()
 
 remote func rpc_message(message) :
-	var chat_node = global.player.get_node('Head/Camera/ChatBox/ChatText')
+	var chat_node = global.player.get_node('Head/Camera/Viewport-UI/UI/ChatBox/ChatText')
 	chat_node.add_text(message)
 	chat_node.newline()
 
 remote func		send_message(pid, message):
-	var chat_node = global.player.get_node('Head/Camera/ChatBox/ChatText')
+	var chat_node = global.player.get_node('Head/Camera/Viewport-UI/UI/ChatBox/ChatText')
 	if ": /" in message :
 		print("trying to run command")
 		get_parent().get_node("local_settings").run_command(pid, message, chat_node)

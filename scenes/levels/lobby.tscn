@@ -167,3 +167,5 @@ text = "select team"
 [connection signal="request_completed" from="PanelContainer/HTTPRequest" to="PanelContainer/Panel/LineEdit" method="_on_HTTPRequest_request_completed"]
 [connection signal="request_completed" from="PanelContainer/ServersRequest" to="PanelContainer/Panel/ServerListing" method="_on_ServersRequest_request_completed"]
 [connection signal="request_completed" from="boi" to="." method="_on_boi_request_completed"]
+[connection signal="pressed" from="vr_select/Button" to="vr_select" method="_on_Button_pressed"]
+[connection signal="toggled" from="vr_select/Button/checkbox" to="vr_select" method="_on_checkbox_toggled"]

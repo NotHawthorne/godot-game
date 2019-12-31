@@ -22,4 +22,4 @@ func _ready():
 		Engine.target_fps = 90
 		
 		# Tell our display what we want to display
-		$"ViewportContainer/Viewport-UI".set_viewport_texture($"Viewport-VR".get_texture())
+		$"Camera/Viewport-UI".set_viewport_texture($"Viewport-VR".get_texture())

@@ -57,7 +57,7 @@ var message_timer		= Timer.new()
 var time_off_ground		= 0
 
 func _ready():
-	$Head/Camera/ChatBox/Control/LineEdit.set_process_input(false)
+	$"Head/Camera/Viewport-UI/UI/ChatBox/Control/LineEdit".set_process_input(false)
 	$Head/Camera/Player_SFX.id = player_id
 	update_timer.set_wait_time(1)
 	update_timer.connect("timeout", self, "_update")
@@ -91,9 +91,9 @@ func _ready():
 		var bone_transform = Transform(Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0))
 		$xbot/Skeleton.set_bone_rest(bone, bone_transform);
 		OS.set_window_size(Vector2(1280, 720))
-		$Head/Camera/Sprite.visible = true
-		$Head/Camera/player_info.visible = true
-		$Head/Camera/ChatBox.visible = true
+		$"Head/Camera/Viewport-UI/UI/Sprite".visible = true
+		$"Head/Camera/Viewport-UI/UI/player_info".visible = true
+		$"Head/Camera/Viewport-UI/UI/ChatBox".visible = true
 		if (player_id != 1):
 			print("name: " + player_name + "team: " + team)
 			rpc_id(1, "gamestate_request", player_id)
@@ -106,7 +106,7 @@ func _ready():
 	bone_transform = $xbot/Skeleton.get_bone_custom_pose($xbot/Skeleton.find_bone("mixamorig_Spine1"))
 
 func hide_messages() :
-	$Head/Camera/match_messages.visible = false
+	$"Head/Camera/Viewport-UI/UI/match_messages".visible = false
 
 remote func set_flag_owner(id, flag_team) :
 	var pnode = get_parent().get_node(str(id))
@@ -165,19 +165,19 @@ remote func reset_flag(id, flag_team) :
 			rpc_id(p, "set_flag_owner", id, "red")
 
 remote func match_info(message) :
-	$Head/Camera/match_messages/round_start.visible = false
-	$Head/Camera/match_messages/you_win.visible = false
-	$Head/Camera/match_messages/you_lose.visible = false
-	$Head/Camera/match_messages/tied_game.visible = false
+	$"Head/Camera/Viewport-UI/UI/match_messages/round_start".visible = false
+	$"Head/Camera/Viewport-UI/UI/match_messages/you_win".visible = false
+	$"Head/Camera/Viewport-UI/UI/match_messages/you_lose".visible = false
+	$"Head/Camera/Viewport-UI/UI/match_messages/tied_game".visible = false
 	if message == "start" :
-		$Head/Camera/match_messages/round_start.visible = true
+		$"Head/Camera/Viewport-UI/UI/match_messages/round_start".visible = true
 	if message == "win" :
-		$Head/Camera/match_messages/you_win.visible = true
+		$"Head/Camera/Viewport-UI/UI/match_messages/you_win".visible = true
 	if message == "lose" :
-		$Head/Camera/match_messages/you_lose.visible = true
+		$"Head/Camera/Viewport-UI/UI/match_messages/you_lose".visible = true
 	if message == "tied" :
-		$Head/Camera/match_messages/tied_game.visible = true
-	$Head/Camera/match_messages.visible = true
+		$"Head/Camera/Viewport-UI/UI/match_messages/tied_game".visible = true
+	$"Head/Camera/Viewport-UI/UI/match_messages".visible = true
 	message_timer.start()
 
 func	reset_players() :
@@ -241,7 +241,7 @@ remote func	gamestate_request(pid):
 	gamestate.players.push_back(server_player)
 	for player in gamestate.players:
 		print(str(player.id) + ":" + str(player.health))
-	gamestate.chat_log = global.player.get_node('Head/Camera/ChatBox/ChatText').get_text()
+	gamestate.chat_log = global.player.get_node('Head/Camera/Viewport-UI/ChatBox/ChatText').get_text()
 	var pnode = get_parent().get_node(str(pid))
 	get_parent().find_node("mode_manager").add_player(pid, pnode.player_name, pnode.team)
 	rpc_id(pid, "gamestate_update", gamestate)
@@ -822,9 +822,9 @@ func	_input(event):
 		
 		global.player.control = false
 		get_tree().set_input_as_handled()
-		$Head/Camera/ChatBox/Control/LineEdit.set_editable(true)
-		$Head/Camera/ChatBox/Control/LineEdit.set_process_input(true)
-		$Head/Camera/ChatBox/Control/LineEdit.grab_focus()
+		$"Head/Camera/Viewport-UI/UI/ChatBox/Control/LineEdit".set_editable(true)
+		$"Head/Camera/Viewport-UI/UI/ChatBox/Control/LineEdit".set_process_input(true)
+		$"Head/Camera/Viewport-UI/UI/ChatBox/Control/LineEdit".grab_focus()
 	if Input.is_action_pressed("shoot") and control == true and ammo > 0 and can_fire == true:
 		#var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		#var	bullet			= bullet_scene.instance()
