@@ -23,7 +23,6 @@ config/icon="res://img/ui/icon.png"
 
 weapons="*res://scripts/weapons.gd"
 global="*res://scripts/global.gd"
-vrinterface="*res://scenes/objects/VR-Player/Player-VR.gd"
 
 [display]
 

@@ -29,7 +29,7 @@ func _physics_process(delta):
 		pass"
 
 [node name="OVRFirstPerson" type="ARVROrigin"]
-world_scale = 5.0
+world_scale = 2.0
 
 [node name="ARVRCamera" type="ARVRCamera" parent="."]
 editor/display_folded = true
@@ -57,4 +57,4 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.25, 0 )
 controller_id = 2
 
 [node name="gun_container" parent="Right_Hand" instance=ExtResource( 3 )]
-transform = Transform( 0.5, 0, 0, 0, 0.471786, 0.165583, 0, -0.165583, 0.471786, 0.0550145, -1.07253, -0.403559 )
+transform = Transform( 0.2, 0, 0, 0, 0.143912, 0.138886, 0, -0.138886, 0.143912, 0.0550145, -0.579106, 0.0849213 )

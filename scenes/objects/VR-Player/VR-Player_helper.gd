@@ -409,9 +409,12 @@ func	_physics_process(delta):
 			accel = RUN_SPEED
 		else:
 			accel = RUN_ACCEL * delta
-		velocity	= velocity.linear_interpolate(target, accel)
+		velocity = velocity.linear_interpolate(target, accel)
 		rpc_unreliable("do_move", velocity, player_id, randi())
 		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
+		var pos = self.get_global_transform()
+		if (vr_player == true) :
+			$"Head/Viewport-VR/ARVROrigin".set_global_transform(pos)
 	$xbot/AnimationPlayer.play(anim);
 
 func			_update():

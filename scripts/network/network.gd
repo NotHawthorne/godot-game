@@ -205,8 +205,14 @@ func			spawn_player(id, name, map, vr, team, location):
 		return
 	#if id == get_tree().get_network_unique_id():
 	var player_scene
-	if vr and global.interface :
-		player_scene = load("res://scenes/objects/Player_vr.tscn")
+	if vr :
+		var interface = ARVRServer.find_interface("OpenVR")
+		if interface and interface.initialize():
+		# Make sure Godot knows the size of our viewport, else this is only known inside of the render driver
+			global.interface = interface
+			player_scene = load("res://scenes/objects/Player_vr.tscn")
+		else :
+			player_scene = load("res://scenes/objects/player.tscn")
 	else:
 		player_scene = load("res://scenes/objects/player.tscn")
 	var player			= player_scene.instance()
