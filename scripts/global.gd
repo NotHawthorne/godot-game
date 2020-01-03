@@ -10,6 +10,7 @@ var		ui_mode				= false
 var		target
 var		interface			= null
 var		vr_selected			= false
+var		vr_interface		= null
 var		player
 var		kills				= 0
 var		level				= 0

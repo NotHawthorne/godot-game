@@ -52,7 +52,24 @@ var message_timer		= Timer.new()
 var time_off_ground		= 0
 
 func _ready():
-	get_node("Head/Viewport-VR/ARVROrigin/C2").connect("button_pressed", self, "_on_button_pressed")
+	$"Head/Viewport-VR".size = global.interface.get_render_targetsize()
+		
+		# Tell our viewport it is the arvr viewport
+	$"Head/Viewport-VR".arvr = true
+		
+		# Uncomment this if you are using an older driver
+	$"Head/Viewport-VR".hdr = false
+		
+		# turn off vsync
+	OS.vsync_enabled = false
+		
+		# change our physics fps
+	Engine.target_fps = 90
+		
+		# Tell our display what we want to display
+	$"Head/VR-Viewport-Mirror/Viewport-UI".set_viewport_texture($"Head/Viewport-VR".get_texture())
+
+	get_node("Head/Viewport-VR/ARVROrigin/Right_Hand").connect("button_pressed", self, "_on_button_pressed")
 	$"Head/Camera/Viewport-UI/UI/ChatBox/Control/LineEdit".set_process_input(false)
 	$Head/Camera/Player_SFX.id = player_id
 	update_timer.set_wait_time(1)
@@ -83,6 +100,9 @@ func _ready():
 		#	if id != player_id :
 		#		print("asking " + str(id) + " for info")
 		#		rpc_id(id, "ask_for_health", player_id)
+		var bone = $xbot/Skeleton.find_bone('mixamorig_Neck')
+		var bone_transform = Transform(Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0))
+		$xbot/Skeleton.set_bone_rest(bone, bone_transform);
 		OS.set_window_size(Vector2(1280, 720))
 		$"Head/Camera/Viewport-UI/UI/Sprite".visible = true
 		$"Head/Camera/Viewport-UI/UI/player_info".visible = true
@@ -94,15 +114,16 @@ func _ready():
 			get_parent().find_node("mode_manager").start_game()
 			get_parent().find_node("mode_manager").add_player(1, player_name, team)
 			match_info("start")
+		#$"Head/Viewport-VR/ARVROrigin".set_global_transform(self.get_global_transform())
 	global.first_load = false
 	first_load = false
-
+	bone_transform = $xbot/Skeleton.get_bone_custom_pose($xbot/Skeleton.find_bone("mixamorig_Spine1"))
 
 func	_on_button_pressed(p_button):
 	if	p_button == 15 : #vr trigger is button 15 on oculus
 		var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		var	bullet			= bullet_scene.instance()
-		var ray = get_node('Head/Viewport-VR/ARVROrigin/C2/gun_container/RayCast')
+		var ray = get_node('Head/Viewport-VR/ARVROrigin/Right_Hand/gun_container/RayCast')
 		bullet.bullet_owner = player_id
 		if (ray == null) :
 			return
@@ -218,7 +239,10 @@ remote func	choose_spawn(id) :
 	print("spawning: " + str(id))
 	var chosen = spawn(id)
 	print("spawn chosen")
-	get_parent().get_node(str(id)).set_global_transform(chosen)
+	var chosen_player = get_parent().get_node(str(id))
+	chosen_player.set_global_transform(chosen)
+	if (chosen_player.vr_player == true) :
+		chosen_player.get_node("Head/Viewport-VR/ARVROrigin").set_global_transform(chosen_player.get_global_transform())
 	rpc_unreliable("do_update", chosen, id)
 
 remote func		gamestate_update(data):
@@ -388,7 +412,7 @@ func	_physics_process(delta):
 		velocity	= velocity.linear_interpolate(target, accel)
 		rpc_unreliable("do_move", velocity, player_id, randi())
 		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
-	#$xbot/AnimationPlayer.play(anim);
+	$xbot/AnimationPlayer.play(anim);
 
 func			_update():
 	if control == true:
@@ -409,6 +433,8 @@ remote	func	do_update(_transform, pid):
 	var	pnode	= root.get_node(str(pid))
 	if (pnode):
 		pnode.set_global_transform(_transform) 
+		if (pnode.vr_player == true) :
+			pnode.get_node("Head/Viewport-VR/ARVROrigin").set_global_transform(pnode.get_global_transform())
 	else:
 		print("Couldn't update position for " + str(pid))
 

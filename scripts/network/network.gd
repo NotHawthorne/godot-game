@@ -205,8 +205,8 @@ func			spawn_player(id, name, map, vr, team, location):
 		return
 	#if id == get_tree().get_network_unique_id():
 	var player_scene
-	if vr :
-		player_scene = load("res://scenes/objects/VR-Player/VR-Player.tscn")
+	if vr and global.interface :
+		player_scene = load("res://scenes/objects/Player_vr.tscn")
 	else:
 		player_scene = load("res://scenes/objects/player.tscn")
 	var player			= player_scene.instance()
