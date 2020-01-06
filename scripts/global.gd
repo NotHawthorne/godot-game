@@ -11,7 +11,7 @@ var		target
 var		interface			= null
 var		vr_selected			= false
 var		vr_interface		= null
-var		player
+var		player				= null
 var		kills				= 0
 var		level				= 0
 var		stats_inited		= false

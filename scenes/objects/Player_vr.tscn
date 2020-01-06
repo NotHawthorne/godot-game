@@ -11,7 +11,7 @@
 radius = 0.6
 height = 2.0
 
-[sub_resource type="CubeMesh" id=3]
+[sub_resource type="CubeMesh" id=2]
 
 [node name="Player-VR" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66133, 0 )
@@ -87,7 +87,7 @@ render_target_update_mode = 3
 transform = Transform( 0.4, 0, 0, 0, 1.6, 0, 0, 0, 0.4, 0, 0, 0 )
 visible = false
 use_in_baked_light = true
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="JumpCast" type="RayCast" parent="."]

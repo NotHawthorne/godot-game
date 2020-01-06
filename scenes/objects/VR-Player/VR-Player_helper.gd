@@ -40,7 +40,7 @@ var		bone_transform
 var		last_do_move	= null
 var		packet_id_cache = {}
 var		first_load		= true
-var		camera_angle	= 0
+#var		camera_angle	= 0
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
 const DASH_SPEED = 150
@@ -118,7 +118,7 @@ func _ready():
 		#$"Head/Viewport-VR/ARVROrigin".set_global_transform(self.get_global_transform())
 	global.first_load = false
 	first_load = false
-	camera_angle = $"Head/Viewport-VR/ARVROrigin/ARVRCamera".get_rotation_degrees().y
+	#camera_angle = $"Head/Viewport-VR/ARVROrigin/ARVRCamera".get_rotation_degrees().y
 	bone_transform = $xbot/Skeleton.get_bone_custom_pose($xbot/Skeleton.find_bone("mixamorig_Spine1"))
 
 func	_on_button_pressed(p_button):
@@ -281,7 +281,7 @@ remote func leaderboard_add_stat(id, kill, death, cap) :
 
 func	_physics_process(delta):
 	if (control == true):
-		# Reset player direction
+		# Reset player directionp-0000000000000000 
 		direction	= Vector3()
 		if $JumpCast.is_colliding():
 			#if time_off_ground > 0 and respawning == false :
@@ -314,120 +314,113 @@ func	_physics_process(delta):
 						rpc_id(1, "reset_flag", player_id, has_flag_dict)
 		elif !$JumpCast.is_colliding() and respawning == false :
 			time_off_ground += delta * 2
-		var aim		= $"Head/Viewport-VR/ARVROrigin/ARVRCamera".get_global_transform().basis
 		
-		if $JumpCast.is_colliding() :
-			if Input.is_action_pressed("move_forward"):
-				direction += aim.z
-				#if (anim != "rifle_jump2"):
-				anim = "rifle_run_forward"
-			
-			if Input.is_action_pressed("move_backward"):
-				direction -= aim.z
-				anim = "rifle_run_forward"
-			if Input.is_action_pressed("move_left"):
-				direction -= aim.x
-				anim = "rifle_run_forward"
-			if Input.is_action_pressed("move_right"):
-				direction += aim.x
-				anim = "rifle_run_forward"
-			if time_off_ground == 0 :
-				play_sound("player", player_name, "start", "walk")
-		else :
-			play_sound("player", player_name, "stop", "walk")
-		if Input.is_action_just_released("move_forward") and not (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward")):
-			play_sound("player", player_name, "stop", "walk")
-		if Input.is_action_just_released("move_backward") and not (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_forward")):
-			play_sound("player", player_name, "stop", "walk")
-		if Input.is_action_just_released("move_left") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward")):
-			play_sound("player", player_name, "stop", "walk")
-		if Input.is_action_just_released("move_right") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_backward")):
-			play_sound("player", player_name, "stop", "walk")
-		if (Input.is_action_just_pressed("jump")):
-			var dashing = false
-			if (jumps <= 1):
-				play_sound("player", player_name, "stop", "walk")
-				if jumps == 0 :
-					play_sound("player", player_name, "play", "jump")
-				#f (anim == "rifle_jump2"):
-					#xbot/AnimationPlayer.stop(true)
-				anim = "rifle_jump2"
-				if $Head/Camera/WallCast1.is_colliding() or $Head/Camera/WallCast2.is_colliding() or $Head/Camera/WallCast3.is_colliding() or $Head/Camera/WallCast4.is_colliding():
-					print("colliding")
-					dashing = true
-					velocity.y += (JUMP_SPEED * delta) / 1.9
-					velocity -= -aim.z * (DASH_SPEED)
-				if $Head/Camera/WallCast1.is_colliding() and Input.is_action_pressed("move_left"):
-					jumps = 0
-					velocity -= aim.x * (DASH_SPEED * 1.2)
-				if $Head/Camera/WallCast2.is_colliding() and Input.is_action_pressed("move_backward"):
-					jumps = 0
-					velocity += -aim.z * (DASH_SPEED * 1.2)
-				if $Head/Camera/WallCast3.is_colliding() and Input.is_action_pressed("move_right"):
-					jumps = 0
-					velocity += aim.x * (DASH_SPEED * 1.2)
-				if $Head/Camera/WallCast4.is_colliding() and Input.is_action_pressed("move_forward"):
-					jumps = 0
-					velocity -= -aim.z * (DASH_SPEED * 1.2)
-			if $JumpCast.is_colliding():
-				jumps = 0
-				#print("colliding")
-			if jumps < 2:
-				#print("jumping...")
-				direction.y = 1 + (direction.y * delta)
-				velocity.y += JUMP_SPEED * delta
-				jumps += 1
-				time_off_ground = 0
-			if jumps == 2:
-				if (Input.is_action_pressed("move_forward")):
-					play_sound("player", player_name, "play", "dash")
-					velocity -= -aim.z * DASH_SPEED
-					dashing = true
-				if (Input.is_action_pressed("move_backward")):
-					play_sound("player", player_name, "play", "dash")
-					velocity += -aim.z * DASH_SPEED
-					dashing = true
-				if (Input.is_action_pressed("move_left")):
-					play_sound("player", player_name, "play", "dash")
-					velocity -= aim.x * DASH_SPEED
-					dashing = true
-				if (Input.is_action_pressed("move_right")):
-					play_sound("player", player_name, "play", "dash")
-					velocity += aim.x * DASH_SPEED
-					dashing = true
-				if dashing == true:
-					velocity.y -= (JUMP_SPEED * delta) / 2
-					jumps += 1
-		#direction.y = 0
-			time_off_ground += (delta * 2)
+		var controller = $"Head/Viewport-VR/ARVROrigin".get_node("Left_Hand")
+		if controller and controller.get_is_active():
+			var left_right = controller.get_joystick_axis(0)
+			var forwards_backwards = controller.get_joystick_axis(1)
+			if (abs(forwards_backwards) > 0.1 or abs(left_right) > 0.1) :
+
+
+
+				var aim	= get_node("Head/Viewport-VR/ARVROrigin/ARVRCamera").get_global_transform().basis
+				var JumpCast = get_node("JumpCast")
+	
+				#direction = Vector3()
+				if JumpCast.is_colliding() :
+					if forwards_backwards < -0.1 :
+						direction += aim.z
+						#if (anim != "rifle_jump2"):
+						anim = "rifle_run_forward"
+	
+					if  forwards_backwards > 0.1 :
+						direction -= aim.z
+						anim = "rifle_run_forward"
+					if left_right < -0.1 :
+						direction -= aim.x
+						anim = "rifle_run_forward"
+					if left_right > 0.1:
+						direction += aim.x
+						anim = "rifle_run_forward"
+					if time_off_ground == 0 :
+						play_sound("player", player_name, "start", "walk")
+				else :
+					play_sound("player", player_name, "stop", "walk")
+				if (Input.is_action_just_pressed("jump")):
+					var dashing = false
+					if (jumps <= 1):
+						play_sound("player", player_name, "stop", "walk")
+						if jumps == 0 :
+							play_sound("player", player_name, "play", "jump")
+						#f (anim == "rifle_jump2"):
+							#xbot/AnimationPlayer.stop(true)
+							anim = "rifle_jump2"
+						if get_node("Head/Camera/WallCast1").is_colliding() or get_node("Head/Camera/WallCast2").is_colliding() or get_node("Head/Camera/WallCast3").is_colliding() or get_node("Head/Camera/WallCast4").is_colliding() :
+							print("colliding")
+							dashing = true
+							velocity.y += (JUMP_SPEED * delta) / 1.9
+							velocity -= -aim.z * (DASH_SPEED)
+						if get_node("Head/Camera/WallCast1").is_colliding() and left_right < -0.1:
+							jumps = 0
+							velocity -= aim.x * (DASH_SPEED * 1.2)
+						if get_node("Head/Camera/WallCast2").is_colliding() and forwards_backwards > 0.1:
+							jumps = 0
+							velocity += -aim.z * (DASH_SPEED * 1.2)
+						if get_node("Head/Camera/WallCast3").is_colliding() and left_right > 0.1:
+							jumps = 0
+							velocity += aim.x * (DASH_SPEED * 1.2)
+						if get_node("Head/Camera/WallCast4").is_colliding() and forwards_backwards < -0.1:
+							jumps = 0
+							velocity -= -aim.z * (DASH_SPEED * 1.2)
+					if JumpCast.is_colliding():
+						jumps = 0
+						#print("colliding")
+					if jumps < 2:
+						#print("jumping...")
+						direction.y = 1 + (direction.y * delta)
+						velocity.y += JUMP_SPEED * delta
+						jumps += 1
+						time_off_ground = 0
+					if jumps == 2:
+						if (forwards_backwards > 0.1):
+							play_sound("player", player_name, "play", "dash")
+							velocity -= -aim.z * DASH_SPEED
+							dashing = true
+						if (forwards_backwards < -0.1):
+							play_sound("player", player_name, "play", "dash")
+							velocity += -aim.z * DASH_SPEED
+							dashing = true
+						if (left_right < -0.1):
+							play_sound("player", player_name, "play", "dash")
+							velocity -= aim.x * DASH_SPEED
+							dashing = true
+						if (left_right > 0.1):
+							play_sound("player", player_name, "play", "dash")
+							velocity += aim.x * DASH_SPEED
+							dashing = true
+						if dashing == true:
+							velocity.y -= (JUMP_SPEED * delta) / 2
+							jumps += 1
+					#direction.y = 0
+					time_off_ground += (delta * 2)
 		velocity.y -= GRAVITY * time_off_ground
-		direction	= direction.normalized()
-		var target	= direction * RUN_SPEED
+		direction = direction.normalized()
+		var target = direction * RUN_SPEED
 		var accel
 		if (RUN_ACCEL * delta > RUN_SPEED):
 			accel = RUN_SPEED
 		else:
 			accel = RUN_ACCEL * delta
 		velocity = velocity.linear_interpolate(target, accel)
-		var rot_x = -($"Head/Viewport-VR/ARVROrigin/ARVRCamera".get_rotation_degrees().x)
-		var rot_y = 180 + ($"Head/Viewport-VR/ARVROrigin/ARVRCamera".get_rotation_degrees().y)
-		$Head.set_rotation_degrees(Vector3(0, rot_y, 0))
-		$xbot.set_rotation_degrees(Vector3(0, rot_y, 0))
-		#var bone = $xbot/Skeleton.find_bone('mixamorig_Spine')
-		#if rot_x < 90 and rot_x > -90 :
-		#	$Head.set_rotation_degrees(Vector3(rot_x, 0, 0))
-	#		bone_transform = bone_transform.rotated(Vector3(1, 0, 0).normalized(), (-rot_amt) * 0.25)
-		#	bone_transform = bone_transform.rotated(Vector3(0, 0, 1).normalized(), (rot_amt) * 0.25)
-	#		$xbot/Skeleton.set_bone_custom_pose(bone, bone_transform);
-		#rpc_unreliable("do_rot", $xbot.rotation.y, bone_transform, global.player_id)
-
-			#var bone_transform = $xbot/Skeleton.get_bone_custom_pose(bone)
-
 		rpc_unreliable("do_move", velocity, player_id, randi())
 		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
 		var pos = self.get_global_transform()
 		if (vr_player == true) :
 			$"Head/Viewport-VR/ARVROrigin".set_global_transform(pos)
+	var rot_x = -(get_node("Head/Viewport-VR/ARVROrigin/ARVRCamera").get_rotation_degrees().x)
+	var rot_y = 180 + (get_node("Head/Viewport-VR/ARVROrigin/ARVRCamera").get_rotation_degrees().y)
+	get_node("Head").set_rotation_degrees(Vector3(0, rot_y, 0))
+	get_node("xbot").set_rotation_degrees(Vector3(0, rot_y, 0))
 	$xbot/AnimationPlayer.play(anim);
 
 func			_update():

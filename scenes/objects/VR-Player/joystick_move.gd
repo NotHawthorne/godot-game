@@ -1,12 +1,13 @@
 extends Node
 
-# some handy nodes...
-var player = global.player
-
-
-
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+onready var player = global.player
+# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	#player = global.player
+	pass # Replace with function body.
 
 func _physics_process(delta):
 	# We should be the child or the controller on which the teleport is implemented
@@ -17,11 +18,7 @@ func _physics_process(delta):
 		if ((abs(forwards_backwards) > 0.1 or abs(left_right) > 0.1) and player.control == true) :
 			var aim	= player.get_node("Head/Viewport-VR/ARVROrigin/ARVRCamera").get_global_transform().basis
 			var JumpCast = player.get_node("JumpCast")
-			
-			
-			
-			
-			
+
 			player.direction = Vector3()
 			if JumpCast.is_colliding() :
 				if forwards_backwards > 0.1 :
