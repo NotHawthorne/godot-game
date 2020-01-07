@@ -21,4 +21,3 @@ depth_max_layers = 32
 depth_flip_tangent = false
 depth_flip_binormal = false
 depth_texture = ExtResource( 2 )
-uv1_scale = Vector3( 2, 2, 2 )
