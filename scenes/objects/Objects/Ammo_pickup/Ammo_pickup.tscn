@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/objects/Objects/Ammo_pickup/Ammo_pickup.gd" type="Script" id=1]
-[ext_resource path="res://sounds/capsule_pop1_take1.ogg" type="AudioStream" id=2]
+[ext_resource path="res://models/materials/dark_matte.tres" type="Material" id=2]
+[ext_resource path="res://sounds/capsule_pop1_take1.ogg" type="AudioStream" id=3]
 
 [sub_resource type="BoxShape" id=1]
 
 [sub_resource type="CubeMesh" id=2]
+material = ExtResource( 2 )
 
 [node name="Ammo_Pad" type="Area"]
 script = ExtResource( 1 )
@@ -20,5 +22,5 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="pop_capsule" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource( 2 )
+stream = ExtResource( 3 )
 unit_size = 10.0

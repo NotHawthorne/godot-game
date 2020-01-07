@@ -403,20 +403,20 @@ func	_physics_process(delta):
 							jumps += 1
 					#direction.y = 0
 					time_off_ground += (delta * 2)
-		velocity.y -= GRAVITY * time_off_ground
-		direction = direction.normalized()
-		var target = direction * RUN_SPEED
-		var accel
-		if (RUN_ACCEL * delta > RUN_SPEED):
-			accel = RUN_SPEED
-		else:
-			accel = RUN_ACCEL * delta
-		velocity = velocity.linear_interpolate(target, accel)
-		rpc_unreliable("do_move", velocity, player_id, randi())
-		move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
-		var pos = self.get_global_transform()
-		if (vr_player == true) :
-			$"Head/Viewport-VR/ARVROrigin".set_global_transform(pos)
+	velocity.y -= GRAVITY * time_off_ground
+	direction = direction.normalized()
+	var target = direction * RUN_SPEED
+	var accel
+	if (RUN_ACCEL * delta > RUN_SPEED):
+		accel = RUN_SPEED
+	else:
+		accel = RUN_ACCEL * delta
+	velocity = velocity.linear_interpolate(target, accel)
+	rpc_unreliable("do_move", velocity, player_id, randi())
+	move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
+	var pos = self.get_global_transform()
+	if (vr_player == true) :
+		$"Head/Viewport-VR/ARVROrigin".set_global_transform(pos)
 	var rot_x = -(get_node("Head/Viewport-VR/ARVROrigin/ARVRCamera").get_rotation_degrees().x)
 	var rot_y = 180 + (get_node("Head/Viewport-VR/ARVROrigin/ARVRCamera").get_rotation_degrees().y)
 	get_node("Head").set_rotation_degrees(Vector3(0, rot_y, 0))
