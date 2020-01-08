@@ -71,14 +71,9 @@ func _ready():
 	message_timer.one_shot = true
 	message_timer.connect("timeout", self, "hide_messages")
 	add_child(message_timer)
-	if (get_tree().is_network_server()):
-		db_timer.set_wait_time(10)
-		db_timer.connect("timeout", self, "update_stats")
-		add_child(db_timer)
-		db_timer.start()
+
 	if global.stats_inited == false and player_id == global.player_id:
 		global.stats_inited = true
-		stats_init()
 		set_weapon(player_id, 1)
 	if (control == true):
 		#var players = get_parent().find_node("network").players
@@ -124,7 +119,6 @@ remote func drop_flag(id, flag_dict, location) :
 			rpc_id(p, "set_flag_owner", id, "blue")
 	if flag_dict["red"] :
 		set_flag_owner(id, "red")
-		location.x = location.transform.basis.x - 1
 		get_parent().get_node("Red_Flag_Pad").drop_flag(location)
 		for p in get_parent().get_node("network").players :
 			get_parent().get_node("Red_Flag_Pad").rpc_id(p, "drop_flag", location)
@@ -485,7 +479,7 @@ remote func		reset_ammo() :
 	ammo = starting_ammo
 
 func			_deal_damage(shot, amt):
-	if control == true :
+	if control == true and shot:
 		if shot.health - amt <= 0 :
 			get_message(shot.player_name + " was fragged by " + player_name + "!")
 			global.kills += 1
@@ -518,66 +512,6 @@ func			_deal_damage(shot, amt):
 #	MAYBE ADD TO COUNTER AND TIMEOUT AN UPDATE FUNCITON?
 #	FIXME:
 
-func			update_stats():
-	for id in to_update:
-		var http = HTTPClient.new()
-		var err = http.connect_to_host("35.236.33.159", 3000)
-		assert(err == OK)
-		while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
-			http.poll()
-		print("Connected!")
-		assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-		var body = str("stat[handle]=", id.name, "&stat[level]=", 1, "&stat[kills]=", id.kills)
-		http.request(
-			http.METHOD_POST, 
-			'/stats.json', 
-			["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
-			body
-		)
-		while http.get_status() != HTTPClient.STATUS_BODY and http.get_status() != HTTPClient.STATUS_CONNECTED:
-			http.poll()
-		if (http.has_response()):
-				var headers = http.get_response_headers_as_dictionary() # Get response headers.
-				print("code: ", http.get_response_code()) # Show response code.
-				print("**headers:\\n", headers) # Show headers.
-				
-				# Getting the HTTP Body
-				
-				if http.is_response_chunked():
-				# Does it use chunks?
-					print("Response is Chunked!")
-				else:
-					# Or just plain Content-Length
-					var bl = http.get_response_body_length()
-					print("Response Length: ",bl)
-				
-					# This method works for both anyway
-				
-				var rb = PoolByteArray() # Array that will hold the data.
-				
-				while http.get_status() == HTTPClient.STATUS_BODY:
-				# While there is body left to be read
-					http.poll()
-					var chunk = http.read_response_body_chunk() # Get a chunk.
-					if chunk.size() == 0:
-						# Got nothing, wait for buffers to fill a bit.
-						OS.delay_usec(1000)
-					else:
-				    	rb = rb + chunk # Append to read buffer.
-				
-				# Done!
-				
-				print("bytes got: ", rb.size())
-				var text = JSON.parse(rb.get_string_from_ascii())
-				if text.result and text.result.has("status"):
-					print("Error retrieving stats")
-					return
-				print(text.result)
-		print(err)
-		assert (err == OK)
-		to_update.erase(id)
-	pass
-
 remote func		stats_add_kill(id, pname, kills):
 	var updateReq = {}
 	updateReq.name = pname
@@ -588,94 +522,6 @@ remote func		stats_add_kill(id, pname, kills):
 			return
 	to_update.push_back(updateReq)
 
-func	stats_init():
-	print(str(player_id) + "initializing")
-	global.kills = 0
-	return
-	var http = HTTPClient.new()
-	var err = http.connect_to_host("35.236.33.159", 3000)
-	var headers = [
-		"User-Agent: Pirulo/1.0 (Godot)",
-		"Accept: */*"
-	]
-	assert(err == OK)
-	while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
-		http.poll()
-		print("Connecting2..")
-		OS.delay_msec(500)
-	print("Connected2!")
-	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-	var body = str("stat[handle]=", global.player_name)
-	print("Forming request... ")
-	err = http.request(
-		HTTPClient.METHOD_POST, 
-		'/stats.json', 
-		headers,
-		body
-	)
-	assert(err == OK) # Make sure all is OK.
-	
-	while http.get_status() == HTTPClient.STATUS_REQUESTING:
-		# Keep polling for as long as the request is being processed.
-		http.poll()
-		print("Requesting...")
-		if not OS.has_feature("web"):
-			OS.delay_msec(500)
-		else:
-			# Synchronous HTTP requests are not supported on the web,
-			# so wait for the next main loop iteration.
-			yield(Engine.get_main_loop(), "idle_frame")
-	print(str(http.get_status()))
-	assert(http.get_status() == HTTPClient.STATUS_BODY or http.get_status() == HTTPClient.STATUS_CONNECTED) # Make sure request finished well.
-	print("Checking response...")
-	if (http.has_response()):
-		print("Response!")
-		headers = http.get_response_headers_as_dictionary() # Get response headers.
-		print("code: ", http.get_response_code()) # Show response code.
-		print("**headers:\\n", headers) # Show headers.
-		
-		# Getting the HTTP Body
-		
-		if http.is_response_chunked():
-		# Does it use chunks?
-			print("Response is Chunked!")
-		else:
-			# Or just plain Content-Length
-			var bl = http.get_response_body_length()
-			print("Response Length: ",bl)
-		
-			# This method works for both anyway
-		
-		var rb = PoolByteArray() # Array that will hold the data.
-		
-		while http.get_status() == HTTPClient.STATUS_BODY:
-		# While there is body left to be read
-			http.poll()
-			var chunk = http.read_response_body_chunk() # Get a chunk.
-			if chunk.size() == 0:
-				# Got nothing, wait for buffers to fill a bit.
-				OS.delay_usec(1000)
-			else:
-		    	rb = rb + chunk # Append to read buffer.
-		
-		# Done!
-		
-		print("bytes got: ", rb.size())
-		var text = JSON.parse(rb.get_string_from_ascii())
-		if text.result and text.result.has("status"):
-			print("Error initializing stats!")
-			return
-		else:
-			print(text.result)
-			if (text.result[0] and text.result[0].kills):
-				global.kills = text.result[0].kills
-			else :
-				global.kills = 0
-			print("Kills: " + str(global.kills))
-	else:
-		print("No response...")
-	pass
-
 func	get_message(message):
 	if player_id == 1 :
 		get_parent().find_node('network').send_message(player_id, message)
@@ -685,7 +531,7 @@ func	get_message(message):
 remote func		display_stats(data, teams) :
 	print("got data")
 	if control == true:
-		var textbox = $Head/Camera/game_stats/stats_text
+		var textbox = $"Head/Camera/Viewport-UI/UI/game_stats/stats_text"
 		textbox.clear()
 		textbox.add_text("name			kills			deaths")
 		textbox.newline()
@@ -707,7 +553,7 @@ remote func		display_stats(data, teams) :
 				if get_parent().get_node(str(pnode2)).team == "red" :
 					textbox.add_text(data.players[pnode2] + "			" + str(data.kills[pnode2]) + "				" + str(data.deaths[pnode2]))
 					textbox.newline()
-		$Head/Camera/game_stats.visible = true
+		$"Head/Camera/Viewport-UI/UI/game_stats".visible = true
 
 remote func		get_leaderboard(pid) :
 	var data = get_parent().find_node("mode_manager").gamestate
@@ -771,7 +617,7 @@ func	_input(event):
 			change = -event.relative.y * mouse_sensitivity
 			var bone = $xbot/Skeleton.find_bone('mixamorig_Spine')
 			#var bone_transform = $xbot/Skeleton.get_bone_custom_pose(bone)
-			print(str(bone_transform))
+			#print(str(bone_transform))
 			if change + camera_angle < 90 and change + camera_angle > -90:
 				$Head/Camera.rotate_x(deg2rad(change))
 				$Head/gun_container.rotate_x(deg2rad(change))
@@ -832,20 +678,21 @@ func	_input(event):
 		#bullet.set_damage(weapon.damage)
 		if ($Head/Camera/CamCast.is_colliding()):
 			print($Head/Camera/CamCast.get_collision_normal())
-		#bullet.target = $Head/Camera/CamCast.get_collision_point()
-		if $Head/Camera/CamCast.get_collider() :
-			if $Head/Camera/CamCast.get_collider().has_method("_deal_damage") :
-				print("CALLING SEND DAMAGE")
-				self._deal_damage($Head/Camera/CamCast.get_collider(), weapon.damage)
-			elif $Head/Camera/CamCast.get_collider().get_parent().has_method("pop_capsule") :
-				play_sound("capsule", $Head/Camera/CamCast.get_collider().get_parent().get_name(), "play", "pop_capsule")
-				$Head/Camera/CamCast.get_collider().get_parent().pop_capsule($Head/Camera/CamCast.get_collider().get_parent().get_name())
-				#$Head/Camera/CamCast.get_collider().get_parent().get_node("pop_capsule").play()
-		#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
-		
-		#$Head/gun_container.add_child(bullet)
-		#can_fire = false
-		#fire_cooldown.start()
+			#bullet.target = $Head/Camera/CamCast.get_collision_point()
+			if $Head/Camera/CamCast.get_collider() :
+				if $Head/Camera/CamCast.get_collider().has_method("_deal_damage") :
+					print("CALLING SEND DAMAGE")
+					self._deal_damage($Head/Camera/CamCast.get_collider(), weapon.damage)
+				elif $Head/Camera/CamCast.get_collider().get_parent() && $Head/Camera/CamCast.get_collider().get_parent().has_method("pop_capsule") :
+					var capsule_pad = $Head/Camera/CamCast.get_collider().get_parent()
+					play_sound("capsule", capsule_pad.get_name(), "play", "pop_capsule")
+					capsule_pad.pop_capsule(capsule_pad.get_name())
+					#$Head/Camera/CamCast.get_collider().get_parent().get_node("pop_capsule").play()
+			#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
+			
+			#$Head/gun_container.add_child(bullet)
+			#can_fire = false
+			#fire_cooldown.start()
 		play_sound("player", player_name, "play", "shoot")
 		ammo -= 1
 		print("fired!")
@@ -853,8 +700,8 @@ func	_input(event):
 		OS.window_fullscreen = !OS.window_fullscreen
 		var size = OS.get_real_window_size()
 		OS.set_window_size(Vector2(size.x, size.y))
-		$Head/Camera/Sprite.position.x = $Head/Camera/Sprite.get_viewport_rect().size.x / 2
-		$Head/Camera/Sprite.position.y = $Head/Camera/Sprite.get_viewport_rect().size.y / 2
+		$"Head/Camera/Viewport-UI/UI/Sprite".position.x = $"Head/Camera/Viewport-UI/UI/Sprite".get_viewport_rect().size.x / 2
+		$"Head/Camera/Viewport-UI/UI/Sprite".position.y = $"Head/Camera/Viewport-UI/UI/Sprite".get_viewport_rect().size.y / 2
 	if Input.is_action_just_pressed("Weapon 1") and control == true:
 		print("trying to change weapon")
 		rpc_unreliable("set_weapon", player_id, 1)

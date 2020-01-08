@@ -3,6 +3,7 @@
 [ext_resource path="res://scenes/objects/Objects/Flags/Flag_Pad.gd" type="Script" id=1]
 
 [sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.678752, 6.54089, 0.651439 )
 
 [sub_resource type="CubeMesh" id=2]
 
@@ -10,7 +11,7 @@
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 5, 0, 0, 0, 0.2, 0, 0, 0, 5, 0, 0, 0 )
+transform = Transform( 5, 0, 0, 0, 0.2, 0, 0, 0, 5, 0, 0.681297, 0 )
 shape = SubResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

@@ -16,7 +16,7 @@ func _ready():
 	capsule = model.instance()
 	self.add_child(capsule)
 	capsule.connect("body_entered", self, "capsule_collided")
-	self.connect("body_entered", self, "pad_collided")
+	connect("body_entered", self, "pad_collided")
 
 remote func reset_flag() :
 	print("trying to reset flag on " + global.player_name + "'s client")

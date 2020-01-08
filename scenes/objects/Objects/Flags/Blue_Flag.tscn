@@ -1,20 +1,22 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://models/materials/holo_blue.tres" type="Material" id=1]
+[ext_resource path="res://scenes/objects/Objects/Flags/flag.gd" type="Script" id=1]
+[ext_resource path="res://models/materials/holo_blue.tres" type="Material" id=2]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.286006, 1.56817, 4.94384 )
+extents = Vector3( 0.139739, 0.18257, 4.94384 )
 
 [sub_resource type="CylinderMesh" id=2]
-material = ExtResource( 1 )
+material = ExtResource( 2 )
 
 [sub_resource type="CubeMesh" id=3]
-material = ExtResource( 1 )
+material = ExtResource( 2 )
 
 [node name="Flag" type="Area"]
+script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 5.06712, -1.39469 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 5.06712, 0.0251942 )
 shape = SubResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

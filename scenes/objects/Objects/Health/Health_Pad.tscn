@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/objects/Objects/Health/Health_Pad.gd" type="Script" id=1]
-[ext_resource path="res://models/materials/dark_matte.tres" type="Material" id=2]
+[ext_resource path="res://models/materials/assets/red_wood_1/red_wood_1.tres" type="Material" id=2]
 [ext_resource path="res://sounds/capsule_pop1_take1.ogg" type="AudioStream" id=3]
 
 [sub_resource type="BoxShape" id=1]
@@ -11,7 +11,7 @@ extents = Vector3( 0.56803, 0.114427, 0.524191 )
 material = ExtResource( 2 )
 
 [node name="Health_Pad" type="Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0566521, -9.53674e-007, -0.380741 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0566521, -9.53674e-07, -0.380741 )
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
