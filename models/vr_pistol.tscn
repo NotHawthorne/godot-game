@@ -67,3 +67,4 @@ material/53 = null
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.129394, 2.36832, 0 )
 enabled = true
 cast_to = Vector3( 0, 0, -10000 )
+collide_with_areas = true

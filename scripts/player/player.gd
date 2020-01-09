@@ -686,7 +686,7 @@ func	_input(event):
 				elif $Head/Camera/CamCast.get_collider().get_parent() && $Head/Camera/CamCast.get_collider().get_parent().has_method("pop_capsule") :
 					var capsule_pad = $Head/Camera/CamCast.get_collider().get_parent()
 					play_sound("capsule", capsule_pad.get_name(), "play", "pop_capsule")
-					capsule_pad.pop_capsule(capsule_pad.get_name())
+					capsule_pad.pop_capsule()
 					#$Head/Camera/CamCast.get_collider().get_parent().get_node("pop_capsule").play()
 			#rpc_unreliable("fire_bullet", player_id, weapon.damage, bullet.target)
 			

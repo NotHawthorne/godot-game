@@ -29,6 +29,7 @@ func _physics_process(delta):
 		pass"
 
 [node name="OVRFirstPerson" type="ARVROrigin"]
+world_scale = 2.0
 
 [node name="ARVRCamera" type="ARVRCamera" parent="."]
 editor/display_folded = true

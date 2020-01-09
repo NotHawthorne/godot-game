@@ -20,9 +20,9 @@ func _ready():
 func flip_cooldown():
 	self.add_child(capsule)
 
-remote func pop_capsule(id) :
-	get_parent().get_node(id).remove_child(capsule)
-	get_parent().get_node(id).cooldown.start()
+remote func pop_capsule() :
+	remove_child(capsule)
+	cooldown.start()
 
 remote func play_sound(sound) :
 	$pop_capsule.play()
@@ -40,8 +40,8 @@ func collided(body):
 			else:
 				global.player.rpc_id(1, "sync_health", global.player_id, global.player.health + health_to_add)
 		body.play_sound("player", body.player_name, "play", "pop_capsule")
-		pop_capsule(self.get_name())
-		rpc_unreliable("pop_capsule", self.get_name())
+		pop_capsule()
+		rpc_unreliable("pop_capsule")
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

@@ -40,6 +40,7 @@ var		bone_transform
 var		last_do_move	= null
 var		packet_id_cache = {}
 var		first_load		= true
+var		jumping			= false
 #var		camera_angle	= 0
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
@@ -92,7 +93,6 @@ func _ready():
 		db_timer.start()
 	if global.stats_inited == false and player_id == global.player_id:
 		global.stats_inited = true
-		stats_init()
 		set_weapon(player_id, 1)
 	if (control == true):
 		#var players = get_parent().find_node("network").players
@@ -125,21 +125,23 @@ func	_on_button_pressed(p_button):
 	if	p_button == 15 : #vr trigger is button 15 on oculus
 		var	bullet_scene	= load("res://scenes/objects/bullet.tscn")
 		var	bullet			= bullet_scene.instance()
-		var ray = get_node('Head/Viewport-VR/ARVROrigin/Right_Hand/gun_container/RayCast')
-		bullet.bullet_owner = player_id
+		var ray = global.player.get_node('Head/Viewport-VR/ARVROrigin/Right_Hand/gun_container/RayCast')
+		bullet.bullet_owner = global.player.player_id
 		if (ray == null) :
 			return
 		
 		if (ray.is_colliding()):
-			print(ray.get_collision_normal())
+			print("hit" + ray.get_collider().get_name())
 		#bullet.target = $Head/Camera/CamCast.get_collision_point()
 		if (ray.get_collider()) :
 			if ray.get_collider().has_method("_deal_damage") :
 				print("CALLING SEND DAMAGE")
 				self._deal_damage(ray.get_collider(), weapon.damage)
-			elif ray.get_collider().get_parent().has_method("pop_capsule") :
-				play_sound("capsule", ray.get_collider().get_parent().get_name(), "play", "pop_capsule")
-				ray.get_collider().get_parent().pop_capsule(ray.get_collider().get_parent().get_name())
+			elif ray.get_collider().get_parent() and ray.get_collider().get_parent().has_method("pop_capsule") :
+					var capsule_pad = ray.get_collider().get_parent()
+					capsule_pad.play_sound("capsule")
+					capsule_pad.pop_capsule()
+					capsule_pad.rpc_unreliable("pop_capsule")
 		
 		
 		play_sound("player", player_name, "play", "shoot")
@@ -243,7 +245,9 @@ remote func	choose_spawn(id) :
 	var chosen_player = get_parent().get_node(str(id))
 	chosen_player.set_global_transform(chosen)
 	if (chosen_player.vr_player == true) :
-		chosen_player.get_node("Head/Viewport-VR/ARVROrigin").set_global_transform(chosen_player.get_global_transform())
+		var transform = chosen_player.get_global_transform()
+		transform.basis.y =  Vector3(0, 1, 0)
+		chosen_player.get_node("Head/Viewport-VR/ARVROrigin").set_global_transform(transform)
 	rpc_unreliable("do_update", chosen, id)
 
 remote func		gamestate_update(data):
@@ -416,6 +420,7 @@ func	_physics_process(delta):
 	move_and_slide(velocity, Vector3( 0, 0, 0 ), false, 4, 1, true)
 	var pos = self.get_global_transform()
 	if (vr_player == true) :
+		pos.basis.y =  Vector3(0, 1, 0)
 		$"Head/Viewport-VR/ARVROrigin".set_global_transform(pos)
 	var rot_x = -(get_node("Head/Viewport-VR/ARVROrigin/ARVRCamera").get_rotation_degrees().x)
 	var rot_y = 180 + (get_node("Head/Viewport-VR/ARVROrigin/ARVRCamera").get_rotation_degrees().y)
@@ -443,7 +448,9 @@ remote	func	do_update(_transform, pid):
 	if (pnode):
 		pnode.set_global_transform(_transform) 
 		if (pnode.vr_player == true) :
-			pnode.get_node("Head/Viewport-VR/ARVROrigin").set_global_transform(pnode.get_global_transform())
+			var transform = pnode.get_global_transform()
+			transform.basis.y =  Vector3(0, 1, 0)
+			pnode.get_node("Head/Viewport-VR/ARVROrigin").set_global_transform(transform)
 	else:
 		print("Couldn't update position for " + str(pid))
 
@@ -544,71 +551,6 @@ func			_deal_damage(shot, amt):
 				sync_health(shot.player_id, shot.health - amt)
 			else:
 				rpc_id(1, "sync_health", shot.player_id, shot.health - amt)
-#	STATS_ADD_KILL
-#	NEEDS TO NOT UPDATE ON EVERY KILL
-#	CAUSES SERVER LAG
-#	MAYBE ADD TO COUNTER AND TIMEOUT AN UPDATE FUNCITON?
-#	FIXME:
-
-func			update_stats():
-	for id in to_update:
-		var http = HTTPClient.new()
-		var err = http.connect_to_host("35.236.33.159", 3000)
-		assert(err == OK)
-		while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
-			http.poll()
-		print("Connected!")
-		assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-		var body = str("stat[handle]=", id.name, "&stat[level]=", 1, "&stat[kills]=", id.kills)
-		http.request(
-			http.METHOD_POST, 
-			'/stats.json', 
-			["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(body.length())], 
-			body
-		)
-		while http.get_status() != HTTPClient.STATUS_BODY and http.get_status() != HTTPClient.STATUS_CONNECTED:
-			http.poll()
-		if (http.has_response()):
-				var headers = http.get_response_headers_as_dictionary() # Get response headers.
-				print("code: ", http.get_response_code()) # Show response code.
-				print("**headers:\\n", headers) # Show headers.
-				
-				# Getting the HTTP Body
-				
-				if http.is_response_chunked():
-				# Does it use chunks?
-					print("Response is Chunked!")
-				else:
-					# Or just plain Content-Length
-					var bl = http.get_response_body_length()
-					print("Response Length: ",bl)
-				
-					# This method works for both anyway
-				
-				var rb = PoolByteArray() # Array that will hold the data.
-				
-				while http.get_status() == HTTPClient.STATUS_BODY:
-				# While there is body left to be read
-					http.poll()
-					var chunk = http.read_response_body_chunk() # Get a chunk.
-					if chunk.size() == 0:
-						# Got nothing, wait for buffers to fill a bit.
-						OS.delay_usec(1000)
-					else:
-				    	rb = rb + chunk # Append to read buffer.
-				
-				# Done!
-				
-				print("bytes got: ", rb.size())
-				var text = JSON.parse(rb.get_string_from_ascii())
-				if text.result and text.result.has("status"):
-					print("Error retrieving stats")
-					return
-				print(text.result)
-		print(err)
-		assert (err == OK)
-		to_update.erase(id)
-	pass
 
 remote func		stats_add_kill(id, pname, kills):
 	var updateReq = {}
@@ -620,94 +562,6 @@ remote func		stats_add_kill(id, pname, kills):
 			return
 	to_update.push_back(updateReq)
 
-func	stats_init():
-	print(str(player_id) + "initializing")
-	global.kills = 0
-	return
-	var http = HTTPClient.new()
-	var err = http.connect_to_host("35.236.33.159", 3000)
-	var headers = [
-		"User-Agent: Pirulo/1.0 (Godot)",
-		"Accept: */*"
-	]
-	assert(err == OK)
-	while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
-		http.poll()
-		print("Connecting2..")
-		OS.delay_msec(500)
-	print("Connected2!")
-	assert(http.get_status() == HTTPClient.STATUS_CONNECTED)
-	var body = str("stat[handle]=", global.player_name)
-	print("Forming request... ")
-	err = http.request(
-		HTTPClient.METHOD_POST, 
-		'/stats.json', 
-		headers,
-		body
-	)
-	assert(err == OK) # Make sure all is OK.
-	
-	while http.get_status() == HTTPClient.STATUS_REQUESTING:
-		# Keep polling for as long as the request is being processed.
-		http.poll()
-		print("Requesting...")
-		if not OS.has_feature("web"):
-			OS.delay_msec(500)
-		else:
-			# Synchronous HTTP requests are not supported on the web,
-			# so wait for the next main loop iteration.
-			yield(Engine.get_main_loop(), "idle_frame")
-	print(str(http.get_status()))
-	assert(http.get_status() == HTTPClient.STATUS_BODY or http.get_status() == HTTPClient.STATUS_CONNECTED) # Make sure request finished well.
-	print("Checking response...")
-	if (http.has_response()):
-		print("Response!")
-		headers = http.get_response_headers_as_dictionary() # Get response headers.
-		print("code: ", http.get_response_code()) # Show response code.
-		print("**headers:\\n", headers) # Show headers.
-		
-		# Getting the HTTP Body
-		
-		if http.is_response_chunked():
-		# Does it use chunks?
-			print("Response is Chunked!")
-		else:
-			# Or just plain Content-Length
-			var bl = http.get_response_body_length()
-			print("Response Length: ",bl)
-		
-			# This method works for both anyway
-		
-		var rb = PoolByteArray() # Array that will hold the data.
-		
-		while http.get_status() == HTTPClient.STATUS_BODY:
-		# While there is body left to be read
-			http.poll()
-			var chunk = http.read_response_body_chunk() # Get a chunk.
-			if chunk.size() == 0:
-				# Got nothing, wait for buffers to fill a bit.
-				OS.delay_usec(1000)
-			else:
-		    	rb = rb + chunk # Append to read buffer.
-		
-		# Done!
-		
-		print("bytes got: ", rb.size())
-		var text = JSON.parse(rb.get_string_from_ascii())
-		if text.result and text.result.has("status"):
-			print("Error initializing stats!")
-			return
-		else:
-			print(text.result)
-			if (text.result[0] and text.result[0].kills):
-				global.kills = text.result[0].kills
-			else :
-				global.kills = 0
-			print("Kills: " + str(global.kills))
-	else:
-		print("No response...")
-	pass
-
 func	get_message(message):
 	if player_id == 1 :
 		get_parent().find_node('network').send_message(player_id, message)
@@ -717,7 +571,7 @@ func	get_message(message):
 remote func		display_stats(data, teams) :
 	print("got data")
 	if control == true:
-		var textbox = $Head/Camera/game_stats/stats_text
+		var textbox = $"Head/Camera/Viewport-UI/UI/game_stats/stats_text"
 		textbox.clear()
 		textbox.add_text("name			kills			deaths")
 		textbox.newline()
@@ -739,7 +593,7 @@ remote func		display_stats(data, teams) :
 				if get_parent().get_node(str(pnode2)).team == "red" :
 					textbox.add_text(data.players[pnode2] + "			" + str(data.kills[pnode2]) + "				" + str(data.deaths[pnode2]))
 					textbox.newline()
-		$Head/Camera/game_stats.visible = true
+		$"Head/Camera/Viewport-UI/UI/game_stats".visible = true
 
 remote func		get_leaderboard(pid) :
 	var data = get_parent().find_node("mode_manager").gamestate
