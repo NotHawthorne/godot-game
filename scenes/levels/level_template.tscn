@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/levels/level_config.gd" type="Script" id=1]
+[ext_resource path="res://scenes/objects/Systems/account.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/objects/Systems/console.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/objects/Systems/mode_manager.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/objects/Systems/network.tscn" type="PackedScene" id=5]
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="account" parent="." instance=ExtResource( 2 )]
+
+[node name="console" parent="." instance=ExtResource( 3 )]
+
+[node name="local_settings" type="Node" parent="."]
+
+[node name="mode_manager" parent="." instance=ExtResource( 4 )]
+
+[node name="network" parent="." instance=ExtResource( 5 )]
+
+[node name="b_spawn1" type="Spatial" parent="." groups=[
+"b_spawns",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47217, 0.579206, 0 )
+
+[node name="r_spawn1" type="Spatial" parent="." groups=[
+"r_spawns",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.83547, 0.351435, 0 )
+
+[node name="spawn1" type="Spatial" parent="." groups=[
+"spawns",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.41318, 0.411704, 0 )

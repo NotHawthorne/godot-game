@@ -33,7 +33,7 @@ func _on_Button_pressed():
 	if global.server_selection == "0.0.0.0" :
 		if global.mode != "deathmatch" :
 			global.teams = true
-		global.map = global.lobby_map_selection
+	global.map = global.lobby_map_selection
 	get_tree().change_scene(global.map)
 
 	return
@@ -119,7 +119,7 @@ func _on_Button_pressed():
 func _on_boi_request_completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	print(json.result)
-	get_tree().change_scene("res://scenes/levels/default_level.tscn")
+	get_tree().change_scene("res://scenes/levels/space_station.tscn")
 
 
 func _on_LineEdit_text_changed(new_text):

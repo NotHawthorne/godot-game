@@ -12,7 +12,7 @@ func _ready():
 
 func on_item_selected(id):
 	print("selecting item ")
-	if str(dropdown.get_item_text(id)) == "level1" :
+	if str(dropdown.get_item_text(id)) == "block fortress" :
 		global.lobby_map_selection = "res://scenes/levels/default_level.tscn"
-	elif str(dropdown.get_item_text(id)) == "level2" :
-		global.lobby_map_selection = "res://scenes/levels/playground.tscn"
+	elif str(dropdown.get_item_text(id)) == "space station" :
+		global.lobby_map_selection = "res://scenes/levels/space_station.tscn"

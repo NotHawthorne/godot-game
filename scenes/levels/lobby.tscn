@@ -62,6 +62,7 @@ margin_right = 886.451
 margin_bottom = 525.44
 focus_next = NodePath("../Username")
 focus_previous = NodePath("../Button")
+text = "server (curr: new)"
 script = ExtResource( 4 )
 
 [node name="Username" type="LineEdit" parent="PanelContainer/Panel"]

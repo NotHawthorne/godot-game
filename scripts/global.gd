@@ -4,8 +4,8 @@ extends Node
 # var a = 2
 # var b = "text"
 var		server_selection	= "0.0.0.0"
-var		player_id			= 0
-var		player_name
+var		player_id			= 1
+var		player_name			= "new"
 var		ui_mode				= false
 var		target
 var		interface			= null
@@ -15,9 +15,9 @@ var		player				= null
 var		kills				= 0
 var		level				= 0
 var		stats_inited		= false
-var		lobby_map_selection	= null
+var		lobby_map_selection	= ""
 var		game_uptime			= 0
-var		map					= "res://scenes/levels/default_level.tscn"
+var		map					= ""
 var		mode				= "ctf"
 # set mode to "ctf", "deathmatch", or "team_deathmatch"
 var		my_team				= null
