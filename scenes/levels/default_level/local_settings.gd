@@ -5,6 +5,16 @@ extends Node
 # var b = "text"
 
 # Called when the node enters the scene tree for the first time.
+
+var blue_flag_pad_pos = Vector3(166.141, 39.841, -50.969)
+var red_flag_pad_pos = Vector3(-12.349, 64.864, 186.285)
+
+var blue_flag_visible = true
+var red_flag_visible = true
+
+var blue_flag_pos = Vector3(166.141, 39.841, -50.969)
+var red_flag_pos = Vector3(-12.349, 64.864, 186.285)
+
 func _ready():
 	pass # Replace with function body.
 
@@ -59,6 +69,18 @@ func run_command(pid, message, chat_node) :
 	elif for_everyone :
 		rpc_unreliable("rpc_message", message)
 
+remote func		move_flags(red_spawned, red_picked_up, red_loc, blue_spawned, blue_picked_up, blue_loc) :
+	var red_flag_pad = get_parent().get_node("Red_Flag_Pad")
+	var blue_flag_pad = get_parent().get_node("Blue_Flag_Pad")
+	red_flag_pad.pop_flag()
+	blue_flag_pad.pop_flag()
+	if (red_spawned) :
+		red_flag_pad.drop_flag(red_loc)
+	if (blue_spawned) :
+		blue_flag_pad.drop_flag(blue_loc)
+	red_flag_pad.picked_up = red_picked_up
+	blue_flag_pad.picked_up = blue_picked_up
+
 remote func		spawn_flags() :
 	print("spawning flag")
 	var flag_pad_scene = load("res://scenes/objects/Objects/Flags/Flag_Pad.tscn")
@@ -72,5 +94,7 @@ remote func		spawn_flags() :
 	red_flag.set_name("Red_Flag_Pad")
 	get_parent().add_child(red_flag)
 	get_parent().add_child(blue_flag)
-	red_flag.global_translate(Vector3(-12.349, 64.864, 186.285))
-	blue_flag.global_translate(Vector3(166.141, 39.841, -50.969))
+	red_flag.global_translate(red_flag_pad_pos)
+	blue_flag.global_translate(blue_flag_pad_pos)
+	red_flag.flag_pos = red_flag.get_global_transform()
+	blue_flag.flag_pos = blue_flag.get_global_transform()

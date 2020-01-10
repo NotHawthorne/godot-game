@@ -7,6 +7,7 @@ var model
 var picked_up = false
 var my_team
 var enemy_team
+var flag_pos
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if my_team == "red" :
@@ -23,9 +24,11 @@ remote func reset_flag() :
 	picked_up = false
 	self.add_child(capsule)
 	self.get_node("Flag").set_global_transform(self.get_global_transform())
+	flag_pos = get_node("Flag").get_global_transform()
 
 remote func pop_flag() :
 	print("flag picked up")
+	picked_up = true
 	if my_team == "red" :
 		get_parent().get_node("Red_Flag_Pad").remove_child(capsule)
 	else :
@@ -49,6 +52,7 @@ func capsule_collided(body):
 remote func drop_flag(location) :
 	self.add_child(capsule)
 	self.get_node("Flag").set_global_transform(location)
+	flag_pos = get_node("Flag").get_global_transform()
 
 func pad_collided(body) :
 	print("flag pad collided")
