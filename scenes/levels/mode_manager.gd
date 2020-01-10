@@ -12,9 +12,14 @@ var gamestate	= {}
 func _ready():
 	pass
 
+
+
 func add_player(id, pname, team) :
 	var player_node = get_parent().get_node(str(id))
-	if global.mode == "ctf" and player_node.first_load :
+	if (id in gamestate.id) :
+		return
+	if global.mode == "ctf" and player_node.player_id != 1:
+		print("telling to spawn flag")
 		get_parent().get_node("local_settings").rpc_id(id, "spawn_flags")
 	gamestate.id[id] = id
 	gamestate.players[id] = pname

@@ -60,6 +60,7 @@ func run_command(pid, message, chat_node) :
 		rpc_unreliable("rpc_message", message)
 
 remote func		spawn_flags() :
+	print("spawning flag")
 	var flag_pad_scene = load("res://scenes/objects/Objects/Flags/Flag_Pad.tscn")
 	var	red_flag = flag_pad_scene.instance()
 	var blue_flag = flag_pad_scene.instance()

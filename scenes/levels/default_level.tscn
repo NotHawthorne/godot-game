@@ -114,7 +114,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 189.965, 22.2864, 61.0492 )
 [node name="Spawn5" type="Spatial" parent="." groups=[
 "spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.9814, 16.3776, 101.73 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.9814, 10.3776, 92.73 )
 
 [node name="Spawn6" type="Spatial" parent="." groups=[
 "spawns",
@@ -144,17 +144,17 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5082, 66.2503, 183.568 )
 [node name="r_spawn3" type="Spatial" parent="." groups=[
 "r_spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24.4227, 30.3492, 105.143 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 72.4227, 30.3492, 103.143 )
 
 [node name="r_spawn4" type="Spatial" parent="." groups=[
 "r_spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.07138, 10.477, 105.143 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.07138, 10.477, 89.1323 )
 
 [node name="r_spawn2" type="Spatial" parent="." groups=[
 "r_spawns",
 ]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 62.7994, 70.2857, 147.591 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 54.1544, 70.2857, 147.591 )
 
 [node name="Spawn9" type="Spatial" parent="." groups=[
 "spawns",
