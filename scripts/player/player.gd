@@ -47,8 +47,8 @@ var		packet_id_cache = {}
 var		first_load		= true
 const GRAVITY = 9.8
 const JUMP_SPEED = 5800
-const DASH_SPEED = 150
-
+const DASH_SPEED = 30
+var dashing = false
 var update_timer		= Timer.new()
 var db_timer			= Timer.new()
 var fire_cooldown		= Timer.new()
@@ -85,7 +85,7 @@ func _ready():
 		var bone = $xbot/Skeleton.find_bone('mixamorig_Neck')
 		var bone_transform = Transform(Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0))
 		$xbot/Skeleton.set_bone_rest(bone, bone_transform);
-		OS.set_window_size(Vector2(1280, 720))
+		OS.set_window_size(Vector2(1600, 1024))
 		$"Head/Camera/Viewport-UI/UI/Sprite".visible = true
 		$"Head/Camera/Viewport-UI/UI/player_info".visible = true
 		$"Head/Camera/Viewport-UI/UI/ChatBox".visible = true
@@ -96,6 +96,9 @@ func _ready():
 			get_parent().find_node("mode_manager").start_game()
 			get_parent().find_node("mode_manager").add_player(1, player_name, team)
 			match_info("start")
+	if (team == "blue") :
+		var material = load("res://models/materials/holo_blue.tres")
+		$xbot.get_node("Skeleton/Beta_Surface").set_material_override(material)
 	global.first_load = false
 	first_load = false
 	bone_transform = $xbot/Skeleton.get_bone_custom_pose($xbot/Skeleton.find_bone("mixamorig_Spine1"))
@@ -309,63 +312,103 @@ func	_physics_process(delta):
 			play_sound("player", player_name, "stop", "walk")
 		if Input.is_action_just_released("move_right") and not (Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_backward")):
 			play_sound("player", player_name, "stop", "walk")
+
+
+
+		if (Input.is_action_just_pressed("Dash")):
+			play_sound("player", player_name, "stop", "walk")
+			if (anim == "rifle_jump2"):
+					$xbot/AnimationPlayer.stop(true)
+			anim = "rifle_run_forward"
+			if (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward") or Input.is_action_pressed("move_forward")) \
+					and (($JumpCast.is_colliding() or $Head/Camera/WallCast1.is_colliding() or $Head/Camera/WallCast2.is_colliding() or $Head/Camera/WallCast3.is_colliding() or $Head/Camera/WallCast4.is_colliding())) \
+					or (time_off_ground > 0 and jumps < 2):
+					if (time_off_ground > 0 and jumps < 2) :
+						jumps += 1
+					else :
+						jumps = 0
+					print("colliding")
+					dashing = true
+					velocity.y += (JUMP_SPEED * delta) / 1.9
+					velocity -= aim.z * (DASH_SPEED)
+					if Input.is_action_pressed("move_left"):
+						velocity -= aim.x * (DASH_SPEED * 1.2)
+					if Input.is_action_pressed("move_backward"):
+						velocity += aim.z * (DASH_SPEED * 1.2)
+					if Input.is_action_pressed("move_right"):
+						velocity += aim.x * (DASH_SPEED * 1.2)
+					if Input.is_action_pressed("move_forward"):
+						velocity -= aim.z * (DASH_SPEED * 1.2)
+			if dashing :
+				if (Input.is_action_pressed("move_forward")):
+					play_sound("player", player_name, "play", "dash")
+					velocity -= aim.z * DASH_SPEED
+				if (Input.is_action_pressed("move_backward")):
+					play_sound("player", player_name, "play", "dash")
+					velocity += aim.z * DASH_SPEED
+				if (Input.is_action_pressed("move_left")):
+					play_sound("player", player_name, "play", "dash")
+					velocity -= aim.x * DASH_SPEED
+				if (Input.is_action_pressed("move_right")):
+					play_sound("player", player_name, "play", "dash")
+					velocity += aim.x * DASH_SPEED
+				#if dashing == true:
+				#	velocity.y -= (JUMP_SPEED * delta) / 2
+				dashing = false
+
+
 		if (Input.is_action_just_pressed("jump")):
-			var dashing = false
-			if (jumps <= 1):
+			if (jumps < 2):
 				play_sound("player", player_name, "stop", "walk")
 				if jumps == 0 :
 					play_sound("player", player_name, "play", "jump")
 				if (anim == "rifle_jump2"):
 					$xbot/AnimationPlayer.stop(true)
 				anim = "rifle_jump2"
-				if $Head/Camera/WallCast1.is_colliding() or $Head/Camera/WallCast2.is_colliding() or $Head/Camera/WallCast3.is_colliding() or $Head/Camera/WallCast4.is_colliding():
-					print("colliding")
-					dashing = true
-					velocity.y += (JUMP_SPEED * delta) / 1.9
-					velocity -= aim.z * (DASH_SPEED)
-				if $Head/Camera/WallCast1.is_colliding() and Input.is_action_pressed("move_left"):
-					jumps = 0
-					velocity -= aim.x * (DASH_SPEED * 1.2)
-				if $Head/Camera/WallCast2.is_colliding() and Input.is_action_pressed("move_backward"):
-					jumps = 0
-					velocity += aim.z * (DASH_SPEED * 1.2)
-				if $Head/Camera/WallCast3.is_colliding() and Input.is_action_pressed("move_right"):
-					jumps = 0
-					velocity += aim.x * (DASH_SPEED * 1.2)
-				if $Head/Camera/WallCast4.is_colliding() and Input.is_action_pressed("move_forward"):
-					jumps = 0
-					velocity -= aim.z * (DASH_SPEED * 1.2)
-			if $JumpCast.is_colliding():
-				jumps = 0
-				#print("colliding")
-			if jumps < 2:
+#				if (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right") or Input.is_action_pressed("move_backward") or Input.is_action_pressed("move_forward")) \
+#					and ($JumpCast.is_colliding() or $Head/Camera/WallCast1.is_colliding() or $Head/Camera/WallCast2.is_colliding() or $Head/Camera/WallCast3.is_colliding() or $Head/Camera/WallCast4.is_colliding()):
+#					print("colliding")
+#					dashing = true
+#					velocity.y += (JUMP_SPEED * delta) / 1.9
+#					velocity -= aim.z * (DASH_SPEED)
+#					if Input.is_action_pressed("move_left"):
+#						jumps = 0
+#						velocity -= aim.x * (DASH_SPEED * 1.2)
+#					if Input.is_action_pressed("move_backward"):
+#						jumps = 0
+#						velocity += aim.z * (DASH_SPEED * 1.2)
+#					if Input.is_action_pressed("move_right"):
+#						jumps = 0
+#						velocity += aim.x * (DASH_SPEED * 1.2)
+#					if Input.is_action_pressed("move_forward"):
+#						jumps = 0
+#						velocity -= aim.z * (DASH_SPEED * 1.2)
+			if jumps < 2 and not ($JumpCast.is_colliding() and dashing):
 				#print("jumping...")
 				direction.y = 1 + (direction.y * delta)
 				velocity.y += JUMP_SPEED * delta
 				jumps += 1
 				time_off_ground = 0
-			if jumps == 2:
-				if (Input.is_action_pressed("move_forward")):
-					play_sound("player", player_name, "play", "dash")
-					velocity -= aim.z * DASH_SPEED
-					dashing = true
-				if (Input.is_action_pressed("move_backward")):
-					play_sound("player", player_name, "play", "dash")
-					velocity += aim.z * DASH_SPEED
-					dashing = true
-				if (Input.is_action_pressed("move_left")):
-					play_sound("player", player_name, "play", "dash")
-					velocity -= aim.x * DASH_SPEED
-					dashing = true
-				if (Input.is_action_pressed("move_right")):
-					play_sound("player", player_name, "play", "dash")
-					velocity += aim.x * DASH_SPEED
-					dashing = true
-				if dashing == true:
-					velocity.y -= (JUMP_SPEED * delta) / 2
-					jumps += 1
+				time_off_ground += (delta * 2)
+			if dashing :
+				dashing = false
+#				if (Input.is_action_pressed("move_forward")):
+#					play_sound("player", player_name, "play", "dash")
+#					velocity -= aim.z * DASH_SPEED
+#				if (Input.is_action_pressed("move_backward")):
+#					play_sound("player", player_name, "play", "dash")
+#					velocity += aim.z * DASH_SPEED
+#				if (Input.is_action_pressed("move_left")):
+#					play_sound("player", player_name, "play", "dash")
+#					velocity -= aim.x * DASH_SPEED
+#				if (Input.is_action_pressed("move_right")):
+#					play_sound("player", player_name, "play", "dash")
+#					velocity += aim.x * DASH_SPEED
+#				if dashing == true:
+#					velocity.y -= (JUMP_SPEED * delta) / 2
+#				dashing = false
 		#direction.y = 0
-			time_off_ground += (delta * 2)
+		
 		velocity.y -= GRAVITY * time_off_ground
 		direction	= direction.normalized()
 		var target	= direction * RUN_SPEED
