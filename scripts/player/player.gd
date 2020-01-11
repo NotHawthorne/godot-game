@@ -85,7 +85,7 @@ func _ready():
 		var bone = $xbot/Skeleton.find_bone('mixamorig_Neck')
 		var bone_transform = Transform(Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0))
 		$xbot/Skeleton.set_bone_rest(bone, bone_transform);
-		OS.set_window_size(Vector2(1600, 1024))
+		OS.set_window_size(Vector2(1280, 720))
 		$"Head/Camera/Viewport-UI/UI/Sprite".visible = true
 		$"Head/Camera/Viewport-UI/UI/player_info".visible = true
 		$"Head/Camera/Viewport-UI/UI/ChatBox".visible = true
