@@ -3,10 +3,10 @@
 [ext_resource path="res://models/92-sci_fi_gun_obj/scifi_gun.obj" type="ArrayMesh" id=1]
 
 [node name="Spatial" type="Spatial"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.332192, 0 )
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -1.78448, -1.61829 )
 mesh = ExtResource( 1 )
 material/0 = null
 material/1 = null
@@ -64,7 +64,7 @@ material/52 = null
 material/53 = null
 
 [node name="RayCast" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.129394, 2.36832, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.104302, 0.573315, -6.18467 )
 enabled = true
 cast_to = Vector3( 0, 0, -10000 )
 collide_with_areas = true
