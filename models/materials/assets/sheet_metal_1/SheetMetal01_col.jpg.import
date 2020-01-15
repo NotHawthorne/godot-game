@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/SheetMetal01_col.jpg-6797f8d9bc4a6d20d2609f2a047d0abc.s3tc.stex"
 path.etc2="res://.import/SheetMetal01_col.jpg-6797f8d9bc4a6d20d2609f2a047d0abc.etc2.stex"
+path.etc="res://.import/SheetMetal01_col.jpg-6797f8d9bc4a6d20d2609f2a047d0abc.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://models/materials/assets/sheet_metal_1/SheetMetal01_col.jpg"
-dest_files=[ "res://.import/SheetMetal01_col.jpg-6797f8d9bc4a6d20d2609f2a047d0abc.s3tc.stex", "res://.import/SheetMetal01_col.jpg-6797f8d9bc4a6d20d2609f2a047d0abc.etc2.stex" ]
+dest_files=[ "res://.import/SheetMetal01_col.jpg-6797f8d9bc4a6d20d2609f2a047d0abc.s3tc.stex", "res://.import/SheetMetal01_col.jpg-6797f8d9bc4a6d20d2609f2a047d0abc.etc2.stex", "res://.import/SheetMetal01_col.jpg-6797f8d9bc4a6d20d2609f2a047d0abc.etc.stex" ]
 
 [params]
 

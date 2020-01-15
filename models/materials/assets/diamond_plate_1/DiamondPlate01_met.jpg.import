@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/DiamondPlate01_met.jpg-57656567a6fd56c7b95fe6d8e4733376.s3tc.stex"
 path.etc2="res://.import/DiamondPlate01_met.jpg-57656567a6fd56c7b95fe6d8e4733376.etc2.stex"
+path.etc="res://.import/DiamondPlate01_met.jpg-57656567a6fd56c7b95fe6d8e4733376.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://models/materials/assets/diamond_plate_1/DiamondPlate01_met.jpg"
-dest_files=[ "res://.import/DiamondPlate01_met.jpg-57656567a6fd56c7b95fe6d8e4733376.s3tc.stex", "res://.import/DiamondPlate01_met.jpg-57656567a6fd56c7b95fe6d8e4733376.etc2.stex" ]
+dest_files=[ "res://.import/DiamondPlate01_met.jpg-57656567a6fd56c7b95fe6d8e4733376.s3tc.stex", "res://.import/DiamondPlate01_met.jpg-57656567a6fd56c7b95fe6d8e4733376.etc2.stex", "res://.import/DiamondPlate01_met.jpg-57656567a6fd56c7b95fe6d8e4733376.etc.stex" ]
 
 [params]
 

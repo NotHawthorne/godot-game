@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/teleport_target.png-c4d10f6b59f31af74c26c231e47584c6.s3tc.stex"
 path.etc2="res://.import/teleport_target.png-c4d10f6b59f31af74c26c231e47584c6.etc2.stex"
+path.etc="res://.import/teleport_target.png-c4d10f6b59f31af74c26c231e47584c6.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://addons/vr-common_01_2020/addons/vr-common/images/teleport_target.png"
-dest_files=[ "res://.import/teleport_target.png-c4d10f6b59f31af74c26c231e47584c6.s3tc.stex", "res://.import/teleport_target.png-c4d10f6b59f31af74c26c231e47584c6.etc2.stex" ]
+dest_files=[ "res://.import/teleport_target.png-c4d10f6b59f31af74c26c231e47584c6.s3tc.stex", "res://.import/teleport_target.png-c4d10f6b59f31af74c26c231e47584c6.etc2.stex", "res://.import/teleport_target.png-c4d10f6b59f31af74c26c231e47584c6.etc.stex" ]
 
 [params]
 

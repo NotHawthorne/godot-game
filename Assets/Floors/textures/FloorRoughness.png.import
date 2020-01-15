@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/FloorRoughness.png-48ee23f1ba3c646c82b2e3449e6f611e.s3tc.stex"
 path.etc2="res://.import/FloorRoughness.png-48ee23f1ba3c646c82b2e3449e6f611e.etc2.stex"
+path.etc="res://.import/FloorRoughness.png-48ee23f1ba3c646c82b2e3449e6f611e.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/Floors/textures/FloorRoughness.png"
-dest_files=[ "res://.import/FloorRoughness.png-48ee23f1ba3c646c82b2e3449e6f611e.s3tc.stex", "res://.import/FloorRoughness.png-48ee23f1ba3c646c82b2e3449e6f611e.etc2.stex" ]
+dest_files=[ "res://.import/FloorRoughness.png-48ee23f1ba3c646c82b2e3449e6f611e.s3tc.stex", "res://.import/FloorRoughness.png-48ee23f1ba3c646c82b2e3449e6f611e.etc2.stex", "res://.import/FloorRoughness.png-48ee23f1ba3c646c82b2e3449e6f611e.etc.stex" ]
 
 [params]
 

@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/StraightPipeEmission.png-99ff70afb70da5ed12c3dd123149911f.s3tc.stex"
 path.etc2="res://.import/StraightPipeEmission.png-99ff70afb70da5ed12c3dd123149911f.etc2.stex"
+path.etc="res://.import/StraightPipeEmission.png-99ff70afb70da5ed12c3dd123149911f.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/Pipes/textures/StraightPipeEmission.png"
-dest_files=[ "res://.import/StraightPipeEmission.png-99ff70afb70da5ed12c3dd123149911f.s3tc.stex", "res://.import/StraightPipeEmission.png-99ff70afb70da5ed12c3dd123149911f.etc2.stex" ]
+dest_files=[ "res://.import/StraightPipeEmission.png-99ff70afb70da5ed12c3dd123149911f.s3tc.stex", "res://.import/StraightPipeEmission.png-99ff70afb70da5ed12c3dd123149911f.etc2.stex", "res://.import/StraightPipeEmission.png-99ff70afb70da5ed12c3dd123149911f.etc.stex" ]
 
 [params]
 

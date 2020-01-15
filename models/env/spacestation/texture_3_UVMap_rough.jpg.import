@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/texture_3_UVMap_rough.jpg-f99ea0304ec4d8d8b941fea013316adc.s3tc.stex"
 path.etc2="res://.import/texture_3_UVMap_rough.jpg-f99ea0304ec4d8d8b941fea013316adc.etc2.stex"
+path.etc="res://.import/texture_3_UVMap_rough.jpg-f99ea0304ec4d8d8b941fea013316adc.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://models/env/spacestation/texture_3_UVMap_rough.jpg"
-dest_files=[ "res://.import/texture_3_UVMap_rough.jpg-f99ea0304ec4d8d8b941fea013316adc.s3tc.stex", "res://.import/texture_3_UVMap_rough.jpg-f99ea0304ec4d8d8b941fea013316adc.etc2.stex" ]
+dest_files=[ "res://.import/texture_3_UVMap_rough.jpg-f99ea0304ec4d8d8b941fea013316adc.s3tc.stex", "res://.import/texture_3_UVMap_rough.jpg-f99ea0304ec4d8d8b941fea013316adc.etc2.stex", "res://.import/texture_3_UVMap_rough.jpg-f99ea0304ec4d8d8b941fea013316adc.etc.stex" ]
 
 [params]
 

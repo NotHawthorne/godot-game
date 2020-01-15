@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/PaintedWood03_disp.jpg-810c123a7488a069b0beacd4be5602ce.s3tc.stex"
 path.etc2="res://.import/PaintedWood03_disp.jpg-810c123a7488a069b0beacd4be5602ce.etc2.stex"
+path.etc="res://.import/PaintedWood03_disp.jpg-810c123a7488a069b0beacd4be5602ce.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://models/materials/assets/red_wood_1/PaintedWood03_disp.jpg"
-dest_files=[ "res://.import/PaintedWood03_disp.jpg-810c123a7488a069b0beacd4be5602ce.s3tc.stex", "res://.import/PaintedWood03_disp.jpg-810c123a7488a069b0beacd4be5602ce.etc2.stex" ]
+dest_files=[ "res://.import/PaintedWood03_disp.jpg-810c123a7488a069b0beacd4be5602ce.s3tc.stex", "res://.import/PaintedWood03_disp.jpg-810c123a7488a069b0beacd4be5602ce.etc2.stex", "res://.import/PaintedWood03_disp.jpg-810c123a7488a069b0beacd4be5602ce.etc.stex" ]
 
 [params]
 

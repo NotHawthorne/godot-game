@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/FloorDiffuse.png-c801a2aba3b9f99c73e04b675c23101f.s3tc.stex"
 path.etc2="res://.import/FloorDiffuse.png-c801a2aba3b9f99c73e04b675c23101f.etc2.stex"
+path.etc="res://.import/FloorDiffuse.png-c801a2aba3b9f99c73e04b675c23101f.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/Floors/textures/FloorDiffuse.png"
-dest_files=[ "res://.import/FloorDiffuse.png-c801a2aba3b9f99c73e04b675c23101f.s3tc.stex", "res://.import/FloorDiffuse.png-c801a2aba3b9f99c73e04b675c23101f.etc2.stex" ]
+dest_files=[ "res://.import/FloorDiffuse.png-c801a2aba3b9f99c73e04b675c23101f.s3tc.stex", "res://.import/FloorDiffuse.png-c801a2aba3b9f99c73e04b675c23101f.etc2.stex", "res://.import/FloorDiffuse.png-c801a2aba3b9f99c73e04b675c23101f.etc.stex" ]
 
 [params]
 

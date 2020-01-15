@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/Tiles65_rgh.jpg-c8b240fe4afde4e0cf012dc4dcb9ae17.s3tc.stex"
 path.etc2="res://.import/Tiles65_rgh.jpg-c8b240fe4afde4e0cf012dc4dcb9ae17.etc2.stex"
+path.etc="res://.import/Tiles65_rgh.jpg-c8b240fe4afde4e0cf012dc4dcb9ae17.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://models/materials/assets/ceramic_tile_1/Tiles65_rgh.jpg"
-dest_files=[ "res://.import/Tiles65_rgh.jpg-c8b240fe4afde4e0cf012dc4dcb9ae17.s3tc.stex", "res://.import/Tiles65_rgh.jpg-c8b240fe4afde4e0cf012dc4dcb9ae17.etc2.stex" ]
+dest_files=[ "res://.import/Tiles65_rgh.jpg-c8b240fe4afde4e0cf012dc4dcb9ae17.s3tc.stex", "res://.import/Tiles65_rgh.jpg-c8b240fe4afde4e0cf012dc4dcb9ae17.etc2.stex", "res://.import/Tiles65_rgh.jpg-c8b240fe4afde4e0cf012dc4dcb9ae17.etc.stex" ]
 
 [params]
 

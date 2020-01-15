@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/Metal12_nrm.jpg-30e663b06aacdf75646c8f8afa39f32c.s3tc.stex"
 path.etc2="res://.import/Metal12_nrm.jpg-30e663b06aacdf75646c8f8afa39f32c.etc2.stex"
+path.etc="res://.import/Metal12_nrm.jpg-30e663b06aacdf75646c8f8afa39f32c.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://models/materials/assets/metal_tex_2/Metal12_nrm.jpg"
-dest_files=[ "res://.import/Metal12_nrm.jpg-30e663b06aacdf75646c8f8afa39f32c.s3tc.stex", "res://.import/Metal12_nrm.jpg-30e663b06aacdf75646c8f8afa39f32c.etc2.stex" ]
+dest_files=[ "res://.import/Metal12_nrm.jpg-30e663b06aacdf75646c8f8afa39f32c.s3tc.stex", "res://.import/Metal12_nrm.jpg-30e663b06aacdf75646c8f8afa39f32c.etc2.stex", "res://.import/Metal12_nrm.jpg-30e663b06aacdf75646c8f8afa39f32c.etc.stex" ]
 
 [params]
 

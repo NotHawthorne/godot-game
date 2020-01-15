@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/HallwayEmission.png-f6d80a7ac88cb9de11c5f03c57b68a0e.s3tc.stex"
 path.etc2="res://.import/HallwayEmission.png-f6d80a7ac88cb9de11c5f03c57b68a0e.etc2.stex"
+path.etc="res://.import/HallwayEmission.png-f6d80a7ac88cb9de11c5f03c57b68a0e.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/Hallways/textures/HallwayEmission.png"
-dest_files=[ "res://.import/HallwayEmission.png-f6d80a7ac88cb9de11c5f03c57b68a0e.s3tc.stex", "res://.import/HallwayEmission.png-f6d80a7ac88cb9de11c5f03c57b68a0e.etc2.stex" ]
+dest_files=[ "res://.import/HallwayEmission.png-f6d80a7ac88cb9de11c5f03c57b68a0e.s3tc.stex", "res://.import/HallwayEmission.png-f6d80a7ac88cb9de11c5f03c57b68a0e.etc2.stex", "res://.import/HallwayEmission.png-f6d80a7ac88cb9de11c5f03c57b68a0e.etc.stex" ]
 
 [params]
 

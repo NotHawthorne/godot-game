@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/ElevatorDiffuse.png-0db0bd27f4ca7184a434a9ff517a0c79.s3tc.stex"
 path.etc2="res://.import/ElevatorDiffuse.png-0db0bd27f4ca7184a434a9ff517a0c79.etc2.stex"
+path.etc="res://.import/ElevatorDiffuse.png-0db0bd27f4ca7184a434a9ff517a0c79.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/Props/textures/ElevatorDiffuse.png"
-dest_files=[ "res://.import/ElevatorDiffuse.png-0db0bd27f4ca7184a434a9ff517a0c79.s3tc.stex", "res://.import/ElevatorDiffuse.png-0db0bd27f4ca7184a434a9ff517a0c79.etc2.stex" ]
+dest_files=[ "res://.import/ElevatorDiffuse.png-0db0bd27f4ca7184a434a9ff517a0c79.s3tc.stex", "res://.import/ElevatorDiffuse.png-0db0bd27f4ca7184a434a9ff517a0c79.etc2.stex", "res://.import/ElevatorDiffuse.png-0db0bd27f4ca7184a434a9ff517a0c79.etc.stex" ]
 
 [params]
 

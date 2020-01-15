@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/BoxContainerEmission.png-585c5dc48ec205a9617d0f4042579a62.s3tc.stex"
 path.etc2="res://.import/BoxContainerEmission.png-585c5dc48ec205a9617d0f4042579a62.etc2.stex"
+path.etc="res://.import/BoxContainerEmission.png-585c5dc48ec205a9617d0f4042579a62.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/Props/textures/BoxContainerEmission.png"
-dest_files=[ "res://.import/BoxContainerEmission.png-585c5dc48ec205a9617d0f4042579a62.s3tc.stex", "res://.import/BoxContainerEmission.png-585c5dc48ec205a9617d0f4042579a62.etc2.stex" ]
+dest_files=[ "res://.import/BoxContainerEmission.png-585c5dc48ec205a9617d0f4042579a62.s3tc.stex", "res://.import/BoxContainerEmission.png-585c5dc48ec205a9617d0f4042579a62.etc2.stex", "res://.import/BoxContainerEmission.png-585c5dc48ec205a9617d0f4042579a62.etc.stex" ]
 
 [params]
 
