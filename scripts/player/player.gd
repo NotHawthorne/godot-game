@@ -249,6 +249,26 @@ remote func leaderboard_add_stat(id, kill, death, cap) :
 func	_physics_process(delta):
 	if (control == true):
 		# Reset player direction
+		if ((Input.is_action_pressed("look_left") or Input.is_action_pressed("look_right") or Input.is_action_pressed("look_up") or Input.is_action_pressed("look_down"))) and !global.ui_mode and control == true:
+			var change = 0
+			if control == true:
+				var change_x = (Input.get_action_strength("look_left") - Input.get_action_strength("look_right")) * delta * 120
+				$Head.rotate_y(deg2rad(change_x))
+				$xbot.rotate_y(deg2rad(change_x))
+				change = (Input.get_action_strength("look_up") - Input.get_action_strength("look_down")) * delta * 120
+				var bone = $xbot/Skeleton.find_bone('mixamorig_Spine')
+				#var bone_transform = $xbot/Skeleton.get_bone_custom_pose(bone)
+				#print(str(bone_transform))
+				if change + camera_angle < 90 and change + camera_angle > -90:
+					$Head/Camera.rotate_x(deg2rad(change))
+					$Head/gun_container.rotate_x(deg2rad(change))
+					var rot_amt = deg2rad(change)
+					bone_transform = bone_transform.rotated(Vector3(1, 0, 0).normalized(), (-rot_amt) * 0.25)
+					bone_transform = bone_transform.rotated(Vector3(0, 0, 1).normalized(), (rot_amt) * 0.25)
+					$xbot/Skeleton.set_bone_custom_pose(bone, bone_transform);
+					camera_angle += change
+				rpc_unreliable("do_rot", $xbot.rotation.y, bone_transform, global.player_id)
+
 		direction	= Vector3()
 		if $JumpCast.is_colliding():
 			#if time_off_ground > 0 and respawning == false :
@@ -652,12 +672,23 @@ func play_sound(node_type, node_name, mode, sound) :
 	rpc_unreliable("remote_play_sound", node_type, node_name, player_id, mode, sound)
 
 func	_input(event):
-	if event is InputEventMouseMotion and !global.ui_mode and control == true:
+	for i in range(16):
+    	if Input.is_joy_button_pressed(0,i):
+        	print("Button at " + str(i) + " pressed, should be button: " + Input.get_joy_button_string(i))
+	if (event is InputEventMouseMotion) and !global.ui_mode and control == true:
 		var change = 0
 		if control == true:
-			$Head.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
-			$xbot.rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
-			change = -event.relative.y * mouse_sensitivity
+			var change_x
+			if (event is InputEventMouseMotion) :
+				change_x = -event.relative.x * mouse_sensitivity
+			#else :
+			#	change_x = Input.get_action_strength("look_left") - Input.get_action_strength("look_right")
+			$Head.rotate_y(deg2rad(change_x))
+			$xbot.rotate_y(deg2rad(change_x))
+			if (event is InputEventMouseMotion) :
+				change = -event.relative.y * mouse_sensitivity
+			#else :
+			#	change = Input.get_action_strength("look_up") - Input.get_action_strength("look_down")
 			var bone = $xbot/Skeleton.find_bone('mixamorig_Spine')
 			#var bone_transform = $xbot/Skeleton.get_bone_custom_pose(bone)
 			#print(str(bone_transform))
